@@ -31,7 +31,7 @@ RUN apt-get update > /dev/null && \
     rm -rf /var/lib/apt/lists/*
 
 #Install necessary R packages
-RUN install2.r optparse R.utils readr BiocManager ggplot2 && \
+RUN install2.r optparse R.utils readr BiocManager ggplot2 remotes && \
     R -e 'BiocManager::install(c("ShortRead","Biostrings","dada2","phyloseq","DECIPHER"), ask = F)' && \
     R -e 'remotes::install_github("jbisanz/qiime2R")' && \
     rm -rf /tmp/downloaded_packages
