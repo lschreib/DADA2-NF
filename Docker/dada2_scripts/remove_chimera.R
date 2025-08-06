@@ -29,8 +29,8 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "FALSE",
-        help = "Print extra output"
+        type = "character", default = "FALSE", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
 
@@ -80,7 +80,7 @@ inRs <- list.files(path, pattern = pattern_REV, full.names = TRUE)
 dadaFs <- readRDS(opt$forward_sample)
 dadaRs <- readRDS(opt$reverse_sample)
 
-mergers <- mergePairs(dadaFs, inFs, dadaRs, inRs, verbose = TRUE)
+mergers <- mergePairs(dadaFs, inFs, dadaRs, inRs, verbose = as.logical(opt$verbose))
 saveRDS(mergers, file = "merged_reads.rds")
 
 seqtab <- makeSequenceTable(mergers)
@@ -93,7 +93,7 @@ write_tsv(stats_before, "seqtab_dimensions.raw.tsv")
 write_tsv(as.data.frame(table(nchar(getSequences(seqtab)))), "seqtab_length_distribution.raw.tsv")
 
 # Remove chimeras
-seqtab.nochim <- removeBimeraDenovo(seqtab, method = "consensus", multithread = opt$threads, verbose = TRUE)
+seqtab.nochim <- removeBimeraDenovo(seqtab, method = "consensus", multithread = opt$threads, verbose = as.logical(opt$verbose))
 
 # Inspect sequence table dimensions
 stats_before <- data.frame("samples" = dim(seqtab.nochim)[1], "unique_sequences" = dim(seqtab.nochim)[2])

@@ -29,8 +29,8 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "TRUE",
-        help = "Print extra output"
+        type = "character", default = "TRUE", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'TRUE')"
     )
 )
 
@@ -59,7 +59,7 @@ if (is.null(trainingSet) || !(inherits(trainingSet, "Taxa") || is.list(trainingS
 }
 
 dna <- DNAStringSet(getSequences(seqtab.nochim)) # Create a DNAStringSet from the ASVs
-ids <- IdTaxa(dna, trainingSet, strand = opt$strand, processors = opt$threads, verbose = opt$verbose)
+ids <- IdTaxa(dna, trainingSet, strand = opt$strand, processors = opt$threads, verbose = as.logical(opt$verbose))
 saveRDS(object = ids, file = "decipher_ids.rds")
 
 # Convert the output object of class "Taxa" to a matrix analogous to the output from assignTaxonomy

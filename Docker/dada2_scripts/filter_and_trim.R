@@ -16,12 +16,12 @@ option_list <- list(
         help = "Path to output directory", metavar = "character"
     ),
     make_option(c("-f", "--trunc_len_fwd"),
-        type = "integer", default = 220,
-        help = "Truncation length for forward reads (DEFAULT: 220)", metavar = "integer"
+        type = "integer", default = 230,
+        help = "Truncation length for forward reads (DEFAULT: 230)", metavar = "integer"
     ),
     make_option(c("-r", "--trunc_len_rev"),
-        type = "integer", default = 220,
-        help = "Truncation length for reverse reads (DEFAULT: 220)", metavar = "integer"
+        type = "integer", default = 230,
+        help = "Truncation length for reverse reads (DEFAULT: 230)", metavar = "integer"
     ),
     make_option(c("-n", "--max_n"),
         type = "integer", default = 0,
@@ -39,13 +39,17 @@ option_list <- list(
         type = "integer", default = 20,
         help = "Quality score threshold for truncation (DEFAULT: 20)", metavar = "integer"
     ),
+    make_option(c("-m", "--min_length"),
+        type = "integer", default = 100,
+        help = "Minimum length of reads after trimming (DEFAULT: 100)", metavar = "integer"
+    ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "FALSE",
-        help = "Print extra output"
+        type = "character", default = "FALSE", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
 
@@ -90,9 +94,9 @@ outFs <- file.path(paste0("filtered/", basename(inFs)))
 outRs <- file.path(paste0("filtered/", basename(inRs)))
 
 out <- filterAndTrim(inFs, outFs, inRs, outRs,
-    truncLen = c(220, 220),
-    maxN = 0, maxEE = c(2, 2), truncQ = 2, rm.phix = TRUE,
-    compress = TRUE, multithread = opt$threads, verbose = opt$verbose
+    truncLen = c(opt$trunc_len_fwd, opt$trunc_len_rev),
+    maxN = opt$max_n, maxEE = c(opt$max_ee_fwd, opt$max_ee_rev), truncQ = opt$trunc_q, minLen = opt$min_length, rm.phix = TRUE,
+    compress = TRUE, multithread = opt$threads, verbose = as.logical(opt$verbose)
 )
 
 saveRDS(out, file = "filter_and_trim_output.rds")

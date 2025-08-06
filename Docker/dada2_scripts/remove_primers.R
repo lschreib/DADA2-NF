@@ -36,8 +36,8 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "FALSE",
-        help = "Print extra output"
+        type = "character", default = "FALSE", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
 
@@ -117,7 +117,7 @@ REV.orients <- allOrients(REV)
 
 fnFs.filtN <- file.path(paste0("filtN/", basename(fnFs), ".gz")) # Put N-filtered files in filtN/ subdirectory
 fnRs.filtN <- file.path(paste0("filtN/", basename(fnRs), ".gz"))
-filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = opt$threads, verbose = opt$verbose, compress = TRUE)
+filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = opt$threads, verbose = as.logical(opt$verbose), compress = TRUE)
 
 primerHits <- function(primer, fn) {
     # Counts number of reads in which the primer is found

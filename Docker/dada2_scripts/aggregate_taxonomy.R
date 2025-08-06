@@ -17,8 +17,8 @@ option_list <- list(
         help = "Level of taxonomy to aggregate (1-8). 1 = domain, 2 = phylum, 3 = class, 4 = order, 5 = family, 6 = genus (DEFAULT), 7 = species, 8 = strain/species hypothesis", metavar = "integer"
     ),
     make_option(c("-n", "--na_remove"),
-        type = "character", default = "FALSE",
-        help = "Add this option to remove NA values during the aggregation (DEFAULT: FALSE)", metavar = "logical"
+        type = "character", default = "FALSE", metavar = "character",
+        help = "Add this option to remove NA values during the aggregation ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     ),
     make_option(c("-o", "--output_prefix"),
         type = "character", default = "aggregated_taxonomy",
@@ -69,7 +69,7 @@ aggr_level <- levels[opt$level]
 outfile_reads <- paste0(opt$output_prefix, "_", aggr_level, ".reads.tsv")
 outfile_abundance <- paste0(opt$output_prefix, "_", aggr_level, ".rel_abund.tsv")
 
-ps_aggr <- tax_glom(ps, aggr_level, NArm = opt$na_remove)
+ps_aggr <- tax_glom(ps, aggr_level, NArm = as.logical(opt$na_remove))
 
 otu <- as.data.frame(t(otu_table(ps_aggr)))
 

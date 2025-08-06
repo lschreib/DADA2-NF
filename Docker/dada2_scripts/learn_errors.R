@@ -12,16 +12,16 @@ option_list <- list(
         help = "Path to input folder containing FASTQ files", metavar = "character"
     ),
     make_option(c("-r", "--randomize"),
-        type = "character", default = "TRUE",
-        help = "Randomize read order (DEFAULT: TRUE)"
+        type = "character", default = "TRUE", metavar = "character",
+        help = "Randomize read order ('TRUE'| 'FALSE')(DEFAULT: 'TRUE')"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "FALSE",
-        help = "Print extra output"
+        type = "character", default = "FALSE", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
 
@@ -68,10 +68,10 @@ if (grepl("\\.gz$", all_files[1])) {
 inFs <- list.files(path, pattern = pattern_FWD, full.names = TRUE)
 inRs <- list.files(path, pattern = pattern_REV, full.names = TRUE)
 
-errF <- learnErrors(inFs, randomize = opt$randomize, multithread = opt$threads, verbose = opt$verbose)
+errF <- learnErrors(inFs, randomize = opt$randomize, multithread = opt$threads, verbose = as.logical(opt$verbose))
 saveRDS(errF, file = "forward_errors.rds")
 
-errR <- learnErrors(inRs, randomize = opt$randomize, multithread = opt$threads, verbose = opt$verbose)
+errR <- learnErrors(inRs, randomize = opt$randomize, multithread = opt$threads, verbose = as.logical(opt$verbose))
 saveRDS(errR, file = "reverse_errors.rds")
 
 forward_error_plot <- plotErrors(errF, nominalQ = TRUE)
