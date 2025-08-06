@@ -29,7 +29,7 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        action = "store_true", default = TRUE,
+        type = "character", default = "TRUE",
         help = "Print extra output"
     )
 )

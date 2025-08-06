@@ -12,15 +12,15 @@ option_list <- list(
         help = "Path to input folder containing FASTQ files", metavar = "character"
     ),
     make_option(c("-r", "--randomize"),
-        action = "store_true", default = TRUE,
-        help = "Randomize read order (default: TRUE)"
+        type = "character", default = "TRUE",
+        help = "Randomize read order (DEFAULT: TRUE)"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
-        help = "Number of threads to use", metavar = "integer"
+        help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        action = "store_true", default = FALSE,
+        type = "character", default = "FALSE",
         help = "Print extra output"
     )
 )

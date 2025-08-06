@@ -10,23 +10,23 @@ suppressMessages(library(ShortRead))
 option_list <- list(
     make_option(c("-f", "--filter_output"),
         type = "character", default = "filter_and_trim_output.rds",
-        help = "Path to filtering output file in RDS format", metavar = "character"
+        help = "Path to filtering output file in RDS format (DEFAULT: filter_and_trim_output.rds)", metavar = "character"
     ),
     make_option(c("-s", "--forward_sample"),
         type = "character", default = "forward_sample.rds",
-        help = "Path to forward sample model file in RDS format", metavar = "character"
+        help = "Path to forward sample model file in RDS format (DEFAULT: forward_sample.rds)", metavar = "character"
     ),
     make_option(c("-r", "--reverse_sample"),
         type = "character", default = "reverse_sample.rds",
-        help = "Path to reverse sample model file in RDS format", metavar = "character"
+        help = "Path to reverse sample model file in RDS format (DEFAULT: reverse_sample.rds)", metavar = "character"
     ),
     make_option(c("-m", "--merged_reads"),
         type = "character", default = "merged_reads.rds",
-        help = "Path to merged reads file in RDS format (generated during chimera removal)", metavar = "character"
+        help = "Path to merged reads file in RDS format (generated during chimera removal)(DEFAULT: merged_reads.rds)", metavar = "character"
     ),
     make_option(c("-c", "--chimera_seq_table"),
         type = "character", default = "seqtab.nochim.rds",
-        help = "Path to chimera sequence table file in RDS format", metavar = "character"
+        help = "Path to chimera sequence table file in RDS format (DEFAULT: seqtab.nochim.rds)", metavar = "character"
     )
 )
 

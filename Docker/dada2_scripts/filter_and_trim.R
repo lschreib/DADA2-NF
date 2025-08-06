@@ -17,34 +17,34 @@ option_list <- list(
     ),
     make_option(c("-f", "--trunc_len_fwd"),
         type = "integer", default = 220,
-        help = "Truncation length for forward reads", metavar = "integer"
+        help = "Truncation length for forward reads (DEFAULT: 220)", metavar = "integer"
     ),
     make_option(c("-r", "--trunc_len_rev"),
         type = "integer", default = 220,
-        help = "Truncation length for reverse reads", metavar = "integer"
+        help = "Truncation length for reverse reads (DEFAULT: 220)", metavar = "integer"
     ),
     make_option(c("-n", "--max_n"),
         type = "integer", default = 0,
-        help = "Maximum number of N's allowed in a read", metavar = "integer"
+        help = "Maximum number of N's allowed in a read (DEFAULT: 0)", metavar = "integer"
     ),
     make_option(c("-d", "--max_ee_fwd"),
         type = "integer", default = 2,
-        help = "Maximum expected errors allowed in a forward read", metavar = "integer"
+        help = "Maximum expected errors allowed in a forward read (DEFAULT: 2)", metavar = "integer"
     ),
     make_option(c("-e", "--max_ee_rev"),
         type = "integer", default = 2,
-        help = "Maximum expected errors allowed in a reverse read", metavar = "integer"
+        help = "Maximum expected errors allowed in a reverse read (DEFAULT: 2)", metavar = "integer"
     ),
     make_option(c("-q", "--trunc_q"),
-        type = "integer", default = 2,
-        help = "Quality score threshold for truncation", metavar = "integer"
+        type = "integer", default = 20,
+        help = "Quality score threshold for truncation (DEFAULT: 20)", metavar = "integer"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
-        help = "Number of threads to use", metavar = "integer"
+        help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        action = "store_true", default = FALSE,
+        type = "character", default = "FALSE",
         help = "Print extra output"
     )
 )

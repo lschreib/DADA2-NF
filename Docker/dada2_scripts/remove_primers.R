@@ -29,14 +29,14 @@ option_list <- list(
     ),
     make_option(c("-m", "--minimum_length"),
         type = "integer", default = 100,
-        help = "Minimum length of reads after trimming", metavar = "integer"
+        help = "Minimum length of reads after trimming (DEFAULT: 100)", metavar = "integer"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
-        help = "Number of threads to use", metavar = "integer"
+        help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        action = "store_true", default = FALSE,
+        type = "character", default = "FALSE",
         help = "Print extra output"
     )
 )

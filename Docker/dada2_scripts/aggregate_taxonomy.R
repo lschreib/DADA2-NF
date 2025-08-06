@@ -17,7 +17,7 @@ option_list <- list(
         help = "Level of taxonomy to aggregate (1-8). 1 = domain, 2 = phylum, 3 = class, 4 = order, 5 = family, 6 = genus (DEFAULT), 7 = species, 8 = strain/species hypothesis", metavar = "integer"
     ),
     make_option(c("-n", "--na_remove"),
-        action = "store_true", default = FALSE,
+        type = "character", default = "FALSE",
         help = "Add this option to remove NA values during the aggregation (DEFAULT: FALSE)", metavar = "logical"
     ),
     make_option(c("-o", "--output_prefix"),

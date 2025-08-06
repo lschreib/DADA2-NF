@@ -22,14 +22,14 @@ option_list <- list(
     ),
     make_option(c("-m", "--method"),
         type = "character", default = "consensus",
-        help = "Method for chimera removal ('consensus'| 'pooled'| 'per-sample')", metavar = "character"
+        help = "Method for chimera removal ('consensus'| 'pooled'| 'per-sample')(DEFAULT: consensus)", metavar = "character"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
-        help = "Number of threads to use", metavar = "integer"
+        help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        action = "store_true", default = FALSE,
+        type = "character", default = "FALSE",
         help = "Print extra output"
     )
 )
