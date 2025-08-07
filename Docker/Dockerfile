@@ -32,8 +32,9 @@ RUN apt-get update > /dev/null && \
 
 #Install necessary R packages
 RUN install2.r optparse R.utils readr BiocManager ggplot2 remotes vegan && \
-    R -e 'BiocManager::install(c("ShortRead","Biostrings","dada2","phyloseq","DECIPHER"), ask = F)' && \
+    R -e 'BiocManager::install(c("ShortRead","Biostrings","dada2","phyloseq","DECIPHER","sangerseqR"), ask = F)' && \
     R -e 'remotes::install_github("jbisanz/qiime2R")' && \
+    R -e 'remotes::install_github("mammerlin/sangeranalyseR")' && \
     rm -rf /tmp/downloaded_packages
 
 #Copy NRC tool kit scripts into container
