@@ -129,7 +129,7 @@ params {
         method = "consensus" 
     }
 
-    track_reads {
+    read_tracking {
         cluster_time = 1.h
         cluster_cpus = 1
         cluster_memory = 12.GB
