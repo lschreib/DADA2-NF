@@ -42,7 +42,7 @@ include { REMOVE_PRIMERS            } from './modules/short_read/remove_primers.
 include { TRIM_AND_FILTER           } from './modules/short_read/trim_and_filter.nf'
 include { LEARN_ERRORS              } from './modules/short_read/learn_errors.nf'
 include { INFER_SAMPLES             } from './modules/short_read/infer_samples.nf'
-include { REMOVE_CHIMERAS           } from './modules/short_read/remove_chimeras.nf'
+include { REMOVE_CHIMERA            } from './modules/short_read/remove_chimera.nf'
 include { READ_TRACKING             } from './modules/short_read/read_tracking.nf'
 include { CLASSIFY_TAXA_DECIPHER    } from './modules/short_read/classify_taxa_decipher.nf'
 include { AGGREGATE_TAXONOMY        } from './modules/short_read/aggregate_taxonomy.nf'
@@ -61,12 +61,12 @@ WORKFLOW section
 */
 
 // Short read workflow
-workflow short_read_dada2 {
+workflow short_read_decipher {
     //Populate input channel
-    if (!params.input_reads) {
+    if (!params.DEFAULT.input_reads) {
         error "Parameter 'params.input_reads' is not defined. Please check your configuration."
     }
-    dir_channel = Channel.fromPath(params.input_reads, checkIfExists: true)
+    dir_channel = Channel.fromPath(params.DEFAULT.input_reads, checkIfExists: true)
 
     main:
         // Initial QC of reads with FASTQC
@@ -80,22 +80,26 @@ workflow short_read_dada2 {
                       LEARN_ERRORS.out.forward_errors,
                       LEARN_ERRORS.out.reverse_errors)
 
-        REMOVE_CHIMERAS(TRIM_AND_FILTER.out.filtered_reads_dir,
+        REMOVE_CHIMERA(TRIM_AND_FILTER.out.filtered_reads_dir,
                         INFER_SAMPLES.out.forward_sample,
                         INFER_SAMPLES.out.reverse_sample)
 
-        READ_TRACKING(TRIM_AND_FILTER.out.filtered_reads_dir,
+        READ_TRACKING(TRIM_AND_FILTER.out.filtered_reads_rds,
                       INFER_SAMPLES.out.forward_sample,
                       INFER_SAMPLES.out.reverse_sample,
-                      REMOVE_CHIMERAS.out.merged_reads,
-                      REMOVE_CHIMERAS.out.no_chimera_seq_table)
+                      REMOVE_CHIMERA.out.merged_reads_rds,
+                      REMOVE_CHIMERA.out.seqtab_nochim_rds)
 
-        CLASSIFY_TAXA_DECIPHER(REMOVE_CHIMERAS.out.no_chimera_seq_table)
+        CLASSIFY_TAXA_DECIPHER(REMOVE_CHIMERA.out.seqtab_nochim_rds)
 
         AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
 }
 
+// Sanger workflow (still to be implemented)
+workflow sanger {
+}
+
 // Long read workflow (still to be implemented)
-workflow long_read_dada2 {
+workflow long_read_decipher {
 }
 

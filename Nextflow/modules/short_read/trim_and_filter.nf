@@ -11,6 +11,8 @@ process TRIM_AND_FILTER {
 
     output:
         path("filtered"), emit: filtered_reads_dir
+        path("filter_and_trim_output.rds"), emit: filtered_reads_rds
+
 
     script:
         """

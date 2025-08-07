@@ -49,7 +49,7 @@ params {
         project_id = "dada2"
 
         // Other parameters that should usually stay the same from one project to another.
-        input_reads = "$projectDir/reads_workdir/"
+        input_reads = "$projectDir/reads_workdir/case2"
         outdir = "$projectDir/output/"
 	}
     
@@ -106,7 +106,7 @@ params {
         max_ee_fwd = 2.0 // Maximum expected errors for forward reads   
         max_ee_rev = 2.0 // Maximum expected errors for reverse reads
 
-        terminal_trunc_q = 20 // Quality score threshold for terminal truncation
+        trunc_q = 2 // Quality score threshold for terminal truncation
 
         min_length = 100 // Minimum acceptable length of reads after trimming
     }
@@ -126,7 +126,7 @@ params {
         cluster_memory = 36.GB
     }
 
-    remove_chimeras {
+    remove_chimera {
         cluster_time = 12.h
         cluster_cpus = 12
         cluster_memory = 36.GB
@@ -150,11 +150,13 @@ params {
             Parameters for taxonomic classification
         */
 
+        strand = "both" // 'top' | 'bottom' | 'both'
         //16S RNA reference database
-        reference_database = "$INSTALL_HOME/databases/dada2/SILVA/SILVA_138.1_SSURef_NR99_tax_silva.rds"
+        reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/silva/DECIPHER_SILVA_SSU_R138.2_NR99_20240918.rds"
 
         //ITS reference database
-        //reference_database = "$INSTALL_HOME/databases/dada2/UNITE/UNITE_10.0.0.rds"
+        //reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/unite/DECIPHER_UNITE_v10.0_20241129.rds"
+
     }
 
     aggregate {
@@ -174,6 +176,12 @@ params {
         // Whether to remove NA values from the aggregated table ('TRUE'| 'FALSE')
         na_remove = "FALSE"
     }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Sanger workflow (still TBD)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
 
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
