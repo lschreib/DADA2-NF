@@ -24,7 +24,7 @@ option_list <- list(
         type = "character", default = "merged_reads.rds",
         help = "Path to merged reads file in RDS format (generated during chimera removal)(DEFAULT: merged_reads.rds)", metavar = "character"
     ),
-    make_option(c("-c", "--chimera_seq_table"),
+    make_option(c("-c", "--no_chimera_seq_table"),
         type = "character", default = "seqtab.nochim.rds",
         help = "Path to chimera sequence table file in RDS format (DEFAULT: seqtab.nochim.rds)", metavar = "character"
     )
@@ -42,7 +42,7 @@ out <- readRDS(opt$filter_output)
 dadaFs <- readRDS(opt$forward_sample)
 dadaRs <- readRDS(opt$reverse_sample)
 mergers <- readRDS(opt$merged_reads)
-seqtab.nochim <- readRDS(opt$chimera_seq_table)
+seqtab.nochim <- readRDS(opt$no_chimera_seq_table)
 
 track <- as.data.frame(cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim)))
 # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)

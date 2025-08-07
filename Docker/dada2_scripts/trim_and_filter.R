@@ -36,8 +36,8 @@ option_list <- list(
         help = "Maximum expected errors allowed in a reverse read (DEFAULT: 2)", metavar = "integer"
     ),
     make_option(c("-q", "--trunc_q"),
-        type = "integer", default = 20,
-        help = "Quality score threshold for truncation (DEFAULT: 20)", metavar = "integer"
+        type = "integer", default = 2,
+        help = "Quality score threshold for truncation (DEFAULT: 2)", metavar = "integer"
     ),
     make_option(c("-m", "--min_length"),
         type = "integer", default = 100,
