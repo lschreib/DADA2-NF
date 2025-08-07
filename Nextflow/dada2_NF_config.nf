@@ -58,6 +58,12 @@ params {
         Customized parameters for individual processes
     */
     
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Short read workflow
+    (This is the standard configuration for short read amplicon sequencing data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
     remove_primers {
         cluster_time = 1.h
         cluster_cpus = 12
@@ -168,6 +174,12 @@ params {
         // Whether to remove NA values from the aggregated table ('TRUE'| 'FALSE')
         na_remove = "FALSE"
     }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Long read workflow (still TBD)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
 }
 
 manifest {
