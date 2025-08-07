@@ -99,8 +99,11 @@ params {
         /*
             Parameters for read trimming and filtering
         */
-        truncation_length_fwd = 230 // Forward reads will be truncated to this length
-        truncation_length_rev = 230 // Reverse reads will be truncated to this length
+        // Reads will be truncated to these lengths;
+        // Caution: reads shorter than these lengths will be discarded!!!
+        // 0 means no truncation.
+        truncation_length_fwd = 0 // Forward reads will be truncated to this length
+        truncation_length_rev = 0 // Reverse reads will be truncated to this length
         
         max_n = 0 // Maximum number of Ns allowed in reads
         max_ee_fwd = 2.0 // Maximum expected errors for forward reads   

@@ -16,12 +16,12 @@ option_list <- list(
         help = "Path to output directory", metavar = "character"
     ),
     make_option(c("-f", "--trunc_len_fwd"),
-        type = "integer", default = 230,
-        help = "Truncation length for forward reads (DEFAULT: 230)", metavar = "integer"
+        type = "integer", default = 0,
+        help = "Truncation length for forward reads (DEFAULT: 0). 0 = no truncation", metavar = "integer"
     ),
     make_option(c("-r", "--trunc_len_rev"),
-        type = "integer", default = 230,
-        help = "Truncation length for reverse reads (DEFAULT: 230)", metavar = "integer"
+        type = "integer", default = 0,
+        help = "Truncation length for reverse reads (DEFAULT: 0). 0 = no truncation", metavar = "integer"
     ),
     make_option(c("-n", "--max_n"),
         type = "integer", default = 0,
