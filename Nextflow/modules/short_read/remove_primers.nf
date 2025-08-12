@@ -1,8 +1,8 @@
 process REMOVE_PRIMERS{
     errorStrategy 'finish'
     debug true
-    publishDir "$params.DEFAULT.outdir", mode: 'copy', pattern: "*.png"
-    publishDir "$params.DEFAULT.outdir", mode: 'copy', pattern: "*.tsv"
+    publishDir "$params.DEFAULT.outdir/trimming", mode: 'copy', pattern: "*.png"
+    publishDir "$params.DEFAULT.outdir/trimming", mode: 'copy', pattern: "*.tsv"
     cpus params.remove_primers.cluster_cpus
     memory params.remove_primers.cluster_memory
     time params.remove_primers.cluster_time

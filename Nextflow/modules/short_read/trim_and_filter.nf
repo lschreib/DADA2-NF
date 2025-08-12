@@ -1,7 +1,7 @@
 process TRIM_AND_FILTER {
     errorStrategy 'finish'
     debug true
-    publishDir "$params.DEFAULT.outdir", mode: 'copy', pattern: "*.png"
+    publishDir "$params.DEFAULT.outdir/trimming", mode: 'copy', pattern: '*.png'
     cpus params.trim_and_filter.cluster_cpus
     memory params.trim_and_filter.cluster_memory
     time params.trim_and_filter.cluster_time
