@@ -70,18 +70,18 @@ if (!dir.exists(path)) {
 all_files <- list.files(path, pattern = "\\.fastq(\\.gz)?$", recursive = TRUE)
 
 if (grepl("\\.gz$", all_files[1])) {
-    if (grepl("_001\\.", all_files[1])) {
+    if (grepl("_001\\.fastq", all_files[1])) {
         pattern_FWD <- "_R1_001.fastq.gz"
         pattern_REV <- "_R2_001.fastq.gz"
-    } else if (grepl("_R1.", all_files[1])) {
+    } else if (grepl("_R1\\.fastq", all_files[1])) {
         pattern_FWD <- "_R1.fastq.gz"
         pattern_REV <- "_R2.fastq.gz"
     }
 } else if (grepl("\\.fastq$", all_files[1])) {
-    if (grepl("_001\\.", all_files[1])) {
+    if (grepl("_001\\.fastq", all_files[1])) {
         pattern_FWD <- "_R1_001.fastq"
         pattern_REV <- "_R2_001.fastq"
-    } else if (grepl("_R1.", all_files[1])) {
+    } else if (grepl("_R1\\.fastq", all_files[1])) {
         pattern_FWD <- "_R1.fastq"
         pattern_REV <- "_R2.fastq"
     }
@@ -115,8 +115,9 @@ REV.orients <- allOrients(REV)
 # FWD.orients
 # REV.orients
 
-fnFs.filtN <- file.path(paste0("filtN/", basename(fnFs), ".gz")) # Put N-filtered files in filtN/ subdirectory
-fnRs.filtN <- file.path(paste0("filtN/", basename(fnRs), ".gz"))
+fnFs.filtN <- file.path("filtN", ifelse(grepl("\\.gz$", basename(fnFs)), basename(fnFs), paste0(basename(fnFs), ".gz")))
+fnRs.filtN <- file.path("filtN", ifelse(grepl("\\.gz$", basename(fnRs)), basename(fnRs), paste0(basename(fnRs), ".gz")))
+
 filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = opt$threads, verbose = as.logical(opt$verbose), compress = TRUE)
 
 primerHits <- function(primer, fn) {
@@ -140,8 +141,8 @@ system2(cutadapt, args = "--version") # Run shell commands from R
 
 path.cut <- file.path(opt$output_dir)
 if (!dir.exists(path.cut)) dir.create(path.cut)
-fnFs.cut <- file.path(path.cut, paste0(basename(fnFs), ".gz")) # Put cutadapt files in output directory
-fnRs.cut <- file.path(path.cut, paste0(basename(fnRs), ".gz"))
+fnFs.cut <- file.path(path.cut, ifelse(grepl("\\.gz$", basename(fnFs)), basename(fnFs), paste0(basename(fnFs), ".gz"))) # Put cutadapt files in output directory
+fnRs.cut <- file.path(path.cut, ifelse(grepl("\\.gz$", basename(fnRs)), basename(fnRs), paste0(basename(fnRs), ".gz")))
 
 FWD.RC <- as.character(Biostrings::reverseComplement(DNAString(FWD)))
 REV.RC <- as.character(Biostrings::reverseComplement(DNAString(REV)))

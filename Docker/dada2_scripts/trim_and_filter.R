@@ -17,11 +17,11 @@ option_list <- list(
     ),
     make_option(c("-f", "--trunc_len_fwd"),
         type = "integer", default = 0,
-        help = "Truncation length for forward reads (DEFAULT: 0). 0 = no truncation", metavar = "integer"
+        help = "Truncation length for forward reads (DEFAULT: 0 [=no truncation])", metavar = "integer"
     ),
     make_option(c("-r", "--trunc_len_rev"),
         type = "integer", default = 0,
-        help = "Truncation length for reverse reads (DEFAULT: 0). 0 = no truncation", metavar = "integer"
+        help = "Truncation length for reverse reads (DEFAULT: 0 [=no truncation])", metavar = "integer"
     ),
     make_option(c("-n", "--max_n"),
         type = "integer", default = 0,
@@ -73,25 +73,43 @@ if (!dir.exists(path)) {
 }
 all_files <- list.files(path, pattern = "\\.fastq(\\.gz)?$", recursive = TRUE)
 
-if (grepl("_001\\.", all_files[1])) {
-    pattern_FWD <- "_R1_001.fastq.gz"
-    pattern_REV <- "_R2_001.fastq.gz"
-} else if ((grepl("_R1.", all_files[1]))) {
-    pattern_FWD <- "_R1.fastq.gz"
-    pattern_REV <- "_R2.fastq.gz"
+path <- opt$input_dir
+if (!dir.exists(path)) {
+    stop("Error: Input directory does not exist.")
+}
+all_files <- list.files(path, pattern = "\\.fastq(\\.gz)?$", recursive = TRUE)
+
+if (grepl("\\.gz$", all_files[1])) {
+    if (grepl("_001\\.fastq", all_files[1])) {
+        pattern_FWD <- "_R1_001.fastq.gz"
+        pattern_REV <- "_R2_001.fastq.gz"
+    } else if (grepl("_R1\\.fastq", all_files[1])) {
+        pattern_FWD <- "_R1.fastq.gz"
+        pattern_REV <- "_R2.fastq.gz"
+    }
+} else if (grepl("\\.fastq$", all_files[1])) {
+    if (grepl("_001\\.fastq", all_files[1])) {
+        pattern_FWD <- "_R1_001.fastq"
+        pattern_REV <- "_R2_001.fastq"
+    } else if (grepl("_R1\\.fastq", all_files[1])) {
+        pattern_FWD <- "_R1.fastq"
+        pattern_REV <- "_R2.fastq"
+    }
 } else {
     stop(paste(
         "Error: No valid paired-end FASTQ files found in the input directory.",
-        "Ensure files are named with either '_R1_001.fastq' and '_R2_001.fastq',",
-        "or '_R1.fastq' and '_R2.fastq'."
+        "Ensure files are named with either '_R1_001.fastq(.gz)' and '_R2_001.fastq(.gz)',",
+        "or '_R1.fastq(.gz)' and '_R2.fastq(.gz)'."
     ))
 }
 
 inFs <- list.files(path, pattern = pattern_FWD, full.names = TRUE)
 inRs <- list.files(path, pattern = pattern_REV, full.names = TRUE)
 
-outFs <- file.path(paste0("filtered/", basename(inFs)))
-outRs <- file.path(paste0("filtered/", basename(inRs)))
+
+outdir <- opt$output_dir
+outFs <- file.path(paste0(outdir, ifelse(grepl("\\.gz$", basename(inFs)), basename(inFs), paste0(basename(inFs), ".gz"))))
+outRs <- file.path(paste0(outdir, ifelse(grepl("\\.gz$", basename(inRs)), basename(inRs), paste0(basename(inRs), ".gz"))))
 
 out <- filterAndTrim(inFs, outFs, inRs, outRs,
     truncLen = c(opt$trunc_len_fwd, opt$trunc_len_rev),
