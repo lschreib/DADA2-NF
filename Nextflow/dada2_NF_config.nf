@@ -49,7 +49,7 @@ params {
         project_id = "dada2"
 
         // Other parameters that should usually stay the same from one project to another.
-        input_reads = "$projectDir/reads_workdir/case2"
+        input_reads = "$projectDir/reads_workdir/unit_test"
         outdir = "$projectDir/output/"
 	}
     
@@ -58,6 +58,17 @@ params {
         Customized parameters for individual processes
     */
     
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Unit test workflow
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+    unit_test {
+        input_reads = "$projectDir/reads_workdir/unit_test"
+        outdir = "$projectDir/output/unit_test/"
+    }
+
+
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG: Short read workflow
@@ -115,7 +126,7 @@ params {
     }
 
     learn_errors {
-        cluster_time = 12.h
+        cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -124,13 +135,13 @@ params {
     }
 
    infer_samples {
-        cluster_time = 12.h
+        cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
     }
 
     remove_chimera {
-        cluster_time = 12.h
+        cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -145,7 +156,7 @@ params {
     }
 
     classify_taxa_decipher {
-        cluster_time = 12.h
+        cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
         

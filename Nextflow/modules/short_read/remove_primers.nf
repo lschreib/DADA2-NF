@@ -1,7 +1,7 @@
 process REMOVE_PRIMERS{
     errorStrategy 'finish'
     debug true
-    publishDir "$params.DEFAULT.outdir", mode: 'copy'
+    //publishDir "$params.DEFAULT.outdir", mode: 'copy'
     cpus params.remove_primers.cluster_cpus
     memory params.remove_primers.cluster_memory
     time params.remove_primers.cluster_time

@@ -10,7 +10,8 @@ process AGGREGATE_TAXONOMY {
         path(feature_table)
 
     output:
-        path("read_tracking.tsv"), emit: read_tracking_summary
+        path("aggregated_taxonomy_*.reads.tsv"), emit: aggregated_reads
+        path("aggregated_taxonomy_*.rel_abund.tsv"), emit: aggregated_relative_abundance
 
     script:
         """
@@ -18,6 +19,6 @@ process AGGREGATE_TAXONOMY {
             -i ${feature_table} \\
             -l ${params.aggregate.aggregation_level} \\
             -n ${params.aggregate.na_remove} \\
-            -o ${params.aggregate.output_prefix}
+            -o aggregated_taxonomy
         """
 }
