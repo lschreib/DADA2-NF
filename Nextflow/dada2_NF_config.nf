@@ -87,9 +87,9 @@ params {
         fwd_primer = "GTGYCAGCMGCCGCGGTAA"  // 515F
         rev_primer = "CCGYCAATTYMTTTRAGTTT"  // 926R
         
-        //16S rRNA long
+        //16S rRNA long 1
         //fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
-        //rev_primer = "RGYTACCTTGTTACGACTT"  // 1468R
+        //rev_primer = "RGYTACCTTGTTACGACTT"  // 1492R
 
         //18S rRNA short (Earth Microbiome Project)
         //fwd_primer = "CCAGCASCYGCGGTAATTCC"  // 1391F
