@@ -23,7 +23,7 @@ process REMOVE_CHIMERA {
 
     script:
         """
-        Rscript /dada2_scripts/remove_chimera.R \\
+        Rscript /dada2_scripts/short_read/remove_chimera.R \\
             -i ${filtered_reads_dir} \\
             -f ${forward_sample} \\
             -r ${reverse_sample} \\
@@ -31,3 +31,4 @@ process REMOVE_CHIMERA {
             -t ${params.remove_chimera.cluster_cpus}
         """
 }
+
