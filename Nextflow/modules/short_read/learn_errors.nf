@@ -17,9 +17,10 @@ process LEARN_ERRORS {
 
     script:
         """
-        Rscript /dada2_scripts/learn_errors.R \\
+        Rscript /dada2_scripts/short_read/learn_errors.R \\
             -i ${filtered_reads_dir} \\
             -r ${params.learn_errors.randomize} \\
             -t ${params.learn_errors.cluster_cpus}
         """
 }
+
