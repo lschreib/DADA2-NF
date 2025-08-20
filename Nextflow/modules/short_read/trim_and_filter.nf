@@ -16,7 +16,7 @@ process TRIM_AND_FILTER {
 
     script:
         """
-        Rscript /dada2_scripts/trim_and_filter.R \\
+        Rscript /dada2_scripts/short_read/trim_and_filter.R \\
             -i ${primers_removed_dir} \\
             -o "filtered" \\
             -f ${params.trim_and_filter.truncation_length_fwd} \\
@@ -31,3 +31,4 @@ process TRIM_AND_FILTER {
         mv filter_and_trim_output.rds filtered/filter_and_trim_output.rds
         """
 }
+
