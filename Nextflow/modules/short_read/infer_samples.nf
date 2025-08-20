@@ -17,10 +17,11 @@ process INFER_SAMPLES {
 
     script:
         """
-        Rscript /dada2_scripts/infer_samples.R \\
+        Rscript /dada2_scripts/short_read/infer_samples.R \\
             -i ${filtered_reads_dir} \\
             -f ${forward_errors} \\
             -r ${reverse_errors} \\
             -t ${params.infer_samples.cluster_cpus}
         """
 }
+
