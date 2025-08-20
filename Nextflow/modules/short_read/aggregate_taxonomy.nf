@@ -15,10 +15,11 @@ process AGGREGATE_TAXONOMY {
 
     script:
         """
-        Rscript /dada2_scripts/aggregate_taxonomy.R \\
+        Rscript /dada2_scripts/short_read/aggregate_taxonomy.R \\
             -i ${feature_table} \\
             -l ${params.aggregate.aggregation_level} \\
             -n ${params.aggregate.na_remove} \\
             -o aggregated_taxonomy
         """
 }
+
