@@ -18,7 +18,7 @@ process READ_TRACKING {
 
     script:
         """
-        Rscript /dada2_scripts/read_tracking.R \\
+        Rscript /dada2_scripts/short_read/read_tracking.R \\
             -f ${filter_output} \\
             -s ${forward_sample} \\
             -r ${reverse_sample} \\
@@ -26,3 +26,4 @@ process READ_TRACKING {
             -c ${no_chimera_seq_table}
         """
 }
+
