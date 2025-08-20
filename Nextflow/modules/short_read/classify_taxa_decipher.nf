@@ -16,10 +16,11 @@ process CLASSIFY_TAXA_DECIPHER {
 
     script:
         """
-        Rscript /dada2_scripts/classify_decipher.R \\
+        Rscript /dada2_scripts/short_read/classify_decipher.R \\
             -i ${sequence_table} \\
             -d ${params.classify_taxa_decipher.reference_database} \\
             -s ${params.classify_taxa_decipher.strand} \\
             -t ${params.classify_taxa_decipher.cluster_cpus}
         """
 }
+
