@@ -433,7 +433,9 @@ mean_val <- params["mean"]
 sd_val <- params["sd"]
 
 x_vals <- seq(1, length(normalized_averaged_peak))
-psf <- dnorm(x_vals, mean = mean_val, sd = sd_val * 0.5)
+#psf <- dnorm(x_vals, mean = mean_val, sd = sd_val * 0.5)
+psf <- dnorm(1:100, mean = 50, sd = 2) # This is almost equivelnt to the empirically determined parameters
+
 
 # Thresholding the PSF to reduce noise
 psf[psf < 0.0001] <- 0
