@@ -75,9 +75,8 @@ if (grepl("\\.gz$", all_files[1])) {
     pattern_reads <- ".fastq"
 } else {
     stop(paste(
-        "Error: No valid paired-end FASTQ files found in the input directory.",
-        "Ensure files are named with either '_R1_001.fastq(.gz)' and '_R2_001.fastq(.gz)',",
-        "or '_R1.fastq(.gz)' and '_R2.fastq(.gz)'."
+        "Error: No valid FASTQ files found in the input directory.",
+        "Ensure files are named with '*.fastq(.gz)'."
     ))
 }
 
