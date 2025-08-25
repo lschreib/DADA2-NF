@@ -1,4 +1,4 @@
-The database file was was created based on the 'bac120_ssu_reps_r214.fna.gz' file available at the [GTDB FTP server](https://data.ace.uq.edu.au/public/gtdb/data/releases/).
+The database file was was created based on the 'ar53_ssu_reps_r226.fna.gz' and 'bac120_ssu_reps_r214.fna.gz' files available at the [GTDB FTP server](https://data.ace.uq.edu.au/public/gtdb/data/releases/).
 
 The fasta headers of the individual sequences were manipulated to follow the DADA2-compatible format, i.e. they were changed from:
 
@@ -32,4 +32,4 @@ GGTCTTGTACACACCGCCCGTCACACCACGAGAGTTGGTTGCACCTGAAGTAGCAGGCCTAACCGTAAGGAGGGATGTTC
 CGAGGGTGTGATTAGCGATTGGGGTGAAGTCGTAACAAGGTATCCGTACGGGAACGTGCGGATGGATCACCTCCTTT
 ```
 
-More detailed instructions to follow.
+Using the provided R script.
