@@ -21,7 +21,7 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "FALSE", metavar = "character",
+        type = "character", default = "'FALSE'", metavar = "character",
         help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
@@ -43,7 +43,7 @@ denoised <- readRDS(opt$denoised_output)
 
 seqtab <- makeSequenceTable(denoised)
 
-bim <- isBimeraDenovo(seqtab, minFoldParentOverAbundance = 3.5, multithread = TRUE)
+bim <- isBimeraDenovo(seqtab, minFoldParentOverAbundance = 3.5, multithread = TRUE, verbose = as.logical(opt$verbose))
 
 # Quantify and export the number of detected chimeras
 {

@@ -29,8 +29,8 @@ option_list <- list(
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "TRUE", metavar = "character",
-        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'TRUE')"
+        type = "character", default = "'FALSE'", metavar = "character",
+        help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )
 
@@ -59,12 +59,13 @@ if (is.null(database) || !(inherits(database, "DNAStringSet") || is.list(databas
 }
 
 if (opt$orientation == "forward") {
-    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads)
+    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads, verbose = as.logical(opt$verbose))
     print("Warning: Using forward strand only for classification. This is not recommended.")
     saveRDS(object = tax, file = "dada2_tax.rds")
 } else if (opt$orientation == "both") {
-    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads, tryRC = TRUE)
+    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads, tryRC = TRUE, verbose = as.logical(opt$verbose))
     print("Using forward direction and reverse complement for classification.")
+    saveRDS(object = tax, file = "dada2_tax.rds")
 } else {
     stop("Error: Invalid orientation specified. Use 'forward' or 'both'.")
 }
