@@ -16,13 +16,13 @@ option_list <- list(
         type = "character", default = NULL,
         help = "Path to sequence table file in RDS format", metavar = "character"
     ),
-    make_option(c("-s", "--strand"),
+    make_option(c("-o", "--orientation"),
         type = "character", default = "both",
-        help = "Strand to use for alignment ('top'|'bottom'|'both')(DEFAULT: 'both')", metavar = "character"
+        help = "Strand to use for alignment ('forward'|'both')(DEFAULT: 'both')", metavar = "character"
     ),
     make_option(c("-d", "--database"),
         type = "character", default = NULL,
-        help = "Path to DECIPHER database file in RDS format", metavar = "character"
+        help = "Path to DADA2-compatible database file in FNA(.gz) format", metavar = "character"
     ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
@@ -44,7 +44,7 @@ if (is.null(opt$sequence_table)) {
 }
 
 if (is.null(opt$database)) {
-    stop("Error: DECIPHER database is required. Use -d or --database to specify the DECIPHER database.")
+    stop("Error: DADA2-compatible database is required. Use -d or --database to specify the DADA2-compatible database.")
 }
 
 # Main script logic
@@ -53,39 +53,26 @@ if (is.null(seqtab.nochim)) {
     stop("Error: Could not read the sequence table. Please check the file path and format.")
 }
 
-trainingSet <- readRDS(opt$database) # Load the DECIPHER database
-if (is.null(trainingSet) || !(inherits(trainingSet, "Taxa") || is.list(trainingSet))) {
-    stop("Error: DECIPHER database not loaded correctly. Please check the file path and format.")
+database <- readFasta(opt$database) # Load the DADA2-compatible database
+if (is.null(database) || !(inherits(database, "DNAStringSet") || is.list(database))) {
+    stop("Error: DADA2-compatible database not loaded correctly. Please check the file path and format.")
 }
 
-dna <- DNAStringSet(getSequences(seqtab.nochim)) # Create a DNAStringSet from the ASVs
-ids <- IdTaxa(dna, trainingSet, strand = opt$strand, processors = opt$threads, verbose = as.logical(opt$verbose))
-saveRDS(object = ids, file = "decipher_ids.rds")
-
-# Convert the output object of class "Taxa" to a matrix analogous to the output from assignTaxonomy
-ranks <- c("domain", "phylum", "class", "order", "family", "genus", "species", "strain") # ranks of interest
-taxid <- matrix(NA, nrow = length(ids), ncol = length(ranks))
-# Loop through each item in 'ids'
-for (i in seq_along(ids)) {
-    # Extract the current list element
-    x <- ids[[i]]
-    # Initialize a temporary vector to store taxa for this iteration (we are omitting the Root and hence start at index 2)
-    taxa <- x$taxon[2:(length(ranks) + 1)]
-    # Put taxonomic classifiction into the final matrix
-    taxid[i, ] <- taxa
+if (opt$orientation == "forward") {
+    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads)
+    print("Warning: Using forward strand only for classification. This is not recommended.")
+    saveRDS(object = tax, file = "dada2_tax.rds")
+} else if (opt$orientation == "both") {
+    tax <- assignTaxonomy(seqtab, opt$database, multithread = opt$threads, tryRC = TRUE)
+    print("Using forward direction and reverse complement for classification.")
+} else {
+    stop("Error: Invalid orientation specified. Use 'forward' or 'both'.")
 }
-
-# Turn all "shaky" classifications into NA
-taxid[apply(taxid, c(1, 2), function(x) startsWith(x, "unclassified_"))] <- NA
-taxid[apply(taxid, c(1, 2), function(x) startsWith(x, "Unclassified_"))] <- NA
-
-colnames(taxid) <- ranks
-rownames(taxid) <- getSequences(seqtab.nochim)
 
 # Hand-off to phyloseq
 ps <- phyloseq(
-    otu_table(seqtab.nochim, taxa_are_rows = FALSE),
-    tax_table(taxid)
+    otu_table(seqtab, taxa_are_rows = FALSE),
+    tax_table(tax)
 )
 
 # Rename the OTU's to something shorter
