@@ -1,4 +1,4 @@
-This file was created based on the 'ar53_ssu_reps_r214.fna.gz' and 'bac120_ssu_reps_r214.fna.gz' available at the [GTDB FTP server](https://data.ace.uq.edu.au/public/gtdb/data/releases/).
+This file was created based on the 'bac120_ssu_reps_r214.fna.gz' file available at the [GTDB FTP server](https://data.ace.uq.edu.au/public/gtdb/data/releases/).
 
 The fasta headers of the individual sequences were manipulated to follow the DADA2-compatible format, i.e. the were changed from:
 
