@@ -1,6 +1,6 @@
 The database file was was created based on the 'bac120_ssu_reps_r214.fna.gz' file available at the [GTDB FTP server](https://data.ace.uq.edu.au/public/gtdb/data/releases/).
 
-The fasta headers of the individual sequences were manipulated to follow the DADA2-compatible format, i.e. the were changed from:
+The fasta headers of the individual sequences were manipulated to follow the DADA2-compatible format, i.e. they were changed from:
 
 ```
 >GB_GCA_000007325.1 d__Bacteria;p__Fusobacteriota;c__Fusobacteriia;o__Fusobacteriales;f__Fusobacteriaceae;g__Fusobacterium;s__Fusobacterium nucleatum [locus_tag=AE009951.2] [location=729883..731399] [ssu_len=1517] [contig_len=2174500]
