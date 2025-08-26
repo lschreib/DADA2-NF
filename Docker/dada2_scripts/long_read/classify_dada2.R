@@ -52,9 +52,9 @@ seqtab.nochim <- readRDS(opt$sequence_table) # Load the sequence table
 if (is.null(seqtab.nochim)) {
     stop("Error: Could not read the sequence table. Please check the file path and format.")
 }
-
+# High level est if we can load the reference database correctlly
 database <- readFasta(opt$database) # Load the DADA2-compatible database
-if (is.null(database) || !(inherits(database, "DNAStringSet") || is.list(database))) {
+if (is.null(database) || !(inherits(database, "ShortRead") || is.list(database))) {
     stop("Error: DADA2-compatible database not loaded correctly. Please check the file path and format.")
 }
 
