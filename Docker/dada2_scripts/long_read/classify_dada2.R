@@ -48,8 +48,8 @@ if (is.null(opt$database)) {
 }
 
 # Main script logic
-seqtab.nochim <- readRDS(opt$sequence_table) # Load the sequence table
-if (is.null(seqtab.nochim)) {
+seqtab <- readRDS(opt$sequence_table) # Load the sequence table
+if (is.null(seqtab)) {
     stop("Error: Could not read the sequence table. Please check the file path and format.")
 }
 # High level est if we can load the reference database correctlly
@@ -172,7 +172,7 @@ test_taxa_prefix <- function(taxa) {
     any(grepl("^(k|p|c|o|f|g|s|t)__", taxa))
 }
 
-if (test_taxa_prefix(taxid)) {
+if (test_taxa_prefix(tax)) {
     feature_table <- turn_to_legacy_from_prefixed(ps)
 } else {
     feature_table <- turn_to_legacy_from_clean(ps)
