@@ -23,4 +23,3 @@ process LEARN_ERRORS {
             -t ${params.learn_errors.cluster_cpus}
         """
 }
-

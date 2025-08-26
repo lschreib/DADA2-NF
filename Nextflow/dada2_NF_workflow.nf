@@ -49,10 +49,17 @@ include { AGGREGATE_TAXONOMY        } from './modules/short_read/aggregate_taxon
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SUB-MODULES: Long read pipeline (still TBD)
+SUB-MODULES: Long read pipeline
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
+include { REMOVE_PRIMERS_LONGREAD   } from './modules/long_read/remove_primers_longread.nf'
+include { TRIM_AND_FILTER_LONGREAD  } from './modules/long_read/trim_and_filter_longread.nf'
+include { DEREPLICATE               } from './modules/long_read/dereplicate.nf'
+include { LEARN_ERRORS_LONGREAD     } from './modules/long_read/learn_errors_longread.nf'
+include { DENOISE                   } from './modules/long_read/denoise.nf'
+include { READ_TRACKING_LONGREAD    } from './modules/long_read/read_tracking_longread.nf'
+include { REMOVE_CHIMERA_LONGREAD   } from './modules/long_read/remove_chimera_longread.nf'
+include { CLASSIFY_TAXA_DADA2       } from './modules/long_read/classify_taxa_dada2.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +76,8 @@ workflow short_read_decipher {
     dir_channel = Channel.fromPath(params.DEFAULT.input_reads, checkIfExists: true)
 
     main:
-        // Initial QC of reads with FASTQC
+        // Initial QC of reads with FASTQC (still missing)
+
         REMOVE_PRIMERS(dir_channel)
 
         TRIM_AND_FILTER(REMOVE_PRIMERS.out.primers_removed_dir)
@@ -99,7 +107,35 @@ workflow short_read_decipher {
 workflow sanger {
 }
 
-// Long read workflow (still to be implemented)
-workflow long_read_decipher {
+// Long read workflow
+workflow long_read_dada2 {
+  //Populate input channel
+    if (!params.DEFAULT.input_reads) {
+        error "Parameter 'params.input_reads' is not defined. Please check your configuration."
+    }
+    dir_channel = Channel.fromPath(params.DEFAULT.input_reads, checkIfExists: true)
+
+    main:
+        // Initial QC of reads with FASTQC (still missing)
+
+        REMOVE_PRIMERS_LONGREAD(dir_channel)
+
+        TRIM_AND_FILTER_LONGREAD(REMOVE_PRIMERS_LONGREAD.out.primers_removed_dir)
+
+        DEREPLICATE(TRIM_AND_FILTER_LONGREAD.out.filtered_reads_dir)
+
+        LEARN_ERRORS_LONGREAD(DEREPLICATE.out.dereplicated_rds)
+
+        DENOISE(DEREPLICATE.out.dereplicated_rds,
+                LEARN_ERRORS_LONGREAD.out.errors_output)
+
+        REMOVE_CHIMERA_LONGREAD(DENOISE.out.denoised_output)
+
+        READ_TRACKING_LONGREAD(REMOVE_PRIMERS_LONGREAD.out.primers_removed_rds,
+                               TRIM_AND_FILTER_LONGREAD.out.filtered_reads_rds,
+                               DENOISE.out.denoised_output,
+                               REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
+
+        CLASSIFY_TAXA_DADA2(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
 }
 

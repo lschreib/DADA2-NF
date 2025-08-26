@@ -23,4 +23,3 @@ process CLASSIFY_TAXA_DECIPHER {
             -t ${params.classify_taxa_decipher.cluster_cpus}
         """
 }
-

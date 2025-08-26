@@ -24,4 +24,3 @@ process INFER_SAMPLES {
             -t ${params.infer_samples.cluster_cpus}
         """
 }
-

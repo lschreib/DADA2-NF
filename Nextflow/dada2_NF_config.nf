@@ -11,10 +11,10 @@ executor {
 }
 
 process {
-    // executor can be either 'local' or 'slurm' 
+    // executor can be either 'local' or 'slurm'
     executor = "slurm"
     clusterOptions = "--account=nrc_eme --export=ALL"
-    
+
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONTAINER: DEFAULT
@@ -33,9 +33,8 @@ singularity {
     envWhitelist = ['TMPDIR','SINGULARITY_TMPDIR','DATABASES']
 }
 
-
 params {
-    
+
     clusterOptions = "--account=nrc_eme --export=ALL"
 
     DEFAULT {
@@ -45,19 +44,19 @@ params {
         cluster_time = 2.h
         cluster_cpus = 1
         cluster_memory = 12.GB
-        
+
         project_id = "dada2"
 
         // Other parameters that should usually stay the same from one project to another.
-        input_reads = "$projectDir/reads_workdir/unit_test"
+        input_reads = "$projectDir/reads_workdir/case3_long_16S"
         outdir = "$projectDir/output/"
-	}
-    
+    }
+
 
     /*
         Customized parameters for individual processes
     */
-    
+
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG: Unit test workflow
@@ -65,9 +64,7 @@ params {
     */
     unit_test {
         input_reads = "$projectDir/reads_workdir/unit_test"
-        outdir = "$projectDir/output/unit_test/"
     }
-
 
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,34 +76,34 @@ params {
         cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
-        
+
         /*
             Parameters for primer removal
         */
         //16S rRNA short (Earth Microbiome Project)
         fwd_primer = "GTGYCAGCMGCCGCGGTAA"  // 515F
         rev_primer = "CCGYCAATTYMTTTRAGTTT"  // 926R
-        
-        //16S rRNA long 1
+
+        //16S rRNA long
         //fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
-        //rev_primer = "RGYTACCTTGTTACGACTT"  // 1492R
+        //rev_primer = "RGYTACCTTGTTACGACTT"  // 1468R
 
         //18S rRNA short (Earth Microbiome Project)
         //fwd_primer = "CCAGCASCYGCGGTAATTCC"  // 1391F
         //rev_primer = "ACTTTCGTTCTTGATYRAC"  // 1510R
-        
+
         //ITS (Earth Microbiome Project)
         //fwd_primer = "CTTGGTCATTTAGAGGAAGTAA"  // ITS1F
         //rev_primer = "GCTGCGTTCTTCATCGATGC"  // ITS2
 
         min_length = 100 // Minimum acceptable length of reads after primer removal
     }
-    
+
     trim_and_filter {
         cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
-        
+
         /*
             Parameters for read trimming and filtering
         */
@@ -115,9 +112,9 @@ params {
         // 0 means no truncation.
         truncation_length_fwd = 0 // Forward reads will be truncated to this length
         truncation_length_rev = 0 // Reverse reads will be truncated to this length
-        
+
         max_n = 0 // Maximum number of Ns allowed in reads
-        max_ee_fwd = 2.0 // Maximum expected errors for forward reads   
+        max_ee_fwd = 2.0 // Maximum expected errors for forward reads
         max_ee_rev = 2.0 // Maximum expected errors for reverse reads
 
         trunc_q = 2 // Quality score threshold for terminal truncation
@@ -134,7 +131,7 @@ params {
         randomize = "TRUE"
     }
 
-   infer_samples {
+    infer_samples {
         cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
@@ -159,7 +156,7 @@ params {
         cluster_time = 1.h
         cluster_cpus = 12
         cluster_memory = 36.GB
-        
+
         /*
             Parameters for taxonomic classification
         */
@@ -170,7 +167,6 @@ params {
 
         //ITS reference database
         //reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/unite/DECIPHER_UNITE_v10.0_20241129.rds"
-
     }
 
     aggregate {
@@ -193,13 +189,127 @@ params {
 
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG: Sanger workflow (still TBD)
+    CONFIG: Long read workflow (still TBD)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
 
+    remove_primers_longread {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        /*
+            Parameters for primer removal
+        */
+        //16S rRNA short (Earth Microbiome Project)
+        //fwd_primer = "GTGYCAGCMGCCGCGGTAA"  // 515F
+        //rev_primer = "CCGYCAATTYMTTTRAGTTT"  // 926R
+
+        //16S rRNA long
+        fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
+        rev_primer = "RGYTACCTTGTTACGACTT"  // 1468R
+
+        //18S rRNA short (Earth Microbiome Project)
+        //fwd_primer = "CCAGCASCYGCGGTAATTCC"  // 1391F
+        //rev_primer = "ACTTTCGTTCTTGATYRAC"  // 1510R
+
+        //ITS (Earth Microbiome Project)
+        //fwd_primer = "CTTGGTCATTTAGAGGAAGTAA"  // ITS1F
+        //rev_primer = "GCTGCGTTCTTCATCGATGC"  // ITS2
+    }
+
+    trim_and_filter_longread {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        /*
+            Parameters for read trimming and filtering
+        */
+        // Reads will be truncated to these lengths;
+        // Caution: reads shorter than these lengths will be discarded!!!
+        // 0 means no truncation.
+        min_length = 1000 // Minimum read length after trimming
+        max_length = 1600 // Maximum read length after trimming
+
+        max_n = 0 // Maximum number of Ns allowed in reads
+        max_ee = 2.0 // Maximum expected errors for reads
+
+        trunc_q = 2 // Quality score threshold for terminal truncation
+        min_q = 3 // Minimum average quality score of reads after trimming
+
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
+    dereplicate {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
+    learn_errors_longread {
+        cluster_time = 2.h
+        cluster_cpus = 36
+        cluster_memory = 96.GB
+
+        band_size = 32 // Band size for alignment (higher values increase sensitivity but also computation time)
+        randomize = "TRUE" // Whether to randomize the input reads ('TRUE'| 'FALSE')
+        error_function = "PacBioErrfun" // Error function to use ('PacBioErrfun' | 'NanoporeErrfun')
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
+    denoise {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        band_size = 32 // Band size for alignment (higher values increase sensitivity but also computation time)
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
+    remove_chimera_longread {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        // Method to use for chimera removal ('consensus'| 'pooled'| 'per-sample')
+        method = "consensus" 
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
+    read_tracking_longread {
+        cluster_time = 1.h
+        cluster_cpus = 1
+        cluster_memory = 12.GB
+    }
+
+    classify_taxa_dada2 {
+        cluster_time = 1.h
+        cluster_cpus = 12
+        cluster_memory = 36.GB
+
+        /*
+            Parameters for taxonomic classification
+        */
+
+        orientation = "both" // 'forward' |'both'
+        //16S RNA reference database (GTDB)
+        reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
+
+        //16S RNA reference database (SILVA)
+        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz"
+
+        //ITS reference database
+        //reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"
+
+        verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
+    }
+
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG: Long read workflow (still TBD)
+    CONFIG: Sanger workflow (still TBD)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
 }

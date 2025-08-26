@@ -31,4 +31,3 @@ process REMOVE_CHIMERA {
             -t ${params.remove_chimera.cluster_cpus}
         """
 }
-

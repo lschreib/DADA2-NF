@@ -26,4 +26,3 @@ process READ_TRACKING {
             -c ${no_chimera_seq_table}
         """
 }
-
