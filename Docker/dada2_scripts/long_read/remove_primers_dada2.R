@@ -28,7 +28,7 @@ option_list <- list(
         help = "Sequence of reverse primer", metavar = "character"
     ),
     make_option(c("-v", "--verbose"),
-        type = "character", default = "'FALSE'", metavar = "character",
+        type = "character", default = "FALSE", metavar = "character",
         help = "Print extra output ('TRUE'| 'FALSE')(DEFAULT: 'FALSE')"
     )
 )

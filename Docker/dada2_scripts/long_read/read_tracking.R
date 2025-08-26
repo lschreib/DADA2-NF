@@ -37,7 +37,7 @@ getN <- function(x) sum(getUniques(x))
 removed_primer_output <- readRDS(opt$removed_primer)
 filtered_output <- readRDS(opt$filter_output)
 denoised_output <- readRDS(opt$denoised_output)
-seqtab.nochim <- readRDS(opt$emoved_chimera)
+seqtab.nochim <- readRDS(opt$removed_chimera)
 
 track <- as.data.frame(cbind(
     raw = removed_primer_output[, 1],
