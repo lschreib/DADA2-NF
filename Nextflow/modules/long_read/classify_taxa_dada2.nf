@@ -10,7 +10,7 @@ process CLASSIFY_TAXA_DADA2 {
         path(sequence_table)
 
     output:
-        path("decipher_ids.rds"), emit: classification_raw
+        path("dada2_tax.rds"), emit: classification_raw
         path("features.fna"), emit: feature_refseqs
         path("feature_table.tsv"), emit: feature_table
 

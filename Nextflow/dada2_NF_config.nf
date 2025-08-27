@@ -23,6 +23,18 @@ process {
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
     container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_v4.5.1.sif"
+
+    //Now follow singularity containers for pipeline steps that require specific containers
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONTAINER: Picrust2
+    (This container is used for Picrust2-based functional prediction)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    withName:PICRUST {
+        container = "file:///$INSTALL_HOME/software/imagefiles/picrust2/picrust2_v2.6.2.sif"
+    }
 }
 
 singularity {
@@ -48,7 +60,7 @@ params {
         project_id = "dada2"
 
         // Other parameters that should usually stay the same from one project to another.
-        input_reads = "$projectDir/reads_workdir/case3_long_16S"
+        input_reads = "$projectDir/reads_workdir"
         outdir = "$projectDir/output/"
     }
 
@@ -123,7 +135,7 @@ params {
     }
 
     learn_errors {
-        cluster_time = 1.h
+        cluster_time = 2.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -194,7 +206,7 @@ params {
     */
 
     remove_primers_longread {
-        cluster_time = 1.h
+        cluster_time = 4.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -219,7 +231,7 @@ params {
     }
 
     trim_and_filter_longread {
-        cluster_time = 1.h
+        cluster_time = 4.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -242,7 +254,7 @@ params {
     }
 
     dereplicate {
-        cluster_time = 1.h
+        cluster_time = 2.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -250,7 +262,7 @@ params {
     }
 
     learn_errors_longread {
-        cluster_time = 2.h
+        cluster_time = 6.h
         cluster_cpus = 36
         cluster_memory = 96.GB
 
@@ -261,7 +273,7 @@ params {
     }
 
     denoise {
-        cluster_time = 1.h
+        cluster_time = 6.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -270,7 +282,7 @@ params {
     }
 
     remove_chimera_longread {
-        cluster_time = 1.h
+        cluster_time = 6.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -286,7 +298,7 @@ params {
     }
 
     classify_taxa_dada2 {
-        cluster_time = 1.h
+        cluster_time = 12.h
         cluster_cpus = 12
         cluster_memory = 36.GB
 
@@ -307,11 +319,49 @@ params {
         verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
     }
 
+    aggregate_longread {
+        cluster_time = 1.h
+        cluster_cpus = 1
+        cluster_memory = 12.GB
+
+        /*
+            Parameters for aggregation
+        */
+        // Level of taxonomy to aggregate (1-8):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species, 8 = strain/species hypothesis
+        aggregation_level = 6
+
+        // Whether to remove NA values from the aggregated table ('TRUE'| 'FALSE')
+        na_remove = "FALSE"
+    }
+
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG: Sanger workflow (still TBD)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
+
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Picrust
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+    picrust {
+        cluster_time = 6.h
+        cluster_cpus = 12
+        cluster_memory = 128.GB
+
+        /*
+            Parameters for Picrust2
+        */
+        // Input fasta file with reference sequences of features
+        input_seqs = "$projectDir/output/classification/features.small.fna"
+        // Input feature table in TSV format
+        input_table = "$projectDir/output/classification/feature_table.small.tsv"
+    }
 }
 
 manifest {

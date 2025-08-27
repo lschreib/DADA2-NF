@@ -1,9 +1,9 @@
-process AGGREGATE_TAXONOMY {
+process AGGREGATE_TAXONOMY_LONGREAD {
     errorStrategy 'finish'
     debug true
     publishDir "$params.DEFAULT.outdir/aggregation", mode: 'copy'
-    cpus params.aggregate.cluster_cpus
-    memory params.aggregate.cluster_memory
+    cpus params.aggregate_longread.cluster_cpus
+    memory params.aggregate_longread.cluster_memory
     time params.aggregate.cluster_time
 
     input:
@@ -17,8 +17,8 @@ process AGGREGATE_TAXONOMY {
         """
         Rscript /dada2_scripts/aggregate_taxonomy.R \\
             -i ${feature_table} \\
-            -l ${params.aggregate.aggregation_level} \\
-            -n ${params.aggregate.na_remove} \\
+            -l ${params.aggregate_longread.aggregation_level} \\
+            -n ${params.aggregate_longread.na_remove} \\
             -o aggregated_taxonomy
         """
 }

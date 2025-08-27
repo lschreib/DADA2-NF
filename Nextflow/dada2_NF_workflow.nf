@@ -60,6 +60,14 @@ include { DENOISE                   } from './modules/long_read/denoise.nf'
 include { READ_TRACKING_LONGREAD    } from './modules/long_read/read_tracking_longread.nf'
 include { REMOVE_CHIMERA_LONGREAD   } from './modules/long_read/remove_chimera_longread.nf'
 include { CLASSIFY_TAXA_DADA2       } from './modules/long_read/classify_taxa_dada2.nf'
+include { AGGREGATE_TAXONOMY_LONGREAD} from './modules/long_read/aggregate_taxonomy_longread.nf'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUB-MODULES: Picrust
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+include { PICRUST                    } from './modules/picrust/picrust.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,5 +145,25 @@ workflow long_read_dada2 {
                                REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
 
         CLASSIFY_TAXA_DADA2(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
+
+        AGGREGATE_TAXONOMY_LONGREAD(CLASSIFY_TAXA_DADA2.out.feature_table)
 }
 
+// Picrust workflow
+workflow picrust {
+  //Populate input channel
+    if (!params.picrust.input_seqs) {
+        error "Parameter 'params.picrust.input_seqs' is not defined. Please check your configuration."
+    }
+    ref_seq_channel = Channel.fromPath(params.picrust.input_seqs, checkIfExists: true)
+
+    if (!params.picrust.input_table) {
+        error "Parameter 'params.picrust.input_table' is not defined. Please check your configuration."
+    }
+    feature_table_channel = Channel.fromPath(params.picrust.input_table, checkIfExists: true)
+
+    main:
+        // Initial QC of reads with FASTQC (still missing)
+
+        PICRUST(ref_seq_channel, feature_table_channel)
+}
