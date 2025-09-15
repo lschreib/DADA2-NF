@@ -14,7 +14,7 @@ process REMOVE_PRIMERS{
 
     script:
         """
-        Rscript /dada2_scripts/short_read/remove_primers.R \\
+        Rscript /dada2_scripts/short_read/remove_primers_cutadapt.R \\
             -i ${fastq_dir} \\
             -o remove_primers \\
             -f ${params.remove_primers.fwd_primer} \\
@@ -23,3 +23,4 @@ process REMOVE_PRIMERS{
             -t ${params.remove_primers.cluster_cpus}
         """
 }
+
