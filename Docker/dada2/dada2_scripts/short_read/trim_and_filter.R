@@ -108,8 +108,8 @@ inRs <- list.files(path, pattern = pattern_REV, full.names = TRUE)
 
 
 outdir <- opt$output_dir
-outFs <- file.path(paste0(outdir, ifelse(grepl("\\.gz$", basename(inFs)), basename(inFs), paste0(basename(inFs), ".gz"))))
-outRs <- file.path(paste0(outdir, ifelse(grepl("\\.gz$", basename(inRs)), basename(inRs), paste0(basename(inRs), ".gz"))))
+outFs <- file.path(outdir, ifelse(grepl("\\.gz$", basename(inFs)), basename(inFs), paste0(basename(inFs), ".gz")))
+outRs <- file.path(outdir, ifelse(grepl("\\.gz$", basename(inRs)), basename(inRs), paste0(basename(inRs), ".gz")))
 
 out <- filterAndTrim(inFs, outFs, inRs, outRs,
     truncLen = c(opt$trunc_len_fwd, opt$trunc_len_rev),
