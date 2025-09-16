@@ -111,6 +111,24 @@ workflow short_read_decipher {
         AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
 }
 
+// Classification-only workflow
+// (mostly just used for downstream classification after combining seqtables of different runs)
+// Requires a pre-existing seqtable in RDS format
+// Adjust reference database in the config file as needed
+workflow classify_only {
+    //Populate input channel
+    if (!params.DEFAULT.seqtable) {
+         error "Parameter 'params.DEFAULT.seqtable' is not defined. Please check your configuration."
+    }
+    seqtable_channel = Channel.fromPath(params.DEFAULT.seqtable, checkIfExists: true)
+
+    main:
+        CLASSIFY_TAXA_DECIPHER(seqtable_channel)
+        //CLASSIFY_TAXA_DADA2(seqtable_channel)
+
+        AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
+}
+
 // Sanger workflow (still to be implemented)
 workflow sanger {
 }

@@ -23,4 +23,3 @@ process REMOVE_PRIMERS{
             -t ${params.remove_primers.cluster_cpus}
         """
 }
-

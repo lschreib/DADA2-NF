@@ -62,6 +62,7 @@ params {
         // Other parameters that should usually stay the same from one project to another.
         input_reads = "$projectDir/reads_workdir"
         outdir = "$projectDir/output/"
+        seqtable = "$projectDir/seqtable_manual/seqtable.rds" // Only needed for classification-only workflow
     }
 
 
