@@ -1,4 +1,42 @@
-#!/usr/bin/env Rscript
+#' @title Remove Chimeras from Paired-End FASTQ Files using DADA2
+#'
+#' @description
+#' This script processes paired-end FASTQ files to remove chimeric sequences using the DADA2 pipeline.
+#' It merges paired reads, constructs a sequence table, removes chimeras, and outputs results in RDS, TSV, and FASTA formats.
+#'
+#' @details
+#' The script expects input FASTQ files to be named with either '_R1_001.fastq(.gz)' and '_R2_001.fastq(.gz)',
+#' or '_R1.fastq(.gz)' and '_R2.fastq(.gz)'. It uses error models (RDS files) for forward and reverse reads,
+#' merges paired reads, constructs a sequence table, removes chimeras using the specified method,
+#' and outputs various summary statistics and processed data files.
+#'
+#' @param -i, --input_dir [character] Path to input folder containing FASTQ files. (Required)
+#' @param -f, --forward_sample [character] Path to forward error model file in RDS format. (Required)
+#' @param -r, --reverse_sample [character] Path to reverse error model file in RDS format. (Required)
+#' @param -m, --method [character] Method for chimera removal ('consensus' | 'pooled' | 'per-sample'). Default: 'consensus'
+#' @param -t, --threads [integer] Number of threads to use. Default: 1
+#' @param -v, --verbose [character] Print extra output ('TRUE' | 'FALSE'). Default: 'FALSE'
+#'
+#' @return
+#' The script generates the following output files in the working directory:
+#' \itemize{
+#'   \item merged_reads.rds: Merged paired-end reads.
+#'   \item seqtab_dimensions.raw.tsv: Sequence table dimensions before chimera removal.
+#'   \item seqtab_length_distribution.raw.tsv: Distribution of sequence lengths before chimera removal.
+#'   \item seqtab_dimensions.nochim.tsv: Sequence table dimensions after chimera removal.
+#'   \item seqtab_length_distribution.nochim.tsv: Distribution of sequence lengths after chimera removal.
+#'   \item seqtab.nochim.rds: Sequence table after chimera removal.
+#'   \item seqtab.nochim.fasta: Non-chimeric sequences in FASTA format.
+#'   \item seqtab.nochim.tsv: Non-chimeric sequence table in TSV format.
+#' }
+#'
+#' @examples
+#' # Run the script from the command line:
+#' # Rscript remove_chimera.R -i /path/to/fastq_dir -f forward.rds -r reverse.rds -m consensus -t 4 -v TRUE
+#'
+#' @author
+#' Lars Schreiber
+# !/usr/bin/env Rscript
 
 # Load necessary libraries
 suppressMessages(library(optparse))
@@ -81,9 +119,9 @@ dadaFs <- readRDS(opt$forward_sample)
 dadaRs <- readRDS(opt$reverse_sample)
 
 mergers <- mergePairs(dadaFs, inFs, dadaRs, inRs, verbose = as.logical(opt$verbose))
-saveRDS(mergers, file = "merged_reads.rds")
 
 seqtab <- makeSequenceTable(mergers)
+saveRDS(seqtab, file = "seqtab.rds")
 
 # Inspect sequence table dimensions
 stats_before <- data.frame("samples" = dim(seqtab)[1], "unique_sequences" = dim(seqtab)[2])
