@@ -22,7 +22,7 @@ process {
     the process requires a specific one)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
-    container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_v4.5.1.sif"
+    container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_v4.5.2.sif"
 
     //Now follow singularity containers for pipeline steps that require specific containers
     /*
