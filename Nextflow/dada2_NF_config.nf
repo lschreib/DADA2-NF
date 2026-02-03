@@ -312,7 +312,7 @@ params {
         reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
 
         //16S RNA reference database (SILVA)
-        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz"
+        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/silva_nr99_v138.2_toSpecies_trainset.fa.gz"
 
         //ITS reference database
         //reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"
