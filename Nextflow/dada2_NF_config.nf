@@ -187,15 +187,6 @@ params {
         cluster_cpus = 1
         cluster_memory = 12.GB
 
-        /*
-            Parameters for aggregation
-        */
-        // Level of taxonomy to aggregate (1-8):
-        // 1 = domain, 2 = phylum, 3 = class,
-        // 4 = order, 5 = family, 6 = genus,
-        // 7 = species, 8 = strain/species hypothesis
-        aggregation_level = 6
-
         // Whether to remove NA values from the aggregated table ('TRUE'| 'FALSE')
         na_remove = "FALSE"
     }
@@ -312,7 +303,7 @@ params {
         reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
 
         //16S RNA reference database (SILVA)
-        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/silva_nr99_v138.2_toSpecies_trainset.fa.gz"
+        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz"
 
         //ITS reference database
         //reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"

@@ -45,7 +45,7 @@ include { INFER_SAMPLES             } from './modules/short_read/infer_samples.n
 include { REMOVE_CHIMERA            } from './modules/short_read/remove_chimera.nf'
 include { READ_TRACKING             } from './modules/short_read/read_tracking.nf'
 include { CLASSIFY_TAXA_DECIPHER    } from './modules/short_read/classify_taxa_decipher.nf'
-include { AGGREGATE_TAXONOMY        } from './modules/short_read/aggregate_taxonomy.nf'
+include { AGGREGATE_TAXONOMY_FLEX   } from './modules/short_read/aggregate_taxonomy_flex.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,8 +60,7 @@ include { DENOISE                   } from './modules/long_read/denoise.nf'
 include { READ_TRACKING_LONGREAD    } from './modules/long_read/read_tracking_longread.nf'
 include { REMOVE_CHIMERA_LONGREAD   } from './modules/long_read/remove_chimera_longread.nf'
 include { CLASSIFY_TAXA_DADA2       } from './modules/long_read/classify_taxa_dada2.nf'
-include { AGGREGATE_TAXONOMY_LONGREAD} from './modules/long_read/aggregate_taxonomy_longread.nf'
-
+include { AGGREGATE_TAXONOMY_LONGREAD_FLEX } from './modules/long_read/aggregate_taxonomy_longread_flex.nf'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUB-MODULES: Picrust
@@ -108,7 +107,16 @@ workflow short_read_decipher {
 
         CLASSIFY_TAXA_DECIPHER(REMOVE_CHIMERA.out.seqtab_nochim_rds)
 
-        AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
+        //AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
+        // For ease of use, we run the aggregation at multiple levels here and then later
+        // choose the desired level during the downstream analysis.
+        // Possible levels of taxonomy to aggregate (1-8):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species, 8 = strain/species hypothesis
+        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+        AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(CLASSIFY_TAXA_DECIPHER.out.feature_table))
+
 }
 
 // Classification-only workflow
@@ -126,7 +134,12 @@ workflow classify_only {
         CLASSIFY_TAXA_DECIPHER(seqtable_channel)
         //CLASSIFY_TAXA_DADA2(seqtable_channel)
 
-        AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
+        // Possible levels of taxonomy to aggregate (1-8):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species, 8 = strain/species hypothesis
+        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+        AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(CLASSIFY_TAXA_DECIPHER.out.feature_table))
 }
 
 // Sanger workflow (still to be implemented)
@@ -164,7 +177,12 @@ workflow long_read_dada2 {
 
         CLASSIFY_TAXA_DADA2(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
 
-        AGGREGATE_TAXONOMY_LONGREAD(CLASSIFY_TAXA_DADA2.out.feature_table)
+        // Possible levels of taxonomy to aggregate (1-8):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species, 8 = strain/species hypothesis
+        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+        AGGREGATE_TAXONOMY_LONGREAD_FLEX(ch_aggregation_level.combine(CLASSIFY_TAXA_DADA2.out.feature_table))
 }
 
 // Picrust workflow
