@@ -213,6 +213,10 @@ params {
         fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
         rev_primer = "RGYTACCTTGTTACGACTT"  // 1468R
 
+        //16S rRNA long (Archaea - Dalhousie: Integrated Microbiome Resource)
+		  //fwd_primer = "TCCGGTTGATCCYGCCGG" //  Arch21Ftrim
+		  //rev_primer = "CRGTGWGTRCAAGGRGCA" //  A1401R
+
         //18S rRNA short (Earth Microbiome Project)
         //fwd_primer = "CCAGCASCYGCGGTAATTCC"  // 1391F
         //rev_primer = "ACTTTCGTTCTTGATYRAC"  // 1510R
