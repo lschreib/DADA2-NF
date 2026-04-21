@@ -38,7 +38,7 @@ RUN install2.r optparse R.utils readr BiocManager ggplot2 remotes vegan && \
     rm -rf /tmp/downloaded_packages
 
 #Copy NRC tool kit scripts into container
-#COPY dada2_scripts /dada2_scripts
+COPY dada2_scripts /dada2_scripts
 
 ENTRYPOINT ["tini", "--"]
 CMD [ "/bin/bash" ]
