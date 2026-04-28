@@ -45,7 +45,7 @@ include { INFER_SAMPLES             } from './modules/short_read/infer_samples.n
 include { REMOVE_CHIMERA            } from './modules/short_read/remove_chimera.nf'
 include { READ_TRACKING             } from './modules/short_read/read_tracking.nf'
 include { CLASSIFY_TAXA_DECIPHER    } from './modules/short_read/classify_taxa_decipher.nf'
-include { AGGREGATE_TAXONOMY        } from './modules/short_read/aggregate_taxonomy.nf'
+include { AGGREGATE_TAXONOMY_FLEX   } from './modules/short_read/aggregate_taxonomy_flex.nf'
 include { BUILD_TAX_GUIDE_TREE      } from './modules/short_read/build_tax_guide_tree.nf'
 include { MAFFT_ALIGNMENT           } from './modules/short_read/mafft_alignment.nf'
 include { IQTREE_TREE               } from './modules/short_read/iqtree_tree.nf'
@@ -122,7 +122,9 @@ workflow short_read_decipher {
             FASTTREE_TREE(MAFFT_ALIGNMENT.out.output_aligned)
         }
 
-        AGGREGATE_TAXONOMY(CLASSIFY_TAXA_DECIPHER.out.feature_table)
+        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+
+        AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(CLASSIFY_TAXA_DECIPHER.out.feature_table))
 }
 
 // Classification-only workflow
