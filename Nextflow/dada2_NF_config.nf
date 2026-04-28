@@ -22,9 +22,30 @@ process {
     the process requires a specific one)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
-    container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_v4.5.2.sif"
+    container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_mod_v1.1.sif"
 
     //Now follow singularity containers for pipeline steps that require specific containers
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONTAINER: UniFrac    (This container is used for UniFrac distance calculation and tree building)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+    withName:BUILD_TAX_GUIDE_TREE {
+        container = "file:///$INSTALL_HOME/software/imagefiles/dada2/dada2_mod_v1.1.sif"
+    }
+
+    withName:MAFFT_ALIGNMENT {
+        container = "file:///$INSTALL_HOME/software/imagefiles/mafft/mafft_v7.525.sif"
+    }
+
+    withName:IQTREE_TREE {
+        container = "file:///$INSTALL_HOME/software/imagefiles/iqtree/iqtree_v3.11.sif"
+    }
+
+    withName:FASTTREE_TREE {
+        container = "file:///$INSTALL_HOME/software/imagefiles/fasttree/fasttree_v2.2.sif"
+    }
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONTAINER: Picrust2
@@ -59,10 +80,20 @@ params {
 
         project_id = "dada2"
 
+        /*
+            Parameters for the workflow configuration
+        */
+        // Whether to build a taxonomy-based guide tree for UniFrac distance calculation
+        // A taxonomy based guide tree is recommended (i.e. set to 'true')for ITS data,
+        // while a de novo tree ('false') is recommended for 16S rRNA data.
+        guide_tree = true
+
         // Other parameters that should usually stay the same from one project to another.
-        input_reads = "$projectDir/reads_workdir"
-        outdir = "$projectDir/output/"
-        seqtable = "$projectDir/seqtable_manual/seqtable.rds" // Only needed for classification-only workflow
+        //input_reads = "$projectDir/reads_workdir"
+        //outdir = "$projectDir/output/"
+        //seqtable = "$projectDir/seqtable_manual/seqtab_merged.no_chim.rds" // Only needed for classification-only workflow
+        input_reads = "$projectDir/reads_batch2023_2024"
+        outdir = "$projectDir/output_batch2023_2024/"
     }
 
 
@@ -94,8 +125,8 @@ params {
             Parameters for primer removal
         */
         //16S rRNA short (Earth Microbiome Project)
-        fwd_primer = "GTGYCAGCMGCCGCGGTAA"  // 515F
-        rev_primer = "CCGYCAATTYMTTTRAGTTT"  // 926R
+        //fwd_primer = "GTGYCAGCMGCCGCGGTAA"  // 515F
+        //rev_primer = "CCGYCAATTYMTTTRAGTTT"  // 926R
 
         //16S rRNA long
         //fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
@@ -106,8 +137,8 @@ params {
         //rev_primer = "ACTTTCGTTCTTGATYRAC"  // 1510R
 
         //ITS (Earth Microbiome Project)
-        //fwd_primer = "CTTGGTCATTTAGAGGAAGTAA"  // ITS1F
-        //rev_primer = "GCTGCGTTCTTCATCGATGC"  // ITS2
+        fwd_primer = "CTTGGTCATTTAGAGGAAGTAA"  // ITS1F
+        rev_primer = "GCTGCGTTCTTCATCGATGC"  // ITS2
 
         min_length = 100 // Minimum acceptable length of reads after primer removal
     }
@@ -173,13 +204,20 @@ params {
         /*
             Parameters for taxonomic classification
         */
-
         strand = "both" // 'top' | 'bottom' | 'both'
+
+        // Minimum level of taxonomy to keep (1-7):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species; (Default: 2, i.e. phylum)
+        remove_below_level = 2  // 2 will remove everythin that does not at
+                                // least have a phylum-level classification
+
         //16S RNA reference database
-        reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/silva/DECIPHER_SILVA_SSU_R138.2_NR99_20240918.rds"
+        //reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/silva/DECIPHER_SILVA_SSU_R138.2_NR99_20240918.rds"
 
         //ITS reference database
-        //reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/unite/DECIPHER_UNITE_v10.0_20241129.rds"
+        reference_database = "$INSTALL_HOME/databases/dada2/decipher_classifier/unite/DECIPHER_UNITE_v10.0_20241129.rds"
     }
 
     aggregate {
@@ -187,9 +225,45 @@ params {
         cluster_cpus = 1
         cluster_memory = 12.GB
 
+        /*
+            Parameters for aggregation
+        */
+        // Level of taxonomy to aggregate (1-8):
+        // 1 = domain, 2 = phylum, 3 = class,
+        // 4 = order, 5 = family, 6 = genus,
+        // 7 = species, 8 = strain/species hypothesis
+        aggregation_level = 6
+
         // Whether to remove NA values from the aggregated table ('TRUE'| 'FALSE')
         na_remove = "FALSE"
     }
+
+    tax_guide_tree {
+        cluster_time = 1.h
+        cluster_cpus = 1
+        cluster_memory = 12.GB
+    }
+
+    mafft_alignment {
+        cluster_time = 12.h
+        cluster_cpus = 24
+        cluster_memory = 96.GB
+        algorithm = "genafpair"
+        max_iterate = 1000
+    }
+ 
+    iqtree {
+        cluster_time = 12.h
+        cluster_cpus = 24
+        cluster_memory = 96.GB
+    }
+
+    fasttree {
+        cluster_time = 12.h
+        cluster_cpus = 24
+        cluster_memory = 96.GB
+    }
+
 
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,10 +286,6 @@ params {
         //16S rRNA long
         fwd_primer = "AGRGTTYGATYMTGGCTCAG"  // 27F
         rev_primer = "RGYTACCTTGTTACGACTT"  // 1468R
-
-        //16S rRNA long (Archaea - Dalhousie: Integrated Microbiome Resource)
-		  //fwd_primer = "TCCGGTTGATCCYGCCGG" //  Arch21Ftrim
-		  //rev_primer = "CRGTGWGTRCAAGGRGCA" //  A1401R
 
         //18S rRNA short (Earth Microbiome Project)
         //fwd_primer = "CCAGCASCYGCGGTAATTCC"  // 1391F
@@ -304,10 +374,10 @@ params {
 
         orientation = "both" // 'forward' |'both'
         //16S RNA reference database (GTDB)
-        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
+        reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
 
         //16S RNA reference database (SILVA)
-        reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/silva_nr99_v138.2_toSpecies_trainset.fa.gz"
+        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz"
 
         //ITS reference database
         //reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"

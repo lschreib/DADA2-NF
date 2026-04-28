@@ -20,6 +20,7 @@ process CLASSIFY_TAXA_DECIPHER {
             -i ${sequence_table} \\
             -d ${params.classify_taxa_decipher.reference_database} \\
             -s ${params.classify_taxa_decipher.strand} \\
+            -r ${params.classify_taxa_decipher.remove_below_level} \\
             -t ${params.classify_taxa_decipher.cluster_cpus}
         """
 }

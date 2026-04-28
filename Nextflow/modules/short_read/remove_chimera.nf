@@ -12,7 +12,8 @@ process REMOVE_CHIMERA {
         path(reverse_sample)
 
     output:
-        path("seqtab.rds"), emit: merged_reads_rds
+        path("merged_reads.rds"), emit: merged_reads_rds
+        path("seqtab.rds"), emit: seqtab_rds
         path("seqtab.nochim.rds"), emit: seqtab_nochim_rds
         path("seqtab.nochim.fasta"), emit: seqtab_nochim_fasta
         path("seqtab.nochim.tsv"), emit: seqtab_nochim_tsv

@@ -1,4 +1,4 @@
-process AGGREGATE_TAXONOMY_FLEX {
+process AGGREGATE_TAXONOMY {
     errorStrategy 'finish'
     debug true
     publishDir "$params.DEFAULT.outdir/aggregation", mode: 'copy'
@@ -7,7 +7,7 @@ process AGGREGATE_TAXONOMY_FLEX {
     time params.aggregate.cluster_time
 
     input:
-        tuple val(aggregation_level), path(feature_table)
+        path(feature_table)
 
     output:
         path("aggregated_taxonomy_*.reads.tsv"), emit: aggregated_reads
@@ -17,7 +17,7 @@ process AGGREGATE_TAXONOMY_FLEX {
         """
         Rscript /dada2_scripts/short_read/aggregate_taxonomy.R \\
             -i ${feature_table} \\
-            -l ${aggregation_level} \\
+            -l ${params.aggregate.aggregation_level} \\
             -n ${params.aggregate.na_remove} \\
             -o aggregated_taxonomy
         """
