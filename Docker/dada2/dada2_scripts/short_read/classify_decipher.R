@@ -24,6 +24,10 @@ option_list <- list(
         type = "character", default = NULL,
         help = "Path to DECIPHER database file in RDS format", metavar = "character"
     ),
+    make_option(c("-r", "--remove"),
+        type = "integer", default = 1,
+        help = "Removes sequences that do not minimum resolution criterium: 1=Domain, 2=Phylum, 3=Class, 4=Order, 5=Family, 6=Genus, 7=Species. For example: r=2 will remove any sequences with originating from an unidentified phylum. (DEFAULT=1 -> at least domain level classfification required)", metavar = "integer"
+    ),
     make_option(c("-t", "--threads"),
         type = "integer", default = 1,
         help = "Number of threads to use (DEFAULT: 1)", metavar = "integer"
@@ -87,6 +91,10 @@ ps <- phyloseq(
     otu_table(seqtab.nochim, taxa_are_rows = FALSE),
     tax_table(taxid)
 )
+
+tax_level_cutoff <- ranks[opt$remove]
+
+ps <- subset_taxa(ps, !is.na(tax_table(ps)[, tax_level_cutoff]))
 
 # Rename the OTU's to something shorter
 dna <- Biostrings::DNAStringSet(taxa_names(ps))

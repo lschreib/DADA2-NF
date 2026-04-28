@@ -44,7 +44,7 @@ dadaRs <- readRDS(opt$reverse_sample)
 mergers <- readRDS(opt$merged_reads)
 seqtab.nochim <- readRDS(opt$no_chimera_seq_table)
 
-track <- as.data.frame(cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), rowSums(mergers), rowSums(seqtab.nochim)))
+track <- as.data.frame(cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim)))
 # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
 

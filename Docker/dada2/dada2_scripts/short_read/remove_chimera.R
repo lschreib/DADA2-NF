@@ -119,6 +119,7 @@ dadaFs <- readRDS(opt$forward_sample)
 dadaRs <- readRDS(opt$reverse_sample)
 
 mergers <- mergePairs(dadaFs, inFs, dadaRs, inRs, verbose = as.logical(opt$verbose))
+saveRDS(mergers, file = "merged_reads.rds")
 
 seqtab <- makeSequenceTable(mergers)
 saveRDS(seqtab, file = "seqtab.rds")

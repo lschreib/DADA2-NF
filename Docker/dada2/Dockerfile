@@ -4,6 +4,11 @@ RUN echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}
 LABEL org.opencontainers.image.vendor="National Research Council Canada" \
       org.opencontainers.image.authors="Lars Schreiber <lars.schreiber@nrc-cnrc.gc.ca>"
 
+### LABELS ###
+LABEL base_image="r-ver"
+LABEL software="dada2-nf"
+LABEL software.version="v1.1.0"
+
 #INstall necessary system packages (all the lib* things are necessary to extend the image with additional R packages)      
 RUN apt-get update > /dev/null && \
     apt-get install --no-install-recommends --yes \
@@ -26,6 +31,8 @@ RUN apt-get update > /dev/null && \
         libglpk-dev \
         libssl-dev \
         libcurl4-openssl-dev \
+        python3 \
+        pip \
         > /dev/null && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -37,7 +44,10 @@ RUN install2.r optparse R.utils readr BiocManager ggplot2 remotes vegan && \
     R -e 'remotes::install_github("mammerlin/sangeranalyseR")' && \
     rm -rf /tmp/downloaded_packages
 
-#Copy NRC tool kit scripts into container
+# Install numpy and pandas using pip
+RUN pip3 install --break-system-packages numpy pandas ete3
+
+#Copy dada2 scripts into container
 COPY dada2_scripts /dada2_scripts
 
 ENTRYPOINT ["tini", "--"]
