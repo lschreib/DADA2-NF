@@ -31,6 +31,7 @@ RUN apt-get update > /dev/null && \
         libglpk-dev \
         libssl-dev \
         libcurl4-openssl-dev \
+        libuv1-dev \
         python3 \
         pip \
         > /dev/null && \
@@ -38,7 +39,8 @@ RUN apt-get update > /dev/null && \
     rm -rf /var/lib/apt/lists/*
 
 #Install necessary R packages
-RUN install2.r optparse R.utils readr BiocManager ggplot2 remotes vegan && \
+RUN set -e && \
+    install2.r optparse R.utils readr BiocManager ggplot2 remotes vegan && \
     R -e 'BiocManager::install(c("ShortRead","Biostrings","dada2","phyloseq","DECIPHER","sangerseqR"), ask = F)' && \
     R -e 'remotes::install_github("jbisanz/qiime2R")' && \
     R -e 'remotes::install_github("mammerlin/sangeranalyseR")' && \
