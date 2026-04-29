@@ -75,6 +75,13 @@ include { PICRUST                    } from './modules/picrust/picrust.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUB-MODULES: FUNGuild
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+include { FUNGUILD                    } from './modules/funguild/funguild.nf'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 WORKFLOW section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -200,4 +207,19 @@ workflow picrust {
         // Initial QC of reads with FASTQC (still missing)
 
         PICRUST(ref_seq_channel, feature_table_channel)
+}
+
+
+// FUNGuild workflow
+workflow funguild {
+  //Populate input channel
+    if (!params.funguild.input_table) {
+        error "Parameter 'params.funguild.input_table' is not defined. Please check your configuration."
+    }
+    feature_table_channel = Channel.fromPath(params.funguild.input_table, checkIfExists: true)
+
+    main:
+        // Initial QC of reads with FASTQC (still missing)
+
+        FUNGUILD(feature_table_channel)
 }

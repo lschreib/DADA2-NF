@@ -56,6 +56,16 @@ process {
     withName:PICRUST {
         container = "file:///$INSTALL_HOME/software/imagefiles/picrust2/picrust2_v2.6.2.sif"
     }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONTAINER: FUNGuild
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    withName:FUNGUILD {
+        container = "file:///$INSTALL_HOME/software/imagefiles/funguild/funguild_v1.1.sif"
+    }
 }
 
 singularity {
@@ -245,7 +255,7 @@ params {
     }
 
     mafft_alignment {
-        cluster_time = 12.h
+        cluster_time = 24.h
         cluster_cpus = 24
         cluster_memory = 96.GB
         algorithm = "genafpair"
@@ -253,13 +263,13 @@ params {
     }
  
     iqtree {
-        cluster_time = 12.h
+        cluster_time = 24.h
         cluster_cpus = 24
         cluster_memory = 96.GB
     }
 
     fasttree {
-        cluster_time = 12.h
+        cluster_time = 24.h
         cluster_cpus = 24
         cluster_memory = 96.GB
     }
@@ -374,13 +384,13 @@ params {
 
         orientation = "both" // 'forward' |'both'
         //16S RNA reference database (GTDB)
-        reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
+        //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz"
 
         //16S RNA reference database (SILVA)
         //reference_database = "$INSTALL_HOME/databases//dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz"
 
         //ITS reference database
-        //reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"
+        reference_database = "$INSTALL_HOME/databases/dada2/dada2_classifier/unite/UNITE_QIIME_release_10.05.2021_sh_dynamic_all_97rep_set.fasta.gz"
 
         verbose = "FALSE" // Whether to print out verbose output ('TRUE' | 'FALSE')
     }
@@ -427,6 +437,20 @@ params {
         input_seqs = "$projectDir/output/classification/features.small.fna"
         // Input feature table in TSV format
         input_table = "$projectDir/output/classification/feature_table.small.tsv"
+    }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CONFIG: Funguild
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    funguild {
+        cluster_time = 6.h
+        cluster_cpus = 4
+        cluster_memory = 32.GB
+
+        input_table = "$projectDir/output/classification/feature_table.tsv"
     }
 }
 
