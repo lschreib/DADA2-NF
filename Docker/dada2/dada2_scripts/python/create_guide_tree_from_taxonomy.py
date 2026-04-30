@@ -88,8 +88,25 @@ def create_phylogenetic_tree(taxonomies):
             print(f"Error creating tree for taxonomy: {taxonomy}")
             print(f"Details: {e}")
             continue
-    
-    tree.contract_lone_descendant()
+
+    # Contract all trivial nodes
+    print("Simplification of non-branching nodes...")
+    # Traverse in postorder so children are processed first
+    for node in list(tree.traverse("postorder")):
+        # Skip leaves and root
+        if node.is_leaf() or node.is_root():
+            continue
+        # Contract nodes with exactly one child
+        if len(node.children) == 1:
+            child = node.children[0]
+            # Add branch lengths
+            child.dist += node.dist
+            # Attach child directly to grandparent
+            parent = node.up
+            child.detach()
+            parent.add_child(child)
+            # Remove old node
+            node.detach()
 
     return tree
 
