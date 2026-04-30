@@ -88,6 +88,9 @@ def create_phylogenetic_tree(taxonomies):
             print(f"Error creating tree for taxonomy: {taxonomy}")
             print(f"Details: {e}")
             continue
+    
+    tree.contract_lone_descendant()
+
     return tree
 
 # Main funtion (workflow)
