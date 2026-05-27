@@ -1,7 +1,8 @@
 process REMOVE_PRIMERS{
     errorStrategy 'finish'
     debug true
-    //publishDir "$params.DEFAULT.outdir", mode: 'copy'
+    publishDir "$params.DEFAULT.outdir/remove_primers", mode: 'copy', pattern: "*.tsv"
+	publishDir "$params.DEFAULT.outdir/remove_primers", mode: 'copy', pattern: "*.png"
     cpus params.remove_primers.cluster_cpus
     memory params.remove_primers.cluster_memory
     time params.remove_primers.cluster_time
@@ -11,6 +12,8 @@ process REMOVE_PRIMERS{
 
     output:
         path("remove_primers"), emit: primers_removed_dir
+		path("*.tsv"), emit: removal_stats
+		path("*.png"), emit: qc_profiles
 
     script:
         """

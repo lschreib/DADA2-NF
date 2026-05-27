@@ -1,7 +1,7 @@
 process TRIM_AND_FILTER {
     errorStrategy 'finish'
     debug true
-    //publishDir "$params.DEFAULT.outdir", mode: 'copy'
+    publishDir "$params.DEFAULT.outdir/trim_and_filter", mode: 'copy', pattern: "*.png"
     cpus params.trim_and_filter.cluster_cpus
     memory params.trim_and_filter.cluster_memory
     time params.trim_and_filter.cluster_time
@@ -12,6 +12,7 @@ process TRIM_AND_FILTER {
     output:
         path("filtered"), emit: filtered_reads_dir
         path("filtered/filter_and_trim_output.rds"), emit: filtered_reads_rds
+		path("*.png"), emit: post_trim_profiles
 
 
     script:
