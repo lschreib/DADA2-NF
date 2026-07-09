@@ -12,13 +12,13 @@
 
 DADA2-NF is an nf-core-compliant Nextflow pipeline that implements the DADA2 amplicon sequence processing workflow with support for:
 
-- **Short-read sequencing**: Illumina MiSeq, NextSeq, NovaSeq (paired-end or single-end)
-- **Long-read sequencing**: PacBio, Oxford Nanopore
+- **Short-read sequencing**: Illumina MiSeq, NextSeq, NovaSeq (paired-end only)
+- **Long-read sequencing**: PacBio
 - **Sanger sequencing**: AB1 files (experimental)
 - **Taxonomic classification**: DECIPHER (short-read) and DADA2 (long-read)
 - **Phylogenetic analysis**: Automated tree construction with MAFFT + IQ-TREE/FastTree
 - **Functional prediction**: PiCrust2 and FUNGuild integration
-- **Container support**: Docker, Singularity, and Conda
+- **Container support**: Singularity
 
 ## Quick Start
 
@@ -82,19 +82,14 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 ## Key Features
 
 ### 🔧 Flexible Configuration
-- Supports multiple container engines (Docker, Singularity, Conda)
 - Easy parameter customization via CLI or config files
 - HPC cluster integration with Slurm/PBS schedulers
-- Resource scaling with automatic memory/CPU management
 
 ### 📊 Comprehensive QC
-- Quality profile visualizations
 - Per-step read tracking statistics
 - Error rate analysis and plotting
-- Classification confidence scores
 
 ### 🌳 Advanced Analysis
-- Multiple phylogenetic inference methods (IQ-TREE, FastTree)
 - Taxonomy-based and de novo guide tree construction
 - Integrated functional prediction (PiCrust2, FUNGuild)
 - Support for multiple reference databases
@@ -106,7 +101,7 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 - Resumable workflows
 
 ### 📦 nf-core Compliant
-- Follows nf-core standards and best practices
+- Follows nf-core standards and best practices (as closely as is reasonable)
 - Modular design for extensibility
 - Comprehensive parameter schema
 - Standardized documentation
@@ -116,7 +111,7 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 ### Essential Parameters
 ```bash
 --workflow_mode       # 'short_read' or 'long_read' (default: short_read)
---input_reads         # Path to FASTQ directory or samplesheet
+--input_reads         # Path to FASTQ directory
 --outdir              # Output directory (default: results)
 ```
 
