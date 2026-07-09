@@ -1,5 +1,4 @@
 repository_type: pipeline
 
 lint:
-  skip:
-    - schema_params
+  schema_params: False
