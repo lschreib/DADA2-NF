@@ -91,7 +91,7 @@
         "outdir": {
           "type": "string",
           "description": "The output directory where the results will be saved. You have to use absolute paths to avoid issues.",
-          "default": "results",
+          "default": "${projectDir}/results",
           "fa_icon": "fas fa-folder-open"
         },
         "seqtable": {
