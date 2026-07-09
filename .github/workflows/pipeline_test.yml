@@ -1,0 +1,40 @@
+name: Pipeline test
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test-preview:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [short_read, long_read]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: '24.10.4'
+
+      - name: Ensure test input path exists
+        run: |
+          mkdir -p tests/data/reads
+
+      - name: Nextflow compile check (${{ matrix.mode }})
+        env:
+          NXF_ANSI_LOG: 'false'
+        run: |
+          nextflow run . -profile test --workflow_mode ${{ matrix.mode }} -preview

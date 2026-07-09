@@ -1,0 +1,8 @@
+taxonomy_scope	upstream_release	source_uri	builder_script	output_artifact	build_date	checksum_sha256	notes
+16S	GTDB_r226	https://data.ace.uq.edu.au/public/gtdb/data/releases/	assets/database_build/GTDB/createDada2Db.R	$DATABASES/dada2/dada2_classifier/gtdb/ar53_bac120_ssu_reps_r226.dada2_fmt.fna.gz	2025-08-25	71158a57935198cc0f198d444a8fa362	Active in conf/nrc.config
+16S	SILVA_138.2		assets/database_build/SILVA/createDada2Db_20240917.R	$DATABASES/dada2/dada2_classifier/silva/DADA2_SILVA_138.2_SSURef.fa.gz	2024-09-17	81a95b0e1ed26d06fd3360d21d8e97f3	Alternative in conf/nrc.config
+16S	SILVA_138.2_NR99		assets/database_build/SILVA/createDecipherDb_20240910.R	$DATABASES/dada2/decipher_classifier/silva/DECIPHER_SILVA_SSU_R138.2_NR99_20240918.rds	2024-09-18	087eeb5a766ab3c9129225db04edbf86	Alternative in conf/nrc.config
+ITS	UNITE_v10.0		assets/database_build/UNITE/createDecipherDb_20240910.R	$DATABASES/dada2/decipher_classifier/unite/DECIPHER_UNITE_v10.0_20241129.rds	2024-11-29	9aab1a39edf3e43e4a7f681c348a1f3e	Active in conf/nrc.config
+16S	FAPROTAX_1.2.12_BT	https://github.com/lschreib/FAPROTAX-BioTech	(n/a; provided release)	$DATABASES/faprotax/FAPROTAX.txt	2026-07-08	117a5a1c82c2e54fe66b34a5acbf999e	Active in conf/nrc.config
+ITS	FUNGUILD_DB_2024    http://stbates.org/funguild_db.php  (n/a; provided release) $DATABASES/funguild/funguild_db.php 2024    53861e426a5d4f17e4514f34c09eecac    Active in conf/nrc.config
+18S NEMAGUILD_DB_2024   http://stbates.org/nemaguild_db.php (n/a; provided release) $DATABASES/funguild/nemaguild_db.php    2024   307e22b0b635d3281b8c3e944d1af277    Alternative in conf/nrc.config

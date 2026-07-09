@@ -1,0 +1,59 @@
+name: Container checks
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  dockerfile-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile:
+          - assets/containers/dada2/Dockerfile
+          - assets/containers/funguild/Dockerfile
+          - assets/containers/picrust2/Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+
+  docker-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: dada2
+            context: assets/containers/dada2
+            dockerfile: assets/containers/dada2/Dockerfile
+          - name: funguild
+            context: assets/containers/funguild
+            dockerfile: assets/containers/funguild/Dockerfile
+          - name: picrust2
+            context: assets/containers/picrust2
+            dockerfile: assets/containers/picrust2/Dockerfile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (${{ matrix.name }})
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: false
+          tags: local/${{ matrix.name }}:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

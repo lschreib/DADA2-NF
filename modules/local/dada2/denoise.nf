@@ -1,0 +1,19 @@
+process DENOISE {
+    input:
+        path(infile_dereplicated)
+        path(infile_errors)
+
+
+    output:
+        path("denoised_output.rds"), emit: denoised_output
+
+    script:
+        """
+        Rscript /dada2_scripts/long_read/denoise.R \\
+            -d ${infile_dereplicated} \\
+            -e ${infile_errors} \\
+            -b ${params.denoise.band_size} \\
+            -t ${task.cpus} \\
+            -v ${params.denoise.verbose}
+        """
+}
