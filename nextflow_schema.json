@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/lschreib/DADA2-NF/main/nextflow_schema.json",
+  "title": "DADA2-NF pipeline parameters",
+  "description": "Parameter schema for the DADA2-NF pipeline.",
+  "type": "object",
+  "$defs": {
+    "generic_options": {
+      "title": "Generic options",
+      "type": "object",
+      "fa_icon": "fas fa-file-import",
+      "description": "Less common options for the pipeline, typically set in a config file.",
+      "properties": {
+        "help": {
+          "type": "boolean",
+          "description": "Display help text.",
+          "fa_icon": "fas fa-question-circle",
+          "hidden": true
+        },
+        "schema_ignore_params": {
+          "type": "string",
+          "default": "genomes,igenomes_base",
+          "hidden": true
+        },
+        "enable_conda": {
+          "type": "boolean",
+          "description": "Run the pipeline using Conda instead of Singularity/Docker.",
+          "hidden": true
+        },
+        "singularity_pull_docker_container": {
+          "type": "boolean",
+          "description": "Instead of directly converting the Dockerfile to a Singularity image, use Singularity to pull the image from a Docker registry.",
+          "hidden": true
+        },
+        "monochrome_logs": {
+          "type": "boolean",
+          "description": "Do not use coloured log outputs.",
+          "fa_icon": "fas fa-palette"
+        },
+        "publish_dir_mode": {
+          "type": "string",
+          "description": "Method used to save pipeline results to output directory.",
+          "default": "copy",
+          "enum": ["symlink", "rellink", "link", "copy", "move"],
+          "fa_icon": "fas fa-copy"
+        },
+        "max_cpus": {
+          "type": "integer",
+          "description": "Maximum number of CPUs that can be requested for any single job.",
+          "default": 16,
+          "fa_icon": "fas fa-microchip",
+          "hidden": true
+        },
+        "max_memory": {
+          "type": "string",
+          "description": "Maximum amount of memory that can be requested for any single job.",
+          "default": "128.GB",
+          "fa_icon": "fas fa-memory",
+          "pattern": "^\\d+(\\.\\d*)?\\s*(B|KB|MB|GB|TB)$",
+          "hidden": true
+        },
+        "max_time": {
+          "type": "string",
+          "description": "Maximum amount of time that can be requested for any single job.",
+          "default": "240.h",
+          "fa_icon": "far fa-clock",
+          "pattern": "^\\d+(\\.\\d*)?\\s*(s|m|h|d)$",
+          "hidden": true
+        }
+      }
+    },
+    "input_output_options": {
+      "title": "Input/output options",
+      "type": "object",
+      "fa_icon": "fas fa-terminal",
+      "description": "Define where the pipeline should find input data and save output data.",
+      "required": ["outdir"],
+      "properties": {
+        "workflow_mode": {
+          "type": "string",
+          "description": "Top-level workflow to run.",
+          "default": "short_read",
+          "enum": ["short_read", "long_read"],
+          "fa_icon": "fas fa-cogs"
+        },
+        "input_reads": {
+          "type": "string",
+          "description": "Input reads directory or samplesheet path.",
+          "fa_icon": "fas fa-dna"
+        },
+        "outdir": {
+          "type": "string",
+          "description": "The output directory where the results will be saved. You have to use absolute paths to avoid issues.",
+          "default": "results",
+          "fa_icon": "fas fa-folder-open"
+        },
+        "seqtable": {
+          "type": "string",
+          "description": "Pre-existing RDS sequence table for classification-only workflow.",
+          "fa_icon": "fas fa-file"
+        }
+      }
+    },
+    "pipeline_options": {
+      "title": "Pipeline options",
+      "type": "object",
+      "fa_icon": "fas fa-cogs",
+      "properties": {
+        "marker_gene": {
+          "type": "string",
+          "description": "Target marker gene used for compatibility checks of downstream interpretation modules.",
+          "default": "16S",
+          "enum": ["16S", "ITS"],
+          "fa_icon": "fas fa-dna"
+        },
+        "guide_tree": {
+          "type": "boolean",
+          "description": "Build a taxonomy-based guide tree for UniFrac (true=ITS, false=16S de novo).",
+          "default": true,
+          "fa_icon": "fas fa-tree"
+        },
+        "run_picrust2": {
+          "type": "boolean",
+          "description": "Run PICRUSt2 downstream interpretation (16S only).",
+          "default": false,
+          "fa_icon": "fas fa-project-diagram"
+        },
+        "run_faprotax": {
+          "type": "boolean",
+          "description": "Run FAPROTAX downstream interpretation (16S only).",
+          "default": false,
+          "fa_icon": "fas fa-table"
+        },
+        "run_funguild": {
+          "type": "boolean",
+          "description": "Run FUNGuild downstream interpretation (ITS only).",
+          "default": false,
+          "fa_icon": "fas fa-leaf"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/generic_options"
+    },
+    {
+      "$ref": "#/$defs/input_output_options"
+    },
+    {
+      "$ref": "#/$defs/pipeline_options"
+    }
+  ],
+  "properties": {
+
+    "remove_primers": {
+      "type": "object",
+      "description": "Primer removal settings (short read).",
+      "properties": {
+        "fwd_primer":  { "type": "string", "description": "Forward primer sequence.", "default": "CTTGGTCATTTAGAGGAAGTAA" },
+        "rev_primer":  { "type": "string", "description": "Reverse primer sequence.", "default": "GCTGCGTTCTTCATCGATGC" },
+        "min_length":  { "type": "integer", "description": "Minimum read length after primer removal.", "default": 100 }
+      }
+    },
+
+    "trim_and_filter": {
+      "type": "object",
+      "description": "Read trimming and quality filtering (short read).",
+      "properties": {
+        "truncation_length_fwd": { "type": "integer", "description": "Truncate forward reads to this length (0 = no truncation).", "default": 0 },
+        "truncation_length_rev": { "type": "integer", "description": "Truncate reverse reads to this length (0 = no truncation).", "default": 0 },
+        "max_n":     { "type": "integer", "description": "Maximum Ns allowed in a read.", "default": 0 },
+        "max_ee_fwd": { "type": "number",  "description": "Maximum expected errors for forward reads.", "default": 2.0 },
+        "max_ee_rev": { "type": "number",  "description": "Maximum expected errors for reverse reads.", "default": 2.0 },
+        "trunc_q":   { "type": "integer", "description": "Quality score threshold for terminal truncation.", "default": 2 },
+        "min_length": { "type": "integer", "description": "Minimum read length after trimming.", "default": 100 }
+      }
+    },
+
+    "learn_errors": {
+      "type": "object",
+      "description": "Error model learning (short read).",
+      "properties": {
+        "randomize": { "type": "string", "description": "Randomize input reads before learning ('TRUE'|'FALSE').", "default": "TRUE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "remove_chimera": {
+      "type": "object",
+      "description": "Chimera removal (short read).",
+      "properties": {
+        "method": { "type": "string", "description": "Chimera detection method.", "default": "consensus", "enum": ["consensus", "pooled", "per-sample"] }
+      }
+    },
+
+    "classify_taxa_decipher": {
+      "type": "object",
+      "description": "DECIPHER taxonomic classification (short read).",
+      "properties": {
+        "strand":             { "type": "string",  "description": "Strand orientation to search.", "default": "both", "enum": ["top", "bottom", "both"] },
+        "remove_below_level": { "type": "integer", "description": "Remove taxa below this rank (1=domain…7=species).", "default": 2 },
+        "reference_database": { "type": ["string", "null"], "description": "Path to DECIPHER reference RDS database." }
+      }
+    },
+
+    "aggregate": {
+      "type": "object",
+      "description": "Taxonomy aggregation (short read).",
+      "properties": {
+        "aggregation_level": { "type": "integer", "description": "Taxonomy level to aggregate to (1=domain…7=species, 8=strain/SH).", "default": 6 },
+        "na_remove":         { "type": "string",  "description": "Remove NA taxa from aggregated table ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "mafft_alignment": {
+      "type": "object",
+      "description": "MAFFT multiple sequence alignment.",
+      "properties": {
+        "algorithm":   { "type": "string",  "description": "MAFFT algorithm flag.", "default": "genafpair" },
+        "max_iterate": { "type": "integer", "description": "Maximum number of iterative refinement cycles.", "default": 1000 }
+      }
+    },
+
+    "remove_primers_longread": {
+      "type": "object",
+      "description": "Primer removal settings (long read).",
+      "properties": {
+        "fwd_primer": { "type": "string", "description": "Forward primer sequence.", "default": "AGRGTTYGATYMTGGCTCAG" },
+        "rev_primer": { "type": "string", "description": "Reverse primer sequence.", "default": "RGYTACCTTGTTACGACTT" }
+      }
+    },
+
+    "trim_and_filter_longread": {
+      "type": "object",
+      "description": "Read trimming and quality filtering (long read).",
+      "properties": {
+        "min_length": { "type": "integer", "description": "Minimum read length after trimming.", "default": 1000 },
+        "max_length": { "type": "integer", "description": "Maximum read length after trimming.", "default": 1600 },
+        "max_n":      { "type": "integer", "description": "Maximum Ns allowed in a read.", "default": 0 },
+        "max_ee":     { "type": "number",  "description": "Maximum expected errors.", "default": 2.0 },
+        "trunc_q":    { "type": "integer", "description": "Quality score threshold for terminal truncation.", "default": 2 },
+        "min_q":      { "type": "integer", "description": "Minimum average quality score after trimming.", "default": 3 },
+        "verbose":    { "type": "string",  "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "dereplicate": {
+      "type": "object",
+      "description": "Read dereplication (long read).",
+      "properties": {
+        "verbose": { "type": "string", "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "learn_errors_longread": {
+      "type": "object",
+      "description": "Error model learning (long read).",
+      "properties": {
+        "band_size":      { "type": "integer", "description": "Band size for alignment.", "default": 32 },
+        "randomize":      { "type": "string",  "description": "Randomize input reads ('TRUE'|'FALSE').", "default": "TRUE", "enum": ["TRUE", "FALSE"] },
+        "error_function": { "type": "string",  "description": "Error function to use.", "default": "PacBioErrfun", "enum": ["PacBioErrfun", "NanoporeErrfun"] },
+        "verbose":        { "type": "string",  "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "denoise": {
+      "type": "object",
+      "description": "DADA2 denoising (long read).",
+      "properties": {
+        "band_size": { "type": "integer", "description": "Band size for alignment.", "default": 32 },
+        "verbose":   { "type": "string",  "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "remove_chimera_longread": {
+      "type": "object",
+      "description": "Chimera removal (long read).",
+      "properties": {
+        "method":  { "type": "string", "description": "Chimera detection method.", "default": "consensus", "enum": ["consensus", "pooled", "per-sample"] },
+        "verbose": { "type": "string", "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "classify_taxa_dada2": {
+      "type": "object",
+      "description": "DADA2 taxonomic classification (long read).",
+      "properties": {
+        "orientation":        { "type": "string",         "description": "Read orientation for classification.", "default": "both", "enum": ["forward", "both"] },
+        "reference_database": { "type": ["string", "null"], "description": "Path to DADA2 reference FASTA database." },
+        "verbose":            { "type": "string",         "description": "Verbose output ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "aggregate_longread": {
+      "type": "object",
+      "description": "Taxonomy aggregation (long read).",
+      "properties": {
+        "aggregation_level": { "type": "integer", "description": "Taxonomy level to aggregate to (1=domain…7=species, 8=strain/SH).", "default": 6 },
+        "na_remove":         { "type": "string",  "description": "Remove NA taxa ('TRUE'|'FALSE').", "default": "FALSE", "enum": ["TRUE", "FALSE"] }
+      }
+    },
+
+    "picrust": {
+      "type": "object",
+      "description": "Picrust2 functional prediction.",
+      "properties": {
+        "input_seqs":  { "type": ["string", "null"], "description": "Input FASTA file with representative feature sequences." },
+        "input_table": { "type": ["string", "null"], "description": "Input feature table in TSV format." }
+      }
+    },
+
+    "faprotax": {
+      "type": "object",
+      "description": "FAPROTAX functional interpretation.",
+      "properties": {
+        "collapse_table_script": { "type": "string", "description": "FAPROTAX collapse script name/path.", "default": "collapse_table.py" },
+        "database_path":         { "type": ["string", "null"], "description": "Path to FAPROTAX database mapping file." }
+      }
+    },
+
+    "funguild": {
+      "type": "object",
+      "description": "FUNGuild functional annotation.",
+      "properties": {
+        "input_table": { "type": ["string", "null"], "description": "Input feature table in TSV format." },
+        "local_db":    { "type": ["string", "null"], "description": "Path to local funguild_db.php file." }
+      }
+    },
+
+    "cluster_options":          { "type": "string", "description": "Scheduler cluster options (site-specific).", "default": "", "hidden": true },
+    "singularity_extra_mounts": { "type": "string", "description": "Extra bind mount flags for Singularity run options.", "default": "", "hidden": true },
+
+    "container_dada2":    { "type": ["string", "null"], "description": "Container URI for DADA2 steps.", "hidden": true },
+    "container_mafft":    { "type": ["string", "null"], "description": "Container URI for MAFFT.", "hidden": true },
+    "container_iqtree":   { "type": ["string", "null"], "description": "Container URI for IQ-TREE.", "hidden": true },
+    "container_fasttree": { "type": ["string", "null"], "description": "Container URI for FastTree.", "hidden": true },
+    "container_picrust2": { "type": ["string", "null"], "description": "Container URI for Picrust2.", "hidden": true },
+    "container_faprotax": { "type": ["string", "null"], "description": "Container URI for FAPROTAX.", "hidden": true },
+    "container_funguild": { "type": ["string", "null"], "description": "Container URI for FUNGuild.", "hidden": true }
+  },
+
+  "required": ["outdir"],
+  "additionalProperties": true
+}

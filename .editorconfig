@@ -1,0 +1,40 @@
+# EditorConfig helps maintain consistent coding styles
+# for multiple developers working on the same project.
+# See https://editorconfig.org for more information.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{groovy,nf}]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+[*.{md,markdown}]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml,json}]
+indent_style = space
+indent_size = 2
+
+[*.{R,r}]
+indent_style = space
+indent_size = 4
+
+[*.{py}]
+indent_style = space
+indent_size = 4
+
+[*.{txt,csv,tsv}]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+[Makefile]
+indent_style = tab

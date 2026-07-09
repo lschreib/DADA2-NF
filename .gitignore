@@ -1,0 +1,63 @@
+# Nextflow
+.nextflow
+.nextflow.log*
+work/
+results/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# R
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+*.Rproj
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Testing
+.temp/
+test-output/
+
+# OS
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Project specific
+*.tar.gz
+*.zip
+.singularity.log
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Logs
+*.log
+*.out
+
+# Temporary files
+*.tmp
+*.temp
