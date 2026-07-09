@@ -33,7 +33,7 @@ ENV PATH=/opt/conda/envs/picrust2/bin:$PATH
 
 WORKDIR /test_data
 
-RUN wget http://kronos.pharmacology.dal.ca/public_files/picrust/picrust2_tutorial_files/chemerin_16S_arc.tar.gz && \
+RUN wget --progress=dot:giga http://kronos.pharmacology.dal.ca/public_files/picrust/picrust2_tutorial_files/chemerin_16S_arc.tar.gz && \
     tar -xvf chemerin_16S_arc.tar.gz && \
     rm chemerin_16S_arc.tar.gz
 
