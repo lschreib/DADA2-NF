@@ -22,11 +22,6 @@
           "default": "genomes,igenomes_base",
           "hidden": true
         },
-        "enable_conda": {
-          "type": "boolean",
-          "description": "Run the pipeline using Conda instead of Singularity/Docker.",
-          "hidden": true
-        },
         "singularity_pull_docker_container": {
           "type": "boolean",
           "description": "Instead of directly converting the Dockerfile to a Singularity image, use Singularity to pull the image from a Docker registry.",
