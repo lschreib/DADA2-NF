@@ -193,7 +193,7 @@
       }
     },
 
-    "classify_taxa_decipher": {
+    "decipher_classify_taxa": {
       "type": "object",
       "description": "DECIPHER taxonomic classification (short read).",
       "properties": {
@@ -281,7 +281,7 @@
       }
     },
 
-    "classify_taxa_dada2": {
+    "dada2_classify_taxa": {
       "type": "object",
       "description": "DADA2 taxonomic classification (long read).",
       "properties": {
