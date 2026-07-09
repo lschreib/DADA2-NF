@@ -14,7 +14,7 @@ DADA2-NF is an nf-core-compliant Nextflow pipeline that implements the DADA2 amp
 
 - **Short-read sequencing**: Illumina MiSeq, NextSeq, NovaSeq (paired-end only)
 - **Long-read sequencing**: PacBio
-- **Sanger sequencing**: AB1 files (experimental)
+- **Sanger sequencing**: AB1 files (development in progress)
 - **Taxonomic classification**: DECIPHER (short-read) and DADA2 (long-read)
 - **Phylogenetic analysis**: Automated tree construction with MAFFT + IQ-TREE/FastTree
 - **Functional prediction**: PiCrust2 and FUNGuild integration
@@ -232,7 +232,6 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 
 - DADA2 team for the foundational methodology
 - nf-core community for standards and best practices
-- Contributors and users for feedback and improvements
 
 ---
 
