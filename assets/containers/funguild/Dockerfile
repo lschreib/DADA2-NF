@@ -5,17 +5,12 @@ LABEL org.opencontainers.image.vendor="National Research Council Canada" \
     org.opencontainers.image.title="DADA2-NF FUNGuild runtime" \
     org.opencontainers.image.version="1.1+dada2nf.2"
 
-
-LABEL base_image="Debian"
-LABEL software="Funguild"
-LABEL software.version="1.1+dada2nf.2"
-
-# Install minimal build tools
-RUN apt-get update && apt-get install -y \
-    wget \
-    ca-certificates \
-    tini \
-    python3 \
+# Install minimal runtime tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    wget=* \
+    ca-certificates=* \
+    tini=* \
+    python3=* \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /funguild
