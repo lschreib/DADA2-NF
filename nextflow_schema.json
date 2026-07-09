@@ -62,7 +62,7 @@
         "max_time": {
           "type": "string",
           "description": "Maximum amount of time that can be requested for any single job.",
-          "default": "240.h",
+          "default": "240h",
           "fa_icon": "far fa-clock",
           "pattern": "^\\d+(\\.\\d+)?\\s*(s|m|h|d)$",
           "hidden": true
