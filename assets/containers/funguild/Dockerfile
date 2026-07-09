@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+﻿FROM debian:stable-slim
 
 LABEL org.opencontainers.image.vendor="National Research Council Canada" \
     org.opencontainers.image.authors="Lars Schreiber <lars.schreiber@nrc-cnrc.gc.ca>" \
@@ -7,10 +7,10 @@ LABEL org.opencontainers.image.vendor="National Research Council Canada" \
 
 # Install minimal runtime tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    wget=* \
-    ca-certificates=* \
-    tini=* \
-    python3=* \
+    wget \
+    ca-certificates \
+    tini \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /funguild

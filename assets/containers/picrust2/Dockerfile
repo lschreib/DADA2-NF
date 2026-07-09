@@ -1,26 +1,26 @@
-FROM condaforge/mambaforge:24.9.2-0
+﻿FROM condaforge/mambaforge:24.9.2-0
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 LABEL org.opencontainers.image.vendor="National Research Council Canada" \
-    org.opencontainers.image.authors="Lars Schreiber <lars.schreiber@nrc-cnrc.gc.ca>" \
-    org.opencontainers.image.title="DADA2-NF PICRUSt2 runtime" \
-    org.opencontainers.image.version="2.6.2"
+      org.opencontainers.image.authors="Lars Schreiber <lars.schreiber@nrc-cnrc.gc.ca>" \
+      org.opencontainers.image.title="DADA2-NF PICRUSt2 runtime" \
+      org.opencontainers.image.version="2.6.2"
 
 ### Basic dependency ###
 RUN apt-get clean && \
     apt-get update && \
-    apt-get install --no-install-recommends -y  \
-    build-essential=* \
-    libc6-dev=* \
-    tini=* \
-    wget=* \
-    zlib1g-dev=* > /dev/null && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    libc6-dev \
+    tini \
+    wget \
+    zlib1g-dev > /dev/null && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-### install BASTA's dependencies ###
+### install PICRUSt2 via conda ###
 ENV PATH=/opt/conda/bin:$PATH
 
 RUN conda config --add channels conda-forge && \
