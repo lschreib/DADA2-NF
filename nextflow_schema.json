@@ -86,7 +86,7 @@
         "marker_gene": {
           "type": "string",
           "description": "Target marker gene used for compatibility checks of downstream interpretation modules.",
-          "default": "16S",
+          "default": "ITS",
           "enum": ["16S", "ITS"],
           "fa_icon": "fas fa-dna"
         },
