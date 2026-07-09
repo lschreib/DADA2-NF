@@ -20,18 +20,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Debug hadolint config
-        run: |
-          pwd
-          ls -la
-          echo "---- .hadolint.yaml ----"
-          cat .hadolint.yaml
-
       - name: Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: ${{ matrix.dockerfile }}
-          config: .hadolint.yaml
+          config_file: .hadolint.yaml
 
   docker-build:
     runs-on: ubuntu-latest
