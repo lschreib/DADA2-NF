@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/lschreib/DADA2-NF/main/nextflow_schema.json",
-  "title": "DADA2-NF pipeline parameters",
+  "title": "lschreib/DADA2-NF pipeline parameters",
   "description": "Parameter schema for the DADA2-NF pipeline.",
   "type": "object",
   "$defs": {
