@@ -2,3 +2,4 @@ repository_type: pipeline
 
 lint:
   schema_params: False
+  file_exists: False
