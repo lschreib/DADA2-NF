@@ -56,8 +56,9 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 6. **Track reads** - Monitor read attrition through pipeline
 7. **Classify taxa** - Assign taxonomy with DECIPHER
 8. **Aggregate taxonomy** - Collapse to desired taxonomic rank
-9. **Build guide tree** - Generate phylogenetic tree
-10. **Functional prediction** - FAPROTAX or FUNGuild
+9. **Build guide tree** - Generate phylogenetic tree (ITS only)
+10. **Calculate phylogenetic tree** -  Phylogenetic inference with FastTree or IQTree (ITS only)
+11. **Functional prediction** - FAPROTAX or FUNGuild
 
 ### Long-Read Workflow
 1. **Remove primers** - Strip primer sequences
@@ -68,7 +69,7 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 6. **Remove chimera** - Chimera detection and removal
 7. **Classify taxa** - DADA2 taxonomy assignment
 8. **Aggregate taxonomy** - Rank-based aggregation
-9. **Build guide tree** - Phylogenetic inference
+9.  **Calculate phylogenetic tree** - Phylogenetic inference
 10. **Functional prediction** - FAPROTAX
 
 ## Documentation
