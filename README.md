@@ -17,7 +17,7 @@ DADA2-NF is an nf-core-compliant Nextflow pipeline that implements the DADA2 amp
 - **Sanger sequencing**: AB1 files (development in progress)
 - **Taxonomic classification**: DECIPHER (short-read) and DADA2 (long-read)
 - **Phylogenetic analysis**: Automated tree construction with MAFFT + IQ-TREE/FastTree
-- **Functional prediction**: PiCrust2 and FUNGuild integration
+- **Functional prediction**: FAPROTAX (16S rRNA) and FUNGuild (ITS) integration
 - **Container support**: Singularity
 
 ## Quick Start
@@ -40,7 +40,7 @@ nextflow run main.nf -profile docker \
 
 ### Test Profile (Validate Setup)
 ```bash
-nextflow run main.nf -profile test,docker
+nextflow run main.nf -profile test_short_16S,singularity -params-file tests/params/short_16S_faprotax.yml
 ```
 
 See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) for detailed instructions.
@@ -56,8 +56,8 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 6. **Track reads** - Monitor read attrition through pipeline
 7. **Classify taxa** - Assign taxonomy with DECIPHER
 8. **Aggregate taxonomy** - Collapse to desired taxonomic rank
-9. **Build guide tree** - Generate phylogenetic tree (optional)
-10. **Functional prediction** - PiCrust2 and/or FUNGuild (optional)
+9. **Build guide tree** - Generate phylogenetic tree
+10. **Functional prediction** - FAPROTAX or FUNGuild
 
 ### Long-Read Workflow
 1. **Remove primers** - Strip primer sequences
@@ -68,8 +68,8 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 6. **Remove chimera** - Chimera detection and removal
 7. **Classify taxa** - DADA2 taxonomy assignment
 8. **Aggregate taxonomy** - Rank-based aggregation
-9. **Build guide tree** - Phylogenetic inference (optional)
-10. **Functional prediction** - PiCrust2 and/or FUNGuild (optional)
+9. **Build guide tree** - Phylogenetic inference
+10. **Functional prediction** - FAPROTAX
 
 ## Documentation
 
