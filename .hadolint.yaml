@@ -1,5 +1,0 @@
-ignored:
-  - DL3008  # apt-get: pin package versions
-  - DL3009  # apt-get: delete lists after installing
-  - DL3013  # pip: pin package versions
-  - DL3042  # pip: avoid cache directory
