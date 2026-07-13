@@ -10,12 +10,7 @@
 5. **.gitignore** - Git ignore patterns for common files
 6. **.editorconfig** - Editor configuration for code consistency
 
-### ✅ Configuration Files (3 new + 1 updated)
-**New Files:**
-- **conf/resources.config** - Resource scaling and process labeling with `process_high`, `process_medium`, `process_low`, `process_single`
-- **conf/docker.config** - Docker profile with container definitions
-- **conf/conda.config** - Conda/Mamba profile with environment files
-
+### ✅ Configuration Files
 **Updated Files:**
 - **nextflow.config** - Added docker and conda profiles to existing profiles
 - **conf/base.config** - Added standard nf-core parameters:
@@ -43,7 +38,6 @@
   - Better descriptions and patterns for validation
 
 ### ✅ Validation & Testing
-- Test profile already exists in `conf/test.config` ✓
 - All configuration files properly organized ✓
 - Parameter schema complete and validated ✓
 
@@ -63,14 +57,12 @@
 - ✅ Pattern validation for resource strings
 
 ### 3. **Container Support**
-- ✅ Docker profile with automatic container pulling
 - ✅ Singularity profile (existing, verified)
-- ✅ Conda profile with environment definitions
 - ✅ Container URIs configurable in site profiles
 
 ### 4. **Documentation**
 - ✅ Installation guide with HPC setup
-- ✅ Comprehensive usage examples
+- ✅ Usage examples
 - ✅ Output file format documentation
 - ✅ FAQ with 80+ Q&A pairs
 - ✅ Troubleshooting guide with 10+ solutions
@@ -102,9 +94,6 @@ DADA2-NF/
 ├── conf/
 │   ├── base.config                  # ✅ UPDATED
 │   ├── modules.config
-│   ├── resources.config             # ✅ NEW
-│   ├── docker.config                # ✅ NEW
-│   ├── conda.config                 # ✅ NEW
 │   ├── singularity.config
 │   ├── nrc.config
 │   └── test.config
@@ -132,7 +121,7 @@ DADA2-NF/
 
 The pipeline now follows nf-core best practices for:
 - ✅ Configuration management
-- ✅ Container support (Docker, Singularity, Conda)
+- ✅ Container support (Singularity)
 - ✅ Parameter validation
 - ✅ Documentation
 - ✅ Project standards
@@ -171,12 +160,12 @@ All critical files for nf-core compliance have been created and configured. Your
 
 - ✅ Professional project structure
 - ✅ Comprehensive documentation (5 new guide files)
-- ✅ Standard configuration profiles (docker, conda, singularity, test)
+- ✅ Standard configuration profiles (singularity, test scenarios)
 - ✅ Resource management and scaling
 - ✅ Community guidelines and license
 - ✅ Enhanced parameter schema
 - ✅ Ready for production use
 
-**Total Changes**: 15 files created/updated
+**Total Changes**: 12 files created/updated
 **Documentation Pages**: 5 comprehensive guides
 **Configuration Profiles**: 4 (docker, conda, singularity, test)
