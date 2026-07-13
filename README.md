@@ -1,6 +1,6 @@
 # DADA2-NF
 
-[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.10.0-brightgreen.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.04.0-brightgreen.svg)](https://www.nextflow.io/)
 [![nf-core](https://img.shields.io/badge/built_with-nf--core%20style-lightblue.svg)](https://nf-co.re)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
