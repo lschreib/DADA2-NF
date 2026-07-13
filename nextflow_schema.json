@@ -91,12 +91,6 @@
           "default": true,
           "fa_icon": "fas fa-tree"
         },
-        "run_picrust2": {
-          "type": "boolean",
-          "description": "Run PICRUSt2 downstream interpretation (16S only).",
-          "default": false,
-          "fa_icon": "fas fa-project-diagram"
-        },
         "run_faprotax": {
           "type": "boolean",
           "description": "Run FAPROTAX downstream interpretation (16S only).",
@@ -306,7 +300,6 @@
     "container_mafft":    { "type": ["string", "null"], "description": "Container URI for MAFFT.", "hidden": true },
     "container_iqtree":   { "type": ["string", "null"], "description": "Container URI for IQ-TREE.", "hidden": true },
     "container_fasttree": { "type": ["string", "null"], "description": "Container URI for FastTree.", "hidden": true },
-    "container_picrust2": { "type": ["string", "null"], "description": "Container URI for Picrust2.", "hidden": true },
     "container_faprotax": { "type": ["string", "null"], "description": "Container URI for FAPROTAX.", "hidden": true },
     "container_funguild": { "type": ["string", "null"], "description": "Container URI for FUNGuild.", "hidden": true }
   },
