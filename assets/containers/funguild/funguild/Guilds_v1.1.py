@@ -143,14 +143,14 @@ import json
 if args.local_db:
     print(f"Using local database: {args.local_db}")
     with open(args.local_db, 'r') as f:
-        db_url = f.read()
+        db_text = f.read()
 else:
     print('Connecting with FUNGuild database ...')
-    db_url = requests.get(url).content.decode('utf-8')
+    response = requests.get(url)
+    db_text = response.content.decode('utf-8')
 
-db_url = db_url.content.decode('utf-8')
-db_url = db_url.split('\n')[6].strip('</body>')
-db_url = json.loads(db_url)
+db_text = db_text.split('\n')[6].strip('</body>')
+db_url = json.loads(db_text)
 db = []
 # For all species key works (replace space with underscore)
 for record in db_url:

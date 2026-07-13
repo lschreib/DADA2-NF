@@ -7,17 +7,10 @@ process FUNGUILD_INTERPRET {
 
     script:
         """
+        python3 /funguild/Guilds_v1.1.py \
+            -otu ${feature_table} \
+            -l ${params.funguild.database_path}
         mkdir -p funguild
-        cp ${feature_table} otu_table.tsv
-
-        python /funguild/Guilds_v1.2.py \
-            -otu otu_table.tsv \
-            ${params.funguild.local_db ? "-l ${params.funguild.local_db}" : ""}
-
-        for f in otu_table*; do
-            if [ -e "$f" ]; then
-                mv "$f" funguild/
-            fi
-        done
+        mv feature_table.guilds.txt funguild/funguild_output.txt
         """
 }

@@ -35,6 +35,7 @@ def resolvePath(path) {
 workflow {
     def mode = (params.workflow_mode ?: 'short_read').toString().trim().toLowerCase()
     def markerGene = (params.marker_gene ?: '').toString().trim().toUpperCase()
+    def taxGuideTree = params.guide_tree as boolean
     def runFaprotax = params.run_faprotax as boolean
     def runFunguild = params.run_funguild as boolean
     def readsCh = null
@@ -66,6 +67,7 @@ workflow {
     marker gene  : ${markerGene ?: '(not set)'}
     input reads  : ${params.input_reads}
     outdir       : ${params.outdir}
+    guide tree   : ${taxGuideTree}
     downstream   : faprotax=${runFaprotax}, funguild=${runFunguild}
     """.stripIndent()
 
@@ -83,6 +85,10 @@ workflow {
 
     if (markerGene == '16S' && runFunguild) {
         error "FUNGuild is only valid for marker_gene='ITS'."
+    }
+
+    if (markerGene == '16S' && taxGuideTree) {
+        warning "Taxonomy-based guide tree only recommended for marker_gene='ITS'."
     }
 
     if (runFaprotax && !params.faprotax?.database_path) {

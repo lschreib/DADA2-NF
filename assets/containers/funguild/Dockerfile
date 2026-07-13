@@ -11,7 +11,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     tini \
     python3 \
+    procps \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
+
+# INstall Python dependencies
+RUN pip3 install --break-system-packages requests
 
 WORKDIR /funguild
 COPY funguild /funguild
