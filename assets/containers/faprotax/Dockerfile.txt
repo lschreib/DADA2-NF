@@ -1,0 +1,30 @@
+FROM ubuntu:jammy
+
+LABEL org.opencontainers.image.vendor="National Research Council Canada" \
+      org.opencontainers.image.authors="Lars Schreiber <lars.schreiber@nrc-cnrc.gc.ca>"
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+### LABELS ###
+LABEL software="faprotax"
+LABEL software.version="1.2.12"
+
+# Install tini
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends tini python3 pip \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app_home
+
+COPY collapse_table.py /app_home/collapse_table.py
+COPY FAPROTAX.txt /app_home/FAPROTAX.txt
+
+# Install numpy and pandas using pip
+RUN pip3 install numpy
+
+ENV PATH=/app_home:/usr/local/:$PATH
+ENV SCRIPT_PATH=/app_home
+
+ENTRYPOINT ["tini", "--"]
+CMD [ "/bin/bash" ]

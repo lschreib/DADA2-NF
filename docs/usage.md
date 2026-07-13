@@ -121,33 +121,7 @@ Common primer sets:
 --dada2_classify_taxa.reference_database /path/to/db
 ```
 
-### Optional Analysis Parameters
-
-#### MAFFT Alignment
-```bash
---mafft_alignment.algorithm genafpair
---mafft_alignment.max_iterate 1000
-```
-
-#### PiCrust2 Functional Prediction
-```bash
---picrust.input_seqs /path/to/seqs.fasta
---picrust.input_table /path/to/features.tsv
-```
-
-#### FUNGuild Functional Annotation
-```bash
---funguild.input_table /path/to/table.tsv
-```
-
 ## Execution Examples
-
-### Docker Profile (Local Machine)
-```bash
-nextflow run main.nf -profile docker \
-  --input_reads /data/fastq \
-  --outdir results
-```
 
 ### Singularity Profile (HPC)
 ```bash
@@ -156,25 +130,10 @@ nextflow run main.nf -profile singularity \
   --outdir results
 ```
 
-### Conda Profile
-```bash
-nextflow run main.nf -profile conda \
-  --input_reads /data/fastq \
-  --outdir results
-```
-
 ### Test Profile (Validate Setup)
 ```bash
-nextflow run main.nf -profile test,docker
-```
-
-### Combined Profiles (HPC with Singularity)
-```bash
-nextflow run main.nf -profile singularity,nrc \
-  --input_reads /data/fastq \
-  --outdir results \
-  --max_cpus 32 \
-  --max_memory 256.GB
+export HOST_PROJECT_DIR="$(pwd -P)"
+nextflow run main.nf -profile test_16S_short,singularity -params-file tests/params/short_16S_faprotax.yml
 ```
 
 ## Configuration File
@@ -225,36 +184,19 @@ nextflow run main.nf -resume abc1234
 ### Generate Reports
 ```bash
 # HTML execution report
-nextflow run main.nf -profile docker -with-report report.html
+nextflow run main.nf -profile nrc,singularity -with-report report.html
 
 # Timeline visualization
-nextflow run main.nf -profile docker -with-timeline timeline.html
+nextflow run main.nf -profile nrc,singularity -with-timeline timeline.html
 
 # DAG visualization
-nextflow run main.nf -profile docker -with-dag flowchart.svg
+nextflow run main.nf -profile nrc,singularity -with-dag flowchart.svg
 ```
 
 ## Resource Limits
 
-Adjust global resource limits:
+Adjust individual resource limits by editing the `conf/modules.config` file
 
-```bash
-nextflow run main.nf \
-  -profile docker \
-  --max_cpus 32 \
-  --max_memory 256.GB \
-  --max_time 500.h
-```
-
-Or in configuration file:
-
-```groovy
-params {
-    max_cpus = 32
-    max_memory = 256.GB
-    max_time = 500.h
-}
-```
 
 ## For More Information
 

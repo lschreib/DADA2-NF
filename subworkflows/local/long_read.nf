@@ -41,7 +41,7 @@ workflow LONG_READ_PIPELINE {
         // As longread data typically yields fewer ASVs, we can use the
         // slower (but more accurate?) DADA2 classifier instead of DECIPHER used for shortread
         // data.
-        DADA2_CLASSIFY_TAXA(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_fasta)
+        DADA2_CLASSIFY_TAXA(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
 
         // Aggregate taxonomy at multiple levels to make downstream interpretation easier.
         ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)

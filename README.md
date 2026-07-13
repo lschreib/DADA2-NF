@@ -76,6 +76,7 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 - **[Installation Guide](docs/installation.md)** - System requirements, setup, and container configuration
 - **[Usage Guide](docs/usage.md)** - Parameter descriptions, examples, and execution profiles
 - **[Output Documentation](docs/output.md)** - File formats and output directory structure
+- **[Testing Guide](docs/testing.md)** - Local validation matrix and test-case commands
 - **[FAQ](docs/faq.md)** - Frequently asked questions and common use cases
 - **[Troubleshooting](docs/troubleshooting.md)** - Error solutions and debugging
 
@@ -171,7 +172,7 @@ nextflow run main.nf -profile docker \
 | RAM | 16 GB | 64-128 GB |
 | Disk Space | 50 GB | 500+ GB |
 | Java Version | 8 | 11+ |
-| Nextflow Version | 23.10.0 | Latest |
+| Nextflow Version | ??? | 23.04.3 |
 
 ## Output
 

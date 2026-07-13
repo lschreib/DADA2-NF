@@ -11,10 +11,30 @@ include { SHORT_READ_PIPELINE } from './subworkflows/local/short_read.nf'
 include { LONG_READ_PIPELINE } from './subworkflows/local/long_read.nf'
 include { DOWNSTREAM_INTERPRETATION } from './subworkflows/local/downstream_interpretation.nf'
 
+def resolvePath(path) {
+    if (path == null) {
+        return null
+    }
+
+    def path_str = path.toString()
+
+    if (
+        path_str.startsWith('/') ||
+        path_str.startsWith('s3://') ||
+        path_str.startsWith('gs://') ||
+        path_str.startsWith('az://') ||
+        path_str.startsWith('http://') ||
+        path_str.startsWith('https://')
+    ) {
+        return file(path_str, checkIfExists: true)
+    }
+
+    return file("${projectDir}/${path_str}", checkIfExists: true)
+}
+
 workflow {
     def mode = (params.workflow_mode ?: 'short_read').toString().trim().toLowerCase()
     def markerGene = (params.marker_gene ?: '').toString().trim().toUpperCase()
-    def runPicrust2 = params.run_picrust2 as boolean
     def runFaprotax = params.run_faprotax as boolean
     def runFunguild = params.run_funguild as boolean
     def readsCh = null
@@ -46,10 +66,10 @@ workflow {
     marker gene  : ${markerGene ?: '(not set)'}
     input reads  : ${params.input_reads}
     outdir       : ${params.outdir}
-    downstream   : picrust2=${runPicrust2}, faprotax=${runFaprotax}, funguild=${runFunguild}
+    downstream   : faprotax=${runFaprotax}, funguild=${runFunguild}
     """.stripIndent()
 
-    if ((runPicrust2 || runFaprotax || runFunguild) && !markerGene) {
+    if ((runFaprotax || runFunguild) && !markerGene) {
         error "When a downstream interpretation tool is selected, 'params.marker_gene' must be set to '16S' or 'ITS'."
     }
 
@@ -57,8 +77,8 @@ workflow {
         error "Unsupported marker_gene='${params.marker_gene}'. Supported marker genes: '16S', 'ITS'."
     }
 
-    if (markerGene == 'ITS' && (runPicrust2 || runFaprotax)) {
-        error "PICRUSt2 and FAPROTAX are only valid for marker_gene='16S'."
+    if (markerGene == 'ITS' && runFaprotax) {
+        error "FAPROTAX is only valid for marker_gene='16S'."
     }
 
     if (markerGene == '16S' && runFunguild) {
@@ -79,7 +99,7 @@ workflow {
     switch (mode) {
         case 'short_read':
             SHORT_READ_PIPELINE(readsCh)
-            if (runPicrust2 || runFaprotax || runFunguild) {
+            if (runFaprotax || runFunguild) {
                 DOWNSTREAM_INTERPRETATION(
                     SHORT_READ_PIPELINE.out.feature_table,
                     SHORT_READ_PIPELINE.out.feature_refseqs
@@ -89,7 +109,7 @@ workflow {
 
         case 'long_read':
             LONG_READ_PIPELINE(readsCh)
-            if (runPicrust2 || runFaprotax || runFunguild) {
+            if (runFaprotax || runFunguild) {
                 DOWNSTREAM_INTERPRETATION(
                     LONG_READ_PIPELINE.out.feature_table,
                     LONG_READ_PIPELINE.out.feature_refseqs

@@ -17,7 +17,6 @@ process REMOVE_PRIMERS_LONGREAD {
             -o remove_primers \\
             -f ${params.remove_primers_longread.fwd_primer} \\
             -r ${params.remove_primers_longread.rev_primer} \\
-            -v TRUE \\
-            -t ${task.cpus}
+            -v TRUE
         """
 }

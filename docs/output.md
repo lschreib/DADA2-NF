@@ -43,10 +43,9 @@ results/
 │   ├── tree.nwk                        # Phylogenetic tree (Newick format)
 │   ├── tree_stats.txt                  # Tree statistics
 │   └── tree_support_values.txt         # Bootstrap/support values (if IQ-TREE)
-├── picrust2/
-│   ├── pred_metagenome_unstrat.tsv     # Predicted metagenome (unstratified)
-│   ├── pred_metagenome_contrib.tsv     # Per-taxon contributions
-│   └── pathway_abundance.tsv           # Pathway abundance predictions
+├── faprotax/
+│   ├── faprotax_collapsed.tsv          # Function profile
+│   └── faprotax_report.txt             # Taxon-to-function assignment
 ├── funguild/
 │   ├── funguild_annotated.tsv          # FUNGuild annotations
 │   └── function_summary.tsv            # Functional category summary
@@ -141,11 +140,6 @@ results/
 
 ## Functional Prediction Outputs
 
-### PiCrust2
-- **pred_metagenome_unstrat.tsv**: Predicted metabolic functions per sample
-- **pred_metagenome_contrib.tsv**: Per-taxon contribution to predictions
-- Columns: KEGG ortholog identifiers (KO) or pathway IDs
-
 ### FUNGuild
 - **funguild_annotated.tsv**: Functional guild assignments
 - Columns: taxon, guild, trophic mode, growth morphology
@@ -155,6 +149,29 @@ results/
   Aspergillus     Saprotroph-Symbiotroph Heterotroph     Mycelium
   Saccharomyces   Saprotroph             Heterotroph     Yeast
   ```
+
+### FAPROTAX
+- **faprotax_collapsed.tsv**: Functional guild profiles
+- Columns: group, sample_ids
+- Example:
+```
+group	Sample1.fastq.gz	Sample2.fastq.gz	Sample3.fastq.gz
+methanotrophy	0	0	0
+acetoclastic_methanogenesis	0.0004115932087	0.0005664202242	0.0002692369824
+methanogenesis_by_disproportionation_of_methyl_groups	0	0	0
+methanogenesis_using_formate	0	0	0
+```
+
+- **faprotax_report.txt**: Functional guild assignments
+- Example:
+```
+# methanotrophy (0 records):
+
+# acetoclastic_methanogenesis (2 records):
+    k__Archaea;p__Halobacteriota;c__Methanosarcinia;o__Methanosarcinales;f__Methanosaetaceae;g__Methanothrix;
+    k__Archaea;p__Halobacteriota;c__Methanosarcinia;o__Methanosarcinales;f__Methanosaetaceae;g__Methanothrix;s__uncultured Methanosaeta sp.;```
+```
+
 
 ## Quality Control Output
 
@@ -215,9 +232,5 @@ nextflow run main.nf --publish_dir_mode symlink
 
 Recommended tools for downstream analysis:
 
-- **QIIME 2**: Diversity analysis, visualization
 - **Phyloseq (R)**: Statistical analysis, ordination
-- **USEARCH/VSEARCH**: Additional taxonomy and analysis
-- **PICRUSt2**: Functional profiling
 - **FigTree**: Tree visualization
-- **Cytoscape**: Network analysis

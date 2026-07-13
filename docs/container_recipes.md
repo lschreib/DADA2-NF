@@ -4,9 +4,12 @@ Container recipes are maintained separately from workflow logic, while workflow 
 
 ## Location
 
-- DADA2 runtime image: `assets/containers/dada2/Dockerfile`
-- FUNGuild image: `assets/containers/funguild/Dockerfile`
-- PICRUSt2 image: `assets/containers/picrust2/Dockerfile`
+- DADA2 runtime image:  `assets/containers/dada2/Dockerfile`
+- FUNGuild image:       `assets/containers/funguild/Dockerfile`
+- FAPROTAX image:       `assets/containers/faprotax/Dockerfile`
+- MAFFT image:          `assets/containers/mafft/Dockerfile`
+- FASTTREE image:       `assets/containers/fasttree/Dockerfile`
+- IQTREE image:         `assets/containers/iqtree/Dockerfile`
 
 ## Runtime contract
 
