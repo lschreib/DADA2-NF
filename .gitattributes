@@ -1,11 +1,16 @@
-﻿* text=auto eol=lf
-*.R text eol=lf
-*.py text eol=lf
-*.nf text eol=lf
-*.sh text eol=lf
-*.md text eol=lf
-*.json text eol=lf
-*.yaml text eol=lf
-*.yml text eol=lf
-*.tsv text eol=lf
-*.csv text eol=lf
+* text=auto eol=lf
+
+*.R     text eol=lf linguist-language=R
+*.r     text eol=lf linguist-language=R
+
+*.py    text eol=lf linguist-language=Python
+*.nf    text eol=lf linguist-language=Nextflow
+*.sh    text eol=lf linguist-language=Shell
+
+*.md    text eol=lf linguist-language=Markdown
+*.json  text eol=lf linguist-language=JSON
+*.yaml  text eol=lf linguist-language=YAML
+*.yml   text eol=lf linguist-language=YAML
+
+*.tsv   text eol=lf linguist-detectable=false
+*.csv   text eol=lf linguist-detectable=false
