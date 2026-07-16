@@ -38,17 +38,28 @@ workflow LONG_READ_PIPELINE {
             REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds
         )
 
-        // As longread data typically yields fewer ASVs, we can use the
-        // slower (but more accurate?) DADA2 classifier instead of DECIPHER used for shortread
-        // data.
-        DADA2_CLASSIFY_TAXA(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
+        /*
+         * Define safe default outputs in case workflow is run without taxonomy classification.
+        */
+        ch_feature_table  = Channel.empty()
+        ch_feature_refseqs = Channel.empty()
 
-        // Aggregate taxonomy at multiple levels to make downstream interpretation easier.
-        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
-        AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(DADA2_CLASSIFY_TAXA.out.feature_table))
+        if (params.classify_taxa) {
+            // As longread data typically yields fewer ASVs, we can use the
+            // slower (but more accurate?) DADA2 classifier instead of DECIPHER used for shortread
+            // data.
+            DADA2_CLASSIFY_TAXA(REMOVE_CHIMERA_LONGREAD.out.seqtab_nochim_rds)
+
+            ch_feature_table   = DADA2_CLASSIFY_TAXA.out.feature_table
+            ch_feature_refseqs = DADA2_CLASSIFY_TAXA.out.feature_refseqs
+
+            // Aggregate taxonomy at multiple levels to make downstream interpretation easier.
+            ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+            AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(DADA2_CLASSIFY_TAXA.out.feature_table))
+        }
 
     emit:
-        feature_table = DADA2_CLASSIFY_TAXA.out.feature_table
-        feature_refseqs = DADA2_CLASSIFY_TAXA.out.feature_refseqs
+        feature_table = ch_feature_table
+        feature_refseqs = ch_feature_refseqs
         read_tracking_summary = READ_TRACKING_LONGREAD.out.read_tracking_summary
 }

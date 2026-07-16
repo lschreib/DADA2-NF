@@ -38,6 +38,7 @@ workflow {
     def taxGuideTree = params.guide_tree as boolean
     def runFaprotax = params.run_faprotax as boolean
     def runFunguild = params.run_funguild as boolean
+    def classifyTaxa = params.classify_taxa as boolean
     def readsCh = null
 
     log.info """
@@ -67,6 +68,7 @@ workflow {
     marker gene  : ${markerGene ?: '(not set)'}
     input reads  : ${params.input_reads}
     outdir       : ${params.outdir}
+    classify taxa: ${params.classify_taxa}
     guide tree   : ${taxGuideTree}
     downstream   : faprotax=${runFaprotax}, funguild=${runFunguild}
     """.stripIndent()
@@ -89,6 +91,10 @@ workflow {
 
     if (markerGene == '16S' && taxGuideTree) {
         warning "Taxonomy-based guide tree only recommended for marker_gene='ITS'."
+    }
+
+    if (classifyTaxa == false && (runFaprotax || runFunguild)) {
+        error "Downstream interpretation tools are only valid when taxonomy classification is performed. Please set 'params.classify_taxa' to true."
     }
 
     if (runFaprotax && !params.faprotax?.database_path) {

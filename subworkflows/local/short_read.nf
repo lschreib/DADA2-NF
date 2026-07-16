@@ -45,26 +45,38 @@ workflow SHORT_READ_PIPELINE {
             REMOVE_CHIMERA.out.seqtab_nochim_rds
         )
 
-        DECIPHER_CLASSIFY_TAXA(REMOVE_CHIMERA.out.seqtab_nochim_rds)
+        /*
+         * Define safe default outputs in case workflow is run without taxonomy classification.
+        */
+        ch_feature_table  = Channel.empty()
+        ch_feature_refseqs = Channel.empty()
 
-        // ITS amplicons do not allow a resolution beyond genus level, to overocme
-        // this, we can build a guide tree from the taxonomy and then only use the
-        // ITS distances to infer leaf lengths in the phylogenetic tree.
-        // This is not necessary or useful when working with ribosomal (16S, 18S, 23S) RNA genes.
-        if (params.guide_tree) {
-            BUILD_TAX_GUIDE_TREE(DECIPHER_CLASSIFY_TAXA.out.feature_table)
-            MAFFT_ALIGNMENT(DECIPHER_CLASSIFY_TAXA.out.feature_refseqs)
-            IQTREE_TREE(BUILD_TAX_GUIDE_TREE.out.output_tree, MAFFT_ALIGNMENT.out.output_aligned)
-        } else {
-            MAFFT_ALIGNMENT(DECIPHER_CLASSIFY_TAXA.out.feature_refseqs)
-            FASTTREE_TREE(MAFFT_ALIGNMENT.out.output_aligned)
+
+        if (params.classify_taxa) {
+            DECIPHER_CLASSIFY_TAXA(REMOVE_CHIMERA.out.seqtab_nochim_rds)
+
+            ch_feature_table   = DECIPHER_CLASSIFY_TAXA.out.feature_table
+            ch_feature_refseqs = DECIPHER_CLASSIFY_TAXA.out.feature_refseqs
+
+            // ITS amplicons do not allow a resolution beyond genus level, to overocme
+            // this, we can build a guide tree from the taxonomy and then only use the
+            // ITS distances to infer leaf lengths in the phylogenetic tree.
+            // This is not necessary or useful when working with ribosomal (16S, 18S, 23S) RNA genes.
+            if (params.guide_tree) {
+                BUILD_TAX_GUIDE_TREE(ch_feature_table)
+                MAFFT_ALIGNMENT(ch_feature_refseqs)
+                IQTREE_TREE(BUILD_TAX_GUIDE_TREE.out.output_tree, MAFFT_ALIGNMENT.out.output_aligned)
+            } else {
+                MAFFT_ALIGNMENT(ch_feature_refseqs)
+                FASTTREE_TREE(MAFFT_ALIGNMENT.out.output_aligned)
+            }
+
+            ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
+            AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(DECIPHER_CLASSIFY_TAXA.out.feature_table))
         }
 
-        ch_aggregation_level = Channel.of(1, 2, 3, 4, 5, 6, 7)
-        AGGREGATE_TAXONOMY_FLEX(ch_aggregation_level.combine(DECIPHER_CLASSIFY_TAXA.out.feature_table))
-
     emit:
-        feature_table = DECIPHER_CLASSIFY_TAXA.out.feature_table
-        feature_refseqs = DECIPHER_CLASSIFY_TAXA.out.feature_refseqs
+        feature_table = ch_feature_table
+        feature_refseqs = ch_feature_refseqs
         read_tracking_summary = READ_TRACKING.out.read_tracking_summary
 }

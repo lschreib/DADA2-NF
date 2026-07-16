@@ -2,6 +2,7 @@ workflow_mode: long_read
 input_reads: tests/data/reads/long_16S
 outdir: results/test-long-16S-faprotax
 marker_gene: 16S
+classify_taxa: true
 guide_tree: false
 run_faprotax: true
 run_funguild: false
