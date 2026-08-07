@@ -1,0 +1,8 @@
+workflow_mode: seq_table
+seqtable: input/workdir/GenARCC_ITS_seqtable/seqtab.combined.nochim.rds
+outdir: results/GenARCC_ITS_seqtable_combined
+marker_gene: ITS
+classify_taxa: true
+guide_tree: true
+run_faprotax: false
+run_funguild: true

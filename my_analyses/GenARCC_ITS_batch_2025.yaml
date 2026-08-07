@@ -1,0 +1,11 @@
+workflow_mode: short_read
+input_reads: input/workdir/GenARCC_ITS_GA25
+outdir: results/GenARCC_ITS_GA25
+marker_gene: ITS
+classify_taxa: false
+guide_tree: true
+run_faprotax: false
+run_funguild: false
+remove_primers:
+  fwd_primer: 'CTTGGTCATTTAGAGGAAGTAA'
+  rev_primer: 'GCTGCGTTCTTCATCGATGC'
