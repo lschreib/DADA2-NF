@@ -24,18 +24,21 @@ DADA2-NF is an nf-core-compliant Nextflow pipeline that implements the DADA2 amp
 
 ### Minimal Example
 ```bash
-nextflow run main.nf -profile docker \
+# Define HOST_PROJECT_DIR directory required for proper execution
+export HOST_PROJECT_DIR="$(pwd -P)"
+# Run Nextlow pipeline
+nextflow run main.nf -profile singularity,nrc \
   --input_reads /path/to/reads \
   --outdir results
 ```
 
-### With Custom Parameters
+### With Custom Parameters Supplied via Project-Specific YAML File (preferred)
 ```bash
-nextflow run main.nf -profile docker \
-  --input_reads /path/to/reads \
-  --outdir results \
-  --remove_primers.fwd_primer CTTGGTCATTTAGAGGAAGTAA \
-  --remove_primers.rev_primer GCTGCGTTCTTCATCGATGC
+# Define HOST_PROJECT_DIR directory required for proper execution
+export HOST_PROJECT_DIR="$(pwd -P)"
+# Run Nextlow pipeline
+nextflow run main.nf -profile singularity,nrc \
+  -params-file my_analyses/my_project.yaml
 ```
 
 ### Test Profile (Validate Setup)
@@ -55,7 +58,7 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 5. **Remove chimera** - Detect and remove chimeric sequences
 6. **Track reads** - Monitor read attrition through pipeline
 7. **Classify taxa** - Assign taxonomy with DECIPHER
-8. **Aggregate taxonomy** - Collapse to desired taxonomic rank
+8. **Aggregate taxonomy** - Rank-based aggregation
 9. **Build guide tree** - Generate phylogenetic tree (ITS only)
 10. **Calculate phylogenetic tree** -  Phylogenetic inference with FastTree or IQTree (ITS only)
 11. **Functional prediction** - FAPROTAX or FUNGuild
@@ -71,6 +74,13 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 8. **Aggregate taxonomy** - Rank-based aggregation
 9.  **Calculate phylogenetic tree** - Phylogenetic inference
 10. **Functional prediction** - FAPROTAX
+
+### Sequence-Table Workflow
+1. **Classify taxa** - Assign taxonomy with DECIPHER
+2. **Aggregate taxonomy** - Rank-based aggregation
+3. **Build guide tree** - Generate phylogenetic tree (ITS only)
+4. **Calculate phylogenetic tree** -  Phylogenetic inference with FastTree or IQTree (ITS only)
+5. **Functional prediction** - FAPROTAX or FUNGuild
 
 ## Documentation
 
@@ -112,9 +122,10 @@ See [Installation Guide](docs/installation.md) and [Usage Guide](docs/usage.md) 
 
 ### Essential Parameters
 ```bash
---workflow_mode       # 'short_read' or 'long_read' (default: short_read)
+--workflow_mode       # 'short_read', 'long_read' or 'seq_table' (default: short_read)
 --input_reads         # Path to FASTQ directory
 --outdir              # Output directory (default: results)
+--seq_table            # DADA2-type sequence table in RDS format (required for seq_table mode)
 ```
 
 ### Primer Removal (Short-read)
@@ -143,6 +154,7 @@ See [Usage Guide](docs/usage.md) for complete parameter documentation.
 
 ### Docker (Local)
 ```bash
+
 nextflow run main.nf -profile docker \
   --input_reads ./data/fastq \
   --outdir results
