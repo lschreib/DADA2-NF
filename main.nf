@@ -69,7 +69,7 @@ workflow {
     workflow mode: ${mode}
     marker gene  : ${markerGene ?: '(not set)'}
     input reads  : ${params.input_reads}
-    seq table    : ${params.seqtable}
+    seq table    : ${params.seq_table}
     outdir       : ${params.outdir}
     classify taxa: ${params.classify_taxa}
     guide tree   : ${taxGuideTree}
@@ -113,9 +113,9 @@ workflow {
 
     if (mode == 'seq_table') {
         if (!params.seqtable) {
-            error "Parameter 'params.seqtable' is not defined for workflow_mode='${mode}'."
+            error "Parameter 'params.seq_table' is required but not defined for workflow_mode='${mode}'."
         }
-        seqtableCh = Channel.fromPath(params.seqtable, checkIfExists: true)
+        seqtableCh = Channel.fromPath(params.seq_table, checkIfExists: true)
     }
 
     switch (mode) {
