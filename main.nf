@@ -9,6 +9,8 @@ nextflow.enable.dsl = 2
 
 include { SHORT_READ_PIPELINE } from './subworkflows/local/short_read.nf'
 include { LONG_READ_PIPELINE } from './subworkflows/local/long_read.nf'
+include { SEQ_TABLE_PIPELINE } from './subworkflows/local/seq_table.nf'
+
 include { DOWNSTREAM_INTERPRETATION } from './subworkflows/local/downstream_interpretation.nf'
 
 def resolvePath(path) {
@@ -67,6 +69,7 @@ workflow {
     workflow mode: ${mode}
     marker gene  : ${markerGene ?: '(not set)'}
     input reads  : ${params.input_reads}
+    seq table    : ${params.seqtable}
     outdir       : ${params.outdir}
     classify taxa: ${params.classify_taxa}
     guide tree   : ${taxGuideTree}
@@ -108,6 +111,13 @@ workflow {
         readsCh = Channel.fromPath(params.input_reads, checkIfExists: true)
     }
 
+    if (mode == 'seq_table') {
+        if (!params.seqtable) {
+            error "Parameter 'params.seqtable' is not defined for workflow_mode='${mode}'."
+        }
+        seqtableCh = Channel.fromPath(params.seqtable, checkIfExists: true)
+    }
+
     switch (mode) {
         case 'short_read':
             SHORT_READ_PIPELINE(readsCh)
@@ -129,7 +139,16 @@ workflow {
             }
             break
 
+        case 'seq_table':
+            SEQ_TABLE_PIPELINE(seqtableCh)
+            if (runFaprotax || runFunguild) {
+                DOWNSTREAM_INTERPRETATION(
+                    SEQ_TABLE_PIPELINE.out.feature_table,
+                    SEQ_TABLE_PIPELINE.out.feature_refseqs
+                )
+            }
+            break
         default:
-            error "Unsupported workflow_mode='${params.workflow_mode}'. Supported modes: 'short_read', 'long_read'."
+            error "Unsupported workflow_mode='${params.workflow_mode}'. Supported modes: 'short_read', 'long_read', 'seq_table'."
     }
 }

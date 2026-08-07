@@ -36,11 +36,11 @@ nextflow run main.nf \
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `workflow_mode` | string | `short_read` | Workflow mode: `short_read` or `long_read` |
+| `workflow_mode` | string | `short_read` | Workflow mode: `short_read`, `long_read` or `seq_table`|
 | `input_reads` | string | null | Path to input reads directory or samplesheet |
 | `outdir` | string | `results` | Output directory path |
 | `guide_tree` | boolean | true | Build taxonomy guide tree (true=ITS, false=16S) |
-| `seqtable` | string | null | Pre-existing RDS sequence table (classification-only mode) |
+| `seqtable` | string | null | Pre-existing RDS sequence table, ideally chimeras-cleaned (classification-only mode) |
 
 ### Short-Read Specific Parameters
 
@@ -125,6 +125,7 @@ Common primer sets:
 
 ### Singularity Profile (HPC)
 ```bash
+export HOST_PROJECT_DIR="$(pwd -P)"
 nextflow run main.nf -profile singularity \
   --input_reads /data/fastq \
   --outdir results
