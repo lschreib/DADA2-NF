@@ -152,14 +152,6 @@ See [Usage Guide](docs/usage.md) for complete parameter documentation.
 
 ## Execution Examples
 
-### Docker (Local)
-```bash
-
-nextflow run main.nf -profile docker \
-  --input_reads ./data/fastq \
-  --outdir results
-```
-
 ### Singularity (HPC)
 ```bash
 nextflow run main.nf -profile singularity,nrc \
