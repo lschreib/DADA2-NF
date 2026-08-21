@@ -3864,6 +3864,7 @@ fermentation			elements:C; main_element:C; electron_donor:C; electron_acceptor:n
 *Pediococcus*damnosus*								# Konigs, Kuipers et al. (2013) - Lactic Acid Bacteria: Genetics, Metabolism and Applications: Proceedings of the Sixth Symposium on lactic acid bacteria: genetics, metabolism and applications, ISBN: 9789401720274
 *Pediococcus*pentosaceus*							# Konigs, Kuipers et al. (2013) - Lactic Acid Bacteria: Genetics, Metabolism and Applications: Proceedings of the Sixth Symposium on lactic acid bacteria: genetics, metabolism and applications, ISBN: 9789401720274
 *Pediococcus*parvulus*								# Konigs, Kuipers et al. (2013) - Lactic Acid Bacteria: Genetics, Metabolism and Applications: Proceedings of the Sixth Symposium on lactic acid bacteria: genetics, metabolism and applications, ISBN: 9789401720274
+Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
 *Leuconostoc*										# Salminen and von Wright (2004) - Lactic Acid Bacteria: Microbiological and Functional Aspects, ISBN: 9780824752033
 *Pediococcus*										# Salminen and von Wright (2004) - Lactic Acid Bacteria: Microbiological and Functional Aspects, ISBN: 9780824752033
 *Streptococcus*										# Salminen and von Wright (2004) - Lactic Acid Bacteria: Microbiological and Functional Aspects, ISBN: 9780824752033
@@ -9106,3 +9107,100 @@ add_group:hydrocarbon_degradation
 *Thermoplasmataceae*Thermoplasma*					# Bergey's Manual of Systematics of Archaea and Bacteria (2015). Domain: Archaea
 
 
+acetone_butanol_ethanol_fermentation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# (solventogenesis; microbial ethanol fermentation; solvent-producing clostridia)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*acetobutylicum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*aurantibutyricum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*beijerinckii*							# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*felsineum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*pasteurianum*							# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*puniceum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*roseum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*saccharobutylicum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*saccharoperbutylacetonicum*			# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+
+
+caproic_acid_production_by_chain_elongation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# Two step process: acetate -> butyric acid; butyric acid -> caproic acid
+# Possible sources of acetate: (i) external source, e.g. provided by homoacetogens that synthesize acetate from CO2 via the  Wood-Ljungdahl; (ii) internally through non- non-saccharolytic fermentation of methanol, ethanol, lactic acid or pyruvate
+# Note:This category only contains upgrading caproic acid production. Caproic acid production by saccharolytic fermentation of sugars such as glucose and fructose is not covered.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*kluyveri*								# Barker and Taha (1942) - Clostridium kluyverii, an organism concerned in the formation of caproic acid from ethyl alcohol, Journal of Bacteriology 43; caproic acid production from acetate and ethanol
+*Megasphaera*elsdenii*								# Elsden, Gilchrist et al. (1956) - Properties of a fatty acid forming organism isolated from the rumen of sheep, Journal of Bacteriology 72; DOI: 10.1128/jb.72.5.681-689.1956; caproic acid production from lactic acid
+*Megasphaera*sueciensis*							# Hiebl, Pinner et al. (2025) - Enhancing Gas Fermentation Efficiency via Bioaugmentation with Megasphaera sueciensis and Clostridium carboxidivorans, MDPI Bioengineering 12; DOI:10.3390/bioengineering12050470; caproic acid production from acetate
+*Eubacterium*limosum*								# Genthner, Davis and Bryant (1981) - Features of rumen and sewage sludge strains of Eubacterium limosum, a methanol- and H2-CO2-utilizing species, AEM 42; DOI: ; caproic acid produced from methanol
+*Eubacterium*pyruvativorans*						# Wallace, McKain et al. (2003) - Eubacterium pyruvativorans sp. nov., a novel non-saccharolytic anaerobe from the rumen that ferments pyruvate and amino acids, forms caproate and utilizes acetate and propionate, IJSEM 53; DOI:10.1099/ijs.0.02110-0; caproic acid production from pyruvate
+*Rummeliibacillus*suwonensis*						# Liu, Du et al. (2022) - Production of caproic acid by Rummeliibacillus suwonensis 3B-1 isolated from the pit mud of strong-flavor baijiu, Journal of Biotechnology 358; DOI:10.1016/j.jbiotec.2022.08.017; caproic acid production from actetate, lactate and glucose
+
+
+caproic_acid_production_by_saccharolytic_fermentation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Megasphaera*hexanoica*								# Jeon, Choi et al. (2016) - Production of medium-chain carboxylic acids by Megasphaera sp. MH with supplemental electron acceptors, Biotechnology for Biofuels 9; DOI:10.1186/s13068-016-0549-3; caproic acid production from fructose
+*Megasphaera*indica*								# Lanjekar, Marathe et al. (2014) - Megasphaera indica sp. nov., an obligate anaerobic bacteria isolated from human faeces, IJSEM 64; DOI:10.1099/ijs.0.059816-0; caproic acid production from glucose
+*Caproiciproducens*galactitolivorans*				# Jeon, Kim et al. (2010) - Production of hexanoic acid from d-galactitol by a newly isolated Clostridium sp. BS-1, Applied Microbiology and Biotechnology 88; DOI: 10.1007/s00253-010-2827-5; caproic acid production from galactitol
+*Clostridium*BS-1*									# Jeon, Kim et al. (2010) - Production of hexanoic acid from d-galactitol by a newly isolated Clostridium sp. BS-1, Applied Microbiology and Biotechnology 88; DOI: 10.1007/s00253-010-2827-5; caproic acid production from galactitol; legacy name of Caproiciproducens galactitolivorans
+*Rummeliibacillus*suwonensis*						# Liu, Du et al. (2022) - Production of caproic acid by Rummeliibacillus suwonensis 3B-1 isolated from the pit mud of strong-flavor baijiu, Journal of Biotechnology 358; DOI:10.1016/j.jbiotec.2022.08.017; caproic acid production from actetate, lactate and glucose
+
+
+homoacetogenesis			elements:C; main_element:C; electron_donor:H; electron_acceptor:C; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# List largely originates from Drake et al. (2008), DOI:10.1196/annals.1419.016. However, taxa without an assigned species name or with uncertain acteogenesis capabilities were removed.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*drakei*								# Liou, Balkwill et al. (2005) - Clostridium carboxidivorans sp. nov., a solvent-producing clostridium isolated from an agricultural settling lagoon, and reclassification of the acetogen Clostridium scatologenes strain SL1 as Clostridium drakei sp. nov., IJSME 55 DOI:10.1099/ijs.0.63482-0
+*Clostridium*carboxidivorans*						# Liou, Balkwill et al. (2005) - Clostridium carboxidivorans sp. nov., a solvent-producing clostridium isolated from an agricultural settling lagoon, and reclassification of the acetogen Clostridium scatologenes strain SL1 as Clostridium drakei sp. nov., IJSME 55 DOI:10.1099/ijs.0.63482-0
+*Acetitomaculum*ruminis*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetoanaerobium*noterae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetoanaerobium*romashkovii*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*bakii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*carbinolicum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*dehalogenans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*fimetarium*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*malicum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*paludosum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*psammolithicum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*tundrae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*wieringae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*woodii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetohalobium*arabaticum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetonema*longum*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Bryantella*formatexigens*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Butyribacterium*methylotrophicum*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*aceticum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*coccoides*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*difficile*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*formicaceticum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*glycolicum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*ljungdahlii*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*magnum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*mayombei*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*methoxybenzovorans*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*scatologenes*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*ultunense*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Eubacterium*aggregans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Eubacterium*limosum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Holophaga*foetida*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*glycerini*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*mulderi*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*thermoacetica*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*thermoautotrophica*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Natroniella*acetigena*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Natronincola*histidinovorans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Oxobacter*pfennigii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*hydrogenotrophicus*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*productus*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*schinkii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*acidovorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*aerivorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*malonica*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*ovata*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*paucivorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*silvacetica*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*sphaeroides*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*termitida*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Syntrophococcus*sucromutans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Thermoacetogenium*phaeum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Thermoanaerobacter*kivui*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Tindallia*californiensis*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Treponema*azotonutricium*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Treponema*primitia*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*autoethanogenum*						# Abrini, Naveau and Nys (1994) - Clostridium autoethanogenum, sp. nov., an anaerobic bacterium that produces ethanol from carbon monoxide, Archives of Microbiology 161; DOI:10.1007/BF00303591
