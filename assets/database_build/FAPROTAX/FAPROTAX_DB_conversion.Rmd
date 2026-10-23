@@ -1,0 +1,99 @@
+---
+title: "FAPROTADX2 DB conversion to FAPROTAX1"
+author: "Lars Schreiber"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rationale
+With the update of FAPROTAX v1 to v2 the ability to add custom functions to the database was lost. So in order to leverage the more comprehensive v2 database but with the functionms mapper form v1, we will need to back convert the v2 DB to v1 format.
+
+```{r loading necessary libraries}
+library("tidyr")
+library("readr")
+library("stringr")
+```
+
+``` {r read data and convert format}
+## Read 
+faprotax2_db <- read_tsv(file = "faprotax2_db/FAPROTAX2-db_main.tsv")
+
+## The database covers these functions
+all_funcs <- colnames(faprotax2_db)[colnames(faprotax2_db) |> 
+                                      str_detect(pattern = fixed(".value"))] |> 
+  str_replace_all(pattern = fixed(".value"), replacement = "")
+
+longest_name = 55
+
+# Open custom function file so that we can add the v2 functions
+custom_file <- "faprotax1_custom_func/FAPROTAX.custom.txt"
+output_file <- "FAPROTAX2_cust.txt"
+
+file.copy(from = custom_file, to = output_file)
+
+my_connection <- file(output_file, open = "at", encoding = "UTF-8")
+
+# Write empty lines between custom records and new records
+writeLines("", con = my_connection)
+writeLines("", con = my_connection)
+writeLines("###############################################", con = my_connection)
+writeLines("# All FAPROTAX2-imported functions", con = my_connection)
+writeLines("###############################################", con = my_connection)
+writeLines("", con = my_connection)
+writeLines("", con = my_connection)
+
+## Create FAPROTAX1 type of records in temporary files for each of the function
+for (func in seq_along(all_funcs)){
+  #func = 1
+  function_column <- paste0(all_funcs[func], ".value")
+  reference_column <- paste0(all_funcs[func], ".source")
+  
+  # Subset and filter the dataframe accordingly
+  faprotax2_db_sub <- faprotax2_db[,c("species", function_column, reference_column)]
+  faprotax2_db_sub_filt <- faprotax2_db_sub[faprotax2_db_sub[[function_column]] == "P",]
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[!is.na(faprotax2_db_sub_filt[[function_column]]),]
+  
+  # Remove all entries without a reference
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[!is.na(faprotax2_db_sub_filt[[reference_column]]),]
+  
+  faprotax2_db_sub_filt <- unique(faprotax2_db_sub_filt)
+  
+  # Replace all internal underscores with * in species names
+  faprotax2_db_sub_filt$species <- str_replace_all(faprotax2_db_sub_filt$species, pattern = fixed("_"), replacement = fixed("*"))
+  # Add terminal *
+  faprotax2_db_sub_filt$species <- paste0(faprotax2_db_sub_filt$species,"*")
+  
+  # Sort by species name
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[order(faprotax2_db_sub_filt$species),]
+  
+  # Write function header to file
+  writeLines(all_funcs[func], con = my_connection)
+  writeLines("# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", con = my_connection)
+  # Loop through the species for putting them into the file
+  for (species in seq_along(faprotax2_db_sub_filt$species)){
+    #species = 1
+    # Pad species name with the right number of tabs
+    current_species <- faprotax2_db_sub_filt$species[species]
+    current_ref <- faprotax2_db_sub_filt[[reference_column]][species]
+    # Convert reference to plaiun ASCII
+    current_ref <- iconv(current_ref,
+                         from = "",
+                         to = "ASCII//TRANSLIT",
+                         sub = "")
+    
+    output_line <- sprintf("%-*s # %s",
+                           longest_name,
+                           current_species,
+                           current_ref)
+    # Write output line
+    writeLines(output_line, con = my_connection)
+  }
+  writeLines("", con = my_connection)
+  writeLines("", con = my_connection)
+}
+close(my_connection)
+```

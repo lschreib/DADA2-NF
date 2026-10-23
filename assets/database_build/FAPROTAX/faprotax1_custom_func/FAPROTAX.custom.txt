@@ -1,0 +1,387 @@
+# FAPROTAX: Functional Annotation of Prokaryotic Taxa
+# Version: 2cust
+# Copyright (c) 2025, Stilianos Louca; 2026, Lars Schreiber
+#
+#
+#
+# LICENSE AGREEMENT
+# - - - - - - - - -
+# All rights reserved.
+# Use and redistributions of the FAPROTAX database, including any associated 
+# software, with or without modification, are permitted provided that the 
+# following conditions are met:
+#
+#    * Redistributions must retain the above copyright notice, this list of 
+#      conditions and the following disclaimer in the database itself, as well 
+#      as in documentation and/or other materials provided with the distribution.
+#    * Neither the name of the original author (Stilianos Louca), nor the names 
+#      of its contributors may be used to endorse or promote products derived 
+#      from FAPROTAX without specific prior written permission.
+#    * If the FAPROTAX database or any associated software has been modified from 
+#      its original version, this needs to be clearly indicated in any redistribution 
+#      and in any publication using the modified version.
+#
+# THE FAPROTAX DATABASE, INCLUDING ANY ASSOCIATED SOFTWARE, IS PROVIDED BY THE 
+# COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+# GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF FAPROTAX, 
+# EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# 
+# Instructions for editing this database
+# - - - - - - - - - - - - - - - - - - - - -
+# Specify functional groups based on taxon names.
+# Each group begins with a group name, followed by a list of taxons affiliated with that group ('member taxons', one member per line).
+# Groups are separated by at least one blank or pure-whitespace line.
+# Member taxons can be enclosed in quotes.
+# Comments are prefixed with # and will be ignored. Use comments to provide literature references for functional affiliations.
+#
+# Each member is specified as a list of descending taxonomic levels (typically 2 or 3), separated by an asterisk (*).
+#    For example "*Escherichia*Coli*" or "*Proteobacteria*Nitrosomonas*" or "*Bacteria*Nitrosomonas*europaea*".
+#    The prefixed and suffixed asterisks indicate that there may be higher or lower taxonomic levels that haven't been included in the member name.
+#    Be as general as possible, but as specific as needed to ensure the validity of the functional affiliations.
+#    For example, if all Nitrosomonas but not all Proteobacteria oxidize ammonia, then add *Proteobacteria*Nitrosomonas* instead of *Proteobacteria*, and instead of just *Proteobacteria*Nitrosomonas*europaea*.
+#
+# Taxon names are case-insensitive.
+# Overlaps between groups are allowed.
+# Duplicate entries within a group are allowed (and will be ignored).
+# Prefixed or trailing whitespace is ignored, unless enclosed in quotes.
+# Group names should not contain whitespace characters (e.g. tabs).
+#
+# Set operations between functional groups are also supported:
+#    Adding previously defined groups to a new group (e.g. for group nesting) is done using the prefix 'add_group:'
+#        For example, the group 'mammal_pathogens' may include 'add_group:human_pathogens' and 'add_group:cattle_pathogens'
+#    Similarly, to subtract previously defined groups from a new group (set difference), use the prefix 'subtract_group:'
+#    To form the intersection of a group with a previously defined group, use the prefix 'intersect_group:'
+#        For example, the group 'hydrogenotrophic_methanogens' may be defined by the two operations 'add_group:hydrogenotrophy' and 'intersect_group:methanogens'.
+#    The order of set operations matters, because a set operation applies to group definitions until the point of the set operation.
+#        For example, the group 'obligate_aerobic' may include 'add_group:aerobic' and then 'subtract_group:anaerobic'.
+#        Similarly, the group 'obligate_aerobic_and_others' may start with 'add_group:aerobic', then 'subtract_group:anaerobic', and then list additional members not affected by the set operations.
+#
+# Group names may be appended by an optional semicolon-separated list of metadata entries, which is separated by the group name by whitespace
+#	These metadata may be included in the generated function tables, but they do not unfluence which OTU/taxon is assigned to which function.
+# 	Each metadata entry should be of the format <key>:<value>, where <value> is a comma-separated list of values (whitespace is ignored)
+#	For example, methanogenesis may be appended by "carbon:yes; anaerobic:yes; elements:C,H"
+
+###############################################
+# All NRC-internal custom functions
+###############################################
+
+acetone_butanol_ethanol_fermentation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# (solventogenesis; microbial ethanol fermentation; solvent-producing clostridia)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*acetobutylicum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*aurantibutyricum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*beijerinckii*							# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*felsineum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*pasteurianum*							# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*puniceum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*roseum*								# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*saccharobutylicum*						# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+*Clostridium*saccharoperbutylacetonicum*			# Poehlein, Solano et al. (2017) - Microbial solvent formation revisited by comparative genome analysis,  Biotechnology for Biofuels 10;  DOI:10.1186/s13068-017-0742-z
+
+
+caproic_acid_production_by_chain_elongation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# Two step process: acetate -> butyric acid; butyric acid -> caproic acid
+# Possible sources of acetate: (i) external source, e.g. provided by homoacetogens that synthesize acetate from CO2 via the  Wood-Ljungdahl; (ii) internally through non- non-saccharolytic fermentation of methanol, ethanol, lactic acid or pyruvate
+# Note:This category only contains upgrading caproic acid production. Caproic acid production by saccharolytic fermentation of sugars such as glucose and fructose is not covered.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*kluyveri*								# Barker and Taha (1942) - Clostridium kluyverii, an organism concerned in the formation of caproic acid from ethyl alcohol, Journal of Bacteriology 43; caproic acid production from acetate and ethanol
+*Megasphaera*elsdenii*								# Elsden, Gilchrist et al. (1956) - Properties of a fatty acid forming organism isolated from the rumen of sheep, Journal of Bacteriology 72; DOI: 10.1128/jb.72.5.681-689.1956; caproic acid production from lactic acid
+*Megasphaera*sueciensis*							# Hiebl, Pinner et al. (2025) - Enhancing Gas Fermentation Efficiency via Bioaugmentation with Megasphaera sueciensis and Clostridium carboxidivorans, MDPI Bioengineering 12; DOI:10.3390/bioengineering12050470; caproic acid production from acetate
+*Eubacterium*limosum*								# Genthner, Davis and Bryant (1981) - Features of rumen and sewage sludge strains of Eubacterium limosum, a methanol- and H2-CO2-utilizing species, AEM 42; DOI: ; caproic acid produced from methanol
+*Eubacterium*pyruvativorans*						# Wallace, McKain et al. (2003) - Eubacterium pyruvativorans sp. nov., a novel non-saccharolytic anaerobe from the rumen that ferments pyruvate and amino acids, forms caproate and utilizes acetate and propionate, IJSEM 53; DOI:10.1099/ijs.0.02110-0; caproic acid production from pyruvate
+*Rummeliibacillus*suwonensis*						# Liu, Du et al. (2022) - Production of caproic acid by Rummeliibacillus suwonensis 3B-1 isolated from the pit mud of strong-flavor baijiu, Journal of Biotechnology 358; DOI:10.1016/j.jbiotec.2022.08.017; caproic acid production from actetate, lactate and glucose
+
+
+caproic_acid_production_by_saccharolytic_fermentation			elements:C; main_element:C; electron_donor:C; electron_acceptor:none; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Megasphaera*hexanoica*								# Jeon, Choi et al. (2016) - Production of medium-chain carboxylic acids by Megasphaera sp. MH with supplemental electron acceptors, Biotechnology for Biofuels 9; DOI:10.1186/s13068-016-0549-3; caproic acid production from fructose
+*Megasphaera*indica*								# Lanjekar, Marathe et al. (2014) - Megasphaera indica sp. nov., an obligate anaerobic bacteria isolated from human faeces, IJSEM 64; DOI:10.1099/ijs.0.059816-0; caproic acid production from glucose
+*Caproiciproducens*galactitolivorans*				# Jeon, Kim et al. (2010) - Production of hexanoic acid from d-galactitol by a newly isolated Clostridium sp. BS-1, Applied Microbiology and Biotechnology 88; DOI: 10.1007/s00253-010-2827-5; caproic acid production from galactitol
+*Clostridium*BS-1*									# Jeon, Kim et al. (2010) - Production of hexanoic acid from d-galactitol by a newly isolated Clostridium sp. BS-1, Applied Microbiology and Biotechnology 88; DOI: 10.1007/s00253-010-2827-5; caproic acid production from galactitol; legacy name of Caproiciproducens galactitolivorans
+*Rummeliibacillus*suwonensis*						# Liu, Du et al. (2022) - Production of caproic acid by Rummeliibacillus suwonensis 3B-1 isolated from the pit mud of strong-flavor baijiu, Journal of Biotechnology 358; DOI:10.1016/j.jbiotec.2022.08.017; caproic acid production from actetate, lactate and glucose
+
+
+homoacetogenesis			elements:C; main_element:C; electron_donor:H; electron_acceptor:C; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# List largely originates from Drake et al. (2008), DOI:10.1196/annals.1419.016. However, taxa without an assigned species name or with uncertain acteogenesis capabilities were removed.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Clostridium*drakei*								# Liou, Balkwill et al. (2005) - Clostridium carboxidivorans sp. nov., a solvent-producing clostridium isolated from an agricultural settling lagoon, and reclassification of the acetogen Clostridium scatologenes strain SL1 as Clostridium drakei sp. nov., IJSME 55 DOI:10.1099/ijs.0.63482-0
+*Clostridium*carboxidivorans*						# Liou, Balkwill et al. (2005) - Clostridium carboxidivorans sp. nov., a solvent-producing clostridium isolated from an agricultural settling lagoon, and reclassification of the acetogen Clostridium scatologenes strain SL1 as Clostridium drakei sp. nov., IJSME 55 DOI:10.1099/ijs.0.63482-0
+*Acetitomaculum*ruminis*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetoanaerobium*noterae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetoanaerobium*romashkovii*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*bakii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*carbinolicum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*dehalogenans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*fimetarium*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*malicum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*paludosum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*psammolithicum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*tundrae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*wieringae*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetobacterium*woodii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetohalobium*arabaticum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Acetonema*longum*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Bryantella*formatexigens*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Butyribacterium*methylotrophicum*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*aceticum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*coccoides*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*difficile*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*formicaceticum*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*glycolicum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*ljungdahlii*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*magnum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*mayombei*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*methoxybenzovorans*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*scatologenes*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*ultunense*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Eubacterium*aggregans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Eubacterium*limosum*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Holophaga*foetida*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*glycerini*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*mulderi*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*thermoacetica*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Moorella*thermoautotrophica*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Natroniella*acetigena*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Natronincola*histidinovorans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Oxobacter*pfennigii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*hydrogenotrophicus*					# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*productus*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Ruminococcus*schinkii*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*acidovorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*aerivorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*malonica*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*ovata*									# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*paucivorans*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*silvacetica*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*sphaeroides*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Sporomusa*termitida*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Syntrophococcus*sucromutans*						# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Thermoacetogenium*phaeum*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Thermoanaerobacter*kivui*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Tindallia*californiensis*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Treponema*azotonutricium*							# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Treponema*primitia*								# Drake, Gossner and Daniel (2008) - Old Acetogens, New Light, Annals of the New York Academy of Sciences 1125; DOI:doi.org/10.1196/annals.1419.016
+*Clostridium*autoethanogenum*						# Abrini, Naveau and Nys (1994) - Clostridium autoethanogenum, sp. nov., an anaerobic bacterium that produces ethanol from carbon monoxide, Archives of Microbiology 161; DOI:10.1007/BF00303591
+*Clostridium*luticellarii*							# Petrognani, Boon & Ganigue (2020) - Production of isobutyric acid from methanol by Clostridium luticellarii. Green Chemistry 22 (23): 8389–8402. DOI:10.1039/d0gc02700f
+
+
+anode_respiration			elements:C; main_element:C; electron_donor:C; electron_acceptor:anode; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# Electro-active microorganisms that use anodes as electron acceptors
+# List largely originates from review articles Koch & Harnisch (2016; doi:10.1002/celc.201600079) with additional taxa from Logan et al. (2019; doi:10.1038/s41579-019-0173-x)
+# Note: taxa listed in original review articles, but requiring an externally added electron shuttles/mediators were excluded
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Acetobacter*aceti*									# Karthikeyan, Kumar, et al (2009) - Bioelectrocatalysis of acetobacter aceti and Gluconobacter roseus for current generation. Environ. Sci. Technol. 43, 8684–8689
+Aeromonas*hydrophila*								# Pham, Jung et al. (2003) - A novel electrochemically active and Fe(III)-reducing bacterium phylogenetically related to Aeromonas hydrophila, isolated from a microbial fuel cell, FEMS Microbiology Letters, Volume 223, Issue 1, June 2003, Pages 129–134, DOI:10.1016/S0378-1097(03)00354-9
+Anabaena*variabilis*								# Tanaka, Tamamushi & Ogawa (1985) – Bioelectrochemical fuel-cells operated by the cyanobacterium, Anabaena variabilis. J. Chem. Technol. Biotechnol., 35: 191-197. DOI:doi.org/10.1002/jctb.280350304
+Arcobacter*butzleri*								# Fedorovich, V. et al. (2009) - Novel electrochemically active bacterium phylogenetically related to Arcobacter butzleri, isolated from a microbial fuel cell. Appl. Environ. Microbiol. 75, 7326–7334
+Bacillus*subtilis*									# Nimje, V. R. et al. (2009) - Stable and high energy generation by a strain of Bacillus subtilis in a microbial fuel cell. J. Power Sources 190, 258–263
+Calditerrivibrio*nitroreducens*						# Fu, Kobayashi et al. (2013) - A Thermophilic Gram-Negative Nitrate-Reducing Bacterium, Calditerrivibrio nitroreducens, Exhibiting Electricity Generation Capability. Environmental Science & Technology 47 (21): 12583–12590, DOI:10.1021/es402749f
+Citrobacter*freundii*								# Huang, Zhu et al. (2015) - Exoelectrogenic Bacterium Phylogenetically Related to Citrobacter freundii, Isolated from Anodic Biofilm of a Microbial Fuel Cell. Appl Biochem Biotechnol 175, 1879–1891, DOI:10.1007/s12010-014-1418-9
+Citrobacter*SX-1*									# Xu & Liu (2011) - New exoelectrogen Citrobacter sp. SX‐1 isolated from a microbial fuel cell, Journal of Applied Microbiology, Volume 111, Issue 5, Pages 1108–1115, DOI:10.1111/j.1365-2672.2011.05129.x
+Clostridium*acetobutylicum*							# Finch, Mackie et al. (2011) - Metabolite analysis of Clostridium acetobutylicum: Fermentation in a microbial fuel cell, Bioresource Technology, Volume 102, Issue 1, Pages 312-315, DOI:10.1016/j.biortech.2010.06.149.
+Clostridium*butyricum*								# Hyung Soo Park, Byung Hong Kim, et al. (2001) - A Novel Electrochemically Active and Fe(III)-reducing Bacterium Phylogenetically Related to Clostridium butyricum Isolated from a Microbial Fuel Cell, Anaerobe, Volume 7, Issue 6, Pages 297-306, DOI: 10.1006/anae.2001.0399.
+Clostridium*propionicum*							# Zhu, L., Chen, H., Huang, L., Cai, J. and Xu, Z. (2011), Electrochemical analysis of Clostridium propionicum and its acrylic acid production in microbial fuel cells. Engineering in Life Sciences 11: 238-244, DOI:10.1002/elsc.201000220
+Comamonas*denitrificans*							# Xing, D., Cheng, S., Logan, B.E. et al. (2010) - Isolation of the exoelectrogenic denitrifying bacterium Comamonas denitrificans based on dilution to extinction. Appl Microbiol Biotechnol 85, 1575–1587, DOI:10.1007/s00253-009-2240-0
+Comamonas*testosteroni*								# Yangyang Yu, Yichao Wu, et al. (2015) - Adjustable bidirectional extracellular electron transfer between Comamonas testosteroni biofilms and electrode via distinct electron mediators, Electrochemistry Communications, Volume 59, Pages 43-47, DOI:10.1016/j.elecom.2015.07.007.
+Corynebacterium*sp.*MFC03*							# Min Liu, Yong Yuan, et al. (2010) - Bioelectricity generation by a Gram-positive Corynebacterium sp. strain MFC03 under alkaline condition in microbial fuel cells, Bioresource Technology, Volume 101, Issue 6, Pages 1807-1811, DOI:10.1016/j.biortech.2009.10.003.
+Desulfitobacterium*hafniense*						# Milliken, May (2007) - Sustained generation of electricity by the spore-forming, Gram-positive, Desulfitobacterium hafniense strain DCB2. Appl Microbiol Biotechnol 73, 1180–1189, DOI:10.1007/s00253-006-0564-6
+Desulfobulbus*propionicus*							# Holmes, Bond & Lovley (2004) - Electron transfer by Desulfobulbus propionicus to Fe(III) and graphite electrodes. Appl Environ Microbiol. 70(2):1234-7. DOI:10.1128/AEM.70.2.1234-1237.2004
+Desulfovibrio*desulfuricans*						# Cooney, Roschi, et al. (1996) - Physiologic studies with the sulfate-reducing bacterium Desulfovibrio desulfuricans: Evaluation for use in a biofuel cell, Enzyme and Microbial Technology, Volume 18, Issue 5, Pages 358-365, DOI:10.1016/0141-0229(95)00132-8.
+Desulfuromonas*acetoxidans*							# Bond, Holmes et al. (2002) - Electrode-Reducing Microorganisms That Harvest Energy from Marine Sediments. Science295, 483-485, DOI:10.1126/science.1066771
+Enterobacter*aerogenes*								# Zhuang, L. et al. (2011) - Development of Enterobacter aerogenes fuel cells: From in situ biohydrogen oxidization to direct electroactive biofilm. Bioresour. Technol. 102, 284–289
+Escherichia*coli*									# Nandy, Kumar & Kundu(2016) - Effect of electric impulse for improved energy generation in mediatorless dual chamber microbial fuel cell through electroevolution of Escherichia coli, Biosens. Bioelectron. 79, 796–801 
+Geoalkalibacter*ferrihydriticus*					# Badalamenti, Krajmalnik-Brown, Torres (2013) - Generation of high current densities by pure cultures of anode-respiring Geoalkalibacter spp. under alkaline and saline conditions in microbial electrochemical cells. mBio 4(3):e00144-13. DOI:10.1128/mBio.00144-13
+Geoalkalibacter*subterraneus*						# Carmona-Martínez, Pierra, et al. (2013) - High current density via direct electron transfer by the halophilic anode respiring bacterium Geoalkalibacter subterraneus.Physical Chemistry Chemical Physics 15 (45): 19699–19707. DOI:10.1039/c3cp54045f
+Geobacillus*S2E*									# Wrighton, Agbo et al. (2008) - A novel ecological role of the Firmicutes identified in thermophilic microbial fuel cells, The ISME Journal, Volume 2, Issue 11, Pages 1146–1156, DOI:10.1038/ismej.2008.48
+Geobacter*anodireducens*							# Sun, Call, et al. (2014) - Geobacter sp. SD-1 in high-salt solutions. Environmental Microbiology Reports, 6: 723-729. https://doi.org/10.1111/1758-2229.12193
+Geobacter*bemidjiensis*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*bremensis*								# Nercessian, Parot, Délia, Bergel, Achouak (2012) - Harvesting Electricity with Geobacter bremensis Isolated from Compost. PLOS ONE 7(3): e34216. https://doi.org/10.1371/journal.pone.0034216
+Geobacter*chapellei*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*humireducens*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*hydrogenophilus*							# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*metallireducens*							# Bond, Holmes et al. (2002) - Electrode-Reducing Microorganisms That Harvest Energy from Marine Sediments. Science295, 483-485, DOI:10.1126/science.1066771
+Geobacter*sulfurreducens*							# Gregory Bond and Lovley (2004) - Graphite electrodes as electron donors for anaerobic respiration. Environmental Microbiology, 6: 596-604, DOI:10.1111/j.1462-2920.2004.00593.x
+Geobacter*uraniireducens*							# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geopsychrobacter*electrodiphilus*					# Holmes, Nicoll, Bond, Lovley (2004) - Potential Role of a Novel Psychrotolerant Member of the Family Geobacteraceae, Geopsychrobacter electrodiphilus gen. nov., sp. nov., in Electricity Production by a Marine Sediment Fuel Cell. Appl Environ Microbiol 70:10, https://doi.org/10.1128/AEM.70.10.6023-6030.2004
+Geothrix*fermentans*								# Bond, Lovley (2005) - Evidence for Involvement of an Electron Shuttle in Electricity Generation by Geothrix fermentans. Appl Environ Microbiol 71:4, https://doi.org/10.1128/AEM.71.4.2186-2189.2005
+Gluconobacter*roseus*								# Karthikeyan, Kumar, et al (2009) - Bioelectrocatalysis of acetobacter aceti and Gluconobacter roseus for current generation. Environ. Sci. Technol. 43, 8684–8689
+Haloferax*volcanii*									# Abrevaya, Sacco, et al. (2011) - Archaea-based microbial fuel cell operating at high ionic strength conditions. Extremophiles 15, 633–642
+Klebsiella*pneumoniae*								# Zhang, Zhou, et al. (2008) - Microbial fuel cell based on Klebsiella pneumoniae biofilm, Electrochemistry Communications, Volume 10, Issue 10, Pages 1641-1643, https://doi.org/10.1016/j.elecom.2008.08.030.
+Lysinibacillus*sphaericus*							# Nandy, Kumar, Kundu, (2013) - Utilization of proteinaceous materials for power generation in a mediatorless microbial fuel cell by a new electrogenic bacteria Lysinibacillus sphaericus VA5. Enzyme Microb. Technol. 53, 339–344
+Mariprofundus*ferrooxydans*							# Summers, Gralnick, Bond (2013) - Cultivation of an Obligate Fe(II)-Oxidizing Lithoautotrophic Bacterium Using Electrodes. mBio 4, https://doi.org/10.1128/mbio.00420-12
+Methanosarcina*acetivorans*							# Holmes, Ueki et al (2019) - A Membrane-Bound Cytochrome Enables Methanosarcina acetivorans To Conserve Energy from Extracellular Electron Transfer. mBio 10:4, doi:10.1128/mbio.00789-19. https://doi.org/10.1128/mbio.00789-19
+Natrialba*magadii*									# Abrevaya, Sacco, et al. (2011) - Archaea-based microbial fuel cell operating at high ionic strength conditions. Extremophiles 15, 633–642
+Ochrobactrum*anthropi*								# Zuo, Xing, Regan, Logan (2008) - Isolation of the Exoelectrogenic Bacterium Ochrobactrum anthropi YZ-1 by Using a U-Tube Microbial Fuel Cell. Appl Environ Microbiol 74:10 , https://doi.org/10.1128/AEM.02732-07
+Propionibacterium*freudenreichii*					# Emde, Schink (1990) - Enhanced Propionate Formation by Propionibacterium freudenreichii subsp. freudenreichii in a Three-Electrode Amperometric Culture System. Appl Environ Microbiol 56:9, https://doi.org/10.1128/aem.56.9.2771-2776.1990
+Proteus*vulgaris*									# Yuan, Ahmed, et al. (2011) - Carbon nanoparticles-assisted mediator-less microbial fuel cells using Proteus vulgaris, Biosensors and Bioelectronics, Volume 27, Issue 1, Pages 106-112, https://doi.org/10.1016/j.bios.2011.06.025.
+Pyrococcus*furiosus*								# Sekar, Wu, et al. (2017) - Electricity generation by Pyrococcus furiosus in microbial fuel cells operated at 90°C. Biotechnol. Bioeng. 114, 1419–1427
+Raoultella*electrica*								# Kimura, Chung, et al. (2014) - Raoultella electrica sp. nov., isolated from anodic biofilms of a glucose-fed microbial fuel cell, International Journal of Systematic and Evolutionary Microbiology 64, 1384-1388, doi:10.1099/ijs.0.058826-0
+Rhodoferax*ferrireducens*							# Chaudhuri & Lovley (2003) - Electricity generation by direct oxidation of glucose in mediatorless microbial fuel cells. Nature Biotechnology 21, 1229–1232, https://doi.org/10.1038/nbt867
+Rhodopseudomonas*palustris*							# Xing, Zuo, et al (2008) - Electricity Generation by Rhodopseudomonas palustris DX-1. Environ. Sci. Technol. 42 (11): 4146–4151. https://doi.org/10.1021/es800312v
+Shewanella*decolorationis*							# Yang, Sun, et al. (2011) - Differential biofilms characteristics of Shewanella decolorationis microbial fuel cells under open and closed circuit conditions, Bioresource Technology, Volume 102, Issue 14, Pages 7093-7098, https://doi.org/10.1016/j.biortech.2011.04.073.
+Shewanella*electrodiphila*							# Zhang, Burgess, Grant (2015) - Shewanella electrodiphila sp. nov., a psychrotolerant bacterium isolated from Mid-Atlantic Ridge deep-sea sediments, International Journal of Systematic and Evolutionary Microbiology, 65, https://doi.org/10.1099/ijs.0.000345
+Shewanella*frigidimarina*							# Fitzgerald, Petersen, et al. (2013) - Shewanella frigidimarina microbial fuel cells and the influence of divalent cations on current output, Biosensors and Bioelectronics, Volume 40, Issue 1, Pages 102-109, https://doi.org/10.1016/j.bios.2012.06.039.
+Shewanella*japonica*								# Biffinger, Fitzgerald, et al. (2011) - The utility of Shewanella japonica for microbial fuel cells, Bioresource Technology, Volume 102, Issue 1, Pages 290-297, https://doi.org/10.1016/j.biortech.2010.06.078.
+Shewanella*marisflavi*								# Huang, Sun, Zhang (2010) - Electricity generation at high ionic strength in microbial fuel cell by a newly isolated Shewanella marisflavi EP1. Appl Microbiol Biotechnol 85(4):1141-9. doi: 10.1007/s00253-009-2259-2
+Shewanella*oneidensis*								# Hyung Joo Kim et al. (2002) - A mediator-less microbial fuel cell using a metal reducing bacterium, Shewanella putrefaciens,, Enzyme and Microbial Technology, Volume 30, Issue 2, Pages 145-152, DOI:10.1016/S0141-0229(01)00478-1.
+Shewanella*putrefaciens*							# Hyung Joo Kim et al. (2002) - A mediator-less microbial fuel cell using a metal reducing bacterium, Shewanella putrefaciens,, Enzyme and Microbial Technology, Volume 30, Issue 2, Pages 145-152, DOI:10.1016/S0141-0229(01)00478-1.
+Shewanella*HN-41*									# Wu, Xing, et al. (2013) - Electricity generation by Shewanella sp. HN-41 in microbial fuel cells, International Journal of Hydrogen Energy, Volume 38, Issue 35, Pages 15568-15573, https://doi.org/10.1016/j.ijhydene.2013.04.081.
+Spirulina*platensis*								# Lin, Wei, et al. (2013) - Characteristics of the photosynthesis microbial fuel cell with a Spirulina platensis biofilm, Bioresource Technology, Volume 135, Pages 640-643, https://doi.org/10.1016/j.biortech.2012.09.138.
+Streptococcus*lactis*								# Freguia, Masuda, et al. (2009) - Lactococcus lactis catalyses electricity generation at microbial fuel cell anodes via excretion of a soluble quinone, Bioelectrochemistry, Volume 76, Issues 1–2, Pages 14-18, https://doi.org/10.1016/j.bioelechem.2009.04.001.
+Synechococcus*PCC*6301*								# Rawson, Willmer, Turner (1989) - Whole-cell biosensors for environmental monitoring, Biosensors, Volume 4, Issue 5, Pages 299-311, https://doi.org/10.1016/0265-928X(89)80011-2.
+Thermincola*ferriacetica*							# Parameswaran, Bry, et al. (2013) - Kinetic, Electrochemical, and Microscopic Characterization of the Thermophilic, Anode-Respiring Bacterium Thermincola ferriacetica. Environ. Sci. Technol. 47 (9): 4934–4940. https://doi.org/10.1021/es400321c
+Thermincola*potens*									# Wrighton, Agbo et al. (2008) - A novel ecological role of the Firmicutes identified in thermophilic microbial fuel cells, The ISME Journal, Volume 2, Issue 11, Pages 1146–1156, DOI:10.1038/ismej.2008.48
+Tolumonas*osonensis*								# Luo, Yang, et al. (2013) - A new electrochemically active bacterium phylogenetically related to Tolumonas osonensis and power performance in MFCs, Bioresource Technology, Volume 139, Pages 141-148, https://doi.org/10.1016/j.biortech.2013.04.031.
+
+
+electrotrophic			elements:C; main_element:C; electron_donor:cathode; electron_acceptor:C; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# Electro-active microorganisms that accept electrons from a cathode and use them for biosynthesis
+# List largely originates from review articles Koch & Harnisch (2016; doi:10.1002/celc.201600079) with additional taxa from Logan et al. (2019; doi:10.1038/s41579-019-0173-x)
+# Note: taxa listed in original review articles, but requiring an externally added electron shuttles/mediators were excluded
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Brevundimonas*diminuta*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Burkholderia*cepacia*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Clostridium*aceticum*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Clostridium*ljungdahlii*							# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Clostridium*pasteurianum*							# Choi, O., Kim, T., Woo, H. et al. (2014) - Electricity-driven metabolic shift through direct electron uptake by electroactive heterotroph Clostridium pasteurianum. Scientific Reports 4, 6961, DOI:10.1038/srep06961
+Clostridium*tyrobutyricum*							# Choi, O., Um, Y. and Sang, B.-I. (2012) - Butyrate production enhancement by Clostridium tyrobutyricum using electron mediators and a cathodic electron donor. Biotechnology and Bioengineering, 109: 2494-2502. DOI:10.1002/bit.24520
+Corynebacterium*glutamicum*							# Hongo, Iwahara (1979) - Application of Electro-energizing Method to l-Glutamic Acid Fermentation, Agricultural and Biological Chemistry, Volume 43, Issue 10, Pages 2075–2081, DOI:10.1080/00021369.1979.10863776
+Dechloromonas*agitata*								# Thrash, Van Trump et al. (2007) - Electrochemical Stimulation of Microbial Perchlorate Reduction. Environmental Science and Technology 41 (5): 1740–1746. DOI:10.1021/es062772m
+Enterobacter*cloacae*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Erwinia*dissolvens*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Escherichia*coli*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Geobacter*lovleyi*									# Strycharz, Woodard et al. (2008) - Graphite Electrode as a Sole Electron Donor for Reductive Dechlorination of Tetrachlorethene by Geobacter lovleyi. Appl Environ Microbiol 74:19, https://doi.org/10.1128/AEM.00961-08
+Kingella*denitrificans*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Kingella*kingae*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Methanobacterium*palustre*							# Cheng, Xing, et al. (2009) - Direct Biological Conversion of Electrical Current into Methane by Electromethanogenesis. Environ. Sci. Technol. 43 (10): 3953–3958. https://doi.org/10.1021/es803531g
+Methanococcus*maripaludis*							# Deutzmann, Sahin, Spormann (2015) - Extracellular Enzymes Facilitate Electron Uptake in Biocorrosion and Bioelectrosynthesis. mBio 6:2, doi:10.1128/mbio.00496-15. https://doi.org/10.1128/mbio.00496-15
+Methanothermobacter*thermautotrophicus*				# Sato, Kawaguchi & Kobayashi (2013) - Bio-electrochemical conversion of carbon dioxide to methane in geological storage reservoirs, Energy Conversion and Management, Volume 66, Pages 343-350, https://doi.org/10.1016/j.enconman.2012.12.008.
+Micrococcus*luteus*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Moorella*thermoacetica*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Moorella*thermoautotrophica*						# Faraghiparapari, N. and Zengler, K. (2017), Production of organics from CO2 by microbial electrosynthesis (MES) at high temperature. J. Chem. Technol. Biotechnol., 92:2, 375-381. https://doi.org/10.1002/jctb.5015
+Pseudomonas*aeruginosa*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Pseudomonas*alcaliphila*							# Su, Zhang, et al. (2012) - Dissimilatory nitrate reduction by Pseudomonas alcaliphila with an electrode as the sole electron donor. Biotechnology and Bioengineering 109:11, 2904-2910. https://doi.org/10.1002/bit.24554
+Pseudomonas*fluorescens*							# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Rhodopseudomonas*palustris*							# Bose, Gardel, Vidoudezet al. (2014) - Electron uptake by iron-oxidizing phototrophic bacteria. Nature Communications 5, 3391, https://doi.org/10.1038/ncomms4391
+Shewanella*amazonensis*								# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*loihica*									# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*oneidensis*								# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*putrefaciens*							# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*ANA-3*									# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shigella*flexneri*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Sporomusa*ovata*									# Nevin, Woodard et al. (2010) - Microbial Electrosynthesis: Feeding Microbes Electricity To Convert Carbon Dioxide and Water to Multicarbon Extracellular Organic Compounds. mBio 1:2, DOI:10.1128/mbio.00103-10. https://doi.org/10.1128/mbio.00103-10
+Sporomusa*silvacetica*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Sporomusa*sphaeroides*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Staphylococcus*carnosus*							# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Winogradskyella*poriferorum*						# Erable, Vandecandelaere et al. (2010) - Marine aerobic biofilm as biocathode catalyst, Bioelectrochemistry, Volume 78, Issue 1, Pages 51-56, DOI:10.1016/j.bioelechem.2009.06.006.
+
+
+electroactive			elements:C; main_element:C; electron_donor:cathode; electron_acceptor:C; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
+# All-electroactive microorganisms (both anode-respiring and electrotrophic)
+# List largely originates from review articles Koch & Harnisch (2016; doi:10.1002/celc.201600079) with additional taxa from Logan et al. (2019; doi:10.1038/s41579-019-0173-x)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Brevundimonas*diminuta*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Burkholderia*cepacia*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Clostridium*aceticum*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Clostridium*ljungdahlii*							# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Clostridium*pasteurianum*							# Choi, O., Kim, T., Woo, H. et al. (2014) - Electricity-driven metabolic shift through direct electron uptake by electroactive heterotroph Clostridium pasteurianum. Scientific Reports 4, 6961, DOI:10.1038/srep06961
+Clostridium*tyrobutyricum*							# Choi, O., Um, Y. and Sang, B.-I. (2012) - Butyrate production enhancement by Clostridium tyrobutyricum using electron mediators and a cathodic electron donor. Biotechnology and Bioengineering, 109: 2494-2502. DOI:10.1002/bit.24520
+Corynebacterium*glutamicum*							# Hongo, Iwahara (1979) - Application of Electro-energizing Method to l-Glutamic Acid Fermentation, Agricultural and Biological Chemistry, Volume 43, Issue 10, Pages 2075–2081, DOI:10.1080/00021369.1979.10863776
+Dechloromonas*agitata*								# Thrash, Van Trump et al. (2007) - Electrochemical Stimulation of Microbial Perchlorate Reduction. Environmental Science and Technology 41 (5): 1740–1746. DOI:10.1021/es062772m
+Enterobacter*cloacae*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Erwinia*dissolvens*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Escherichia*coli*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Geobacter*lovleyi*									# Strycharz, Woodard et al. (2008) - Graphite Electrode as a Sole Electron Donor for Reductive Dechlorination of Tetrachlorethene by Geobacter lovleyi. Appl Environ Microbiol 74:19, https://doi.org/10.1128/AEM.00961-08
+Kingella*denitrificans*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Kingella*kingae*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Methanobacterium*palustre*							# Cheng, Xing, et al. (2009) - Direct Biological Conversion of Electrical Current into Methane by Electromethanogenesis. Environ. Sci. Technol. 43 (10): 3953–3958. https://doi.org/10.1021/es803531g
+Methanococcus*maripaludis*							# Deutzmann, Sahin, Spormann (2015) - Extracellular Enzymes Facilitate Electron Uptake in Biocorrosion and Bioelectrosynthesis. mBio 6:2, doi:10.1128/mbio.00496-15. https://doi.org/10.1128/mbio.00496-15
+Methanothermobacter*thermautotrophicus*				# Sato, Kawaguchi & Kobayashi (2013) - Bio-electrochemical conversion of carbon dioxide to methane in geological storage reservoirs, Energy Conversion and Management, Volume 66, Pages 343-350, https://doi.org/10.1016/j.enconman.2012.12.008.
+Micrococcus*luteus*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Moorella*thermoacetica*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Moorella*thermoautotrophica*						# Faraghiparapari, N. and Zengler, K. (2017), Production of organics from CO2 by microbial electrosynthesis (MES) at high temperature. J. Chem. Technol. Biotechnol., 92:2, 375-381. https://doi.org/10.1002/jctb.5015
+Pseudomonas*aeruginosa*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Pseudomonas*alcaliphila*							# Su, Zhang, et al. (2012) - Dissimilatory nitrate reduction by Pseudomonas alcaliphila with an electrode as the sole electron donor. Biotechnology and Bioengineering 109:11, 2904-2910. https://doi.org/10.1002/bit.24554
+Pseudomonas*fluorescens*							# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Rhodopseudomonas*palustris*							# Bose, Gardel, Vidoudezet al. (2014) - Electron uptake by iron-oxidizing phototrophic bacteria. Nature Communications 5, 3391, https://doi.org/10.1038/ncomms4391
+Shewanella*amazonensis*								# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*loihica*									# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*oneidensis*								# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*putrefaciens*							# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shewanella*ANA-3*									# Hsu, Masuda et al., (2012) - Evaluation of microbial fuel cell Shewanella biocathodes for treatment of chromate contamination. RSC Advances (13): 5844–5855, DOI:10.1039/c2ra20478a
+Shigella*flexneri*									# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Sporomusa*ovata*									# Nevin, Woodard et al. (2010) - Microbial Electrosynthesis: Feeding Microbes Electricity To Convert Carbon Dioxide and Water to Multicarbon Extracellular Organic Compounds. mBio 1:2, DOI:10.1128/mbio.00103-10. https://doi.org/10.1128/mbio.00103-10
+Sporomusa*silvacetica*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Sporomusa*sphaeroides*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
+Staphylococcus*carnosus*							# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
+Winogradskyella*poriferorum*						# Erable, Vandecandelaere et al. (2010) - Marine aerobic biofilm as biocathode catalyst, Bioelectrochemistry, Volume 78, Issue 1, Pages 51-56, DOI:10.1016/j.bioelechem.2009.06.006.
+Acetobacter*aceti*									# Karthikeyan, Kumar, et al (2009) - Bioelectrocatalysis of acetobacter aceti and Gluconobacter roseus for current generation. Environ. Sci. Technol. 43, 8684–8689
+Aeromonas*hydrophila*								# Pham, Jung et al. (2003) - A novel electrochemically active and Fe(III)-reducing bacterium phylogenetically related to Aeromonas hydrophila, isolated from a microbial fuel cell, FEMS Microbiology Letters, Volume 223, Issue 1, June 2003, Pages 129–134, DOI:10.1016/S0378-1097(03)00354-9
+Anabaena*variabilis*								# Tanaka, Tamamushi & Ogawa (1985) – Bioelectrochemical fuel-cells operated by the cyanobacterium, Anabaena variabilis. J. Chem. Technol. Biotechnol., 35: 191-197. DOI:doi.org/10.1002/jctb.280350304
+Arcobacter*butzleri*								# Fedorovich, V. et al. (2009) - Novel electrochemically active bacterium phylogenetically related to Arcobacter butzleri, isolated from a microbial fuel cell. Appl. Environ. Microbiol. 75, 7326–7334
+Bacillus*subtilis*									# Nimje, V. R. et al. (2009) - Stable and high energy generation by a strain of Bacillus subtilis in a microbial fuel cell. J. Power Sources 190, 258–263
+Calditerrivibrio*nitroreducens*						# Fu, Kobayashi et al. (2013) - A Thermophilic Gram-Negative Nitrate-Reducing Bacterium, Calditerrivibrio nitroreducens, Exhibiting Electricity Generation Capability. Environmental Science & Technology 47 (21): 12583–12590, DOI:10.1021/es402749f
+Citrobacter*freundii*								# Huang, Zhu et al. (2015) - Exoelectrogenic Bacterium Phylogenetically Related to Citrobacter freundii, Isolated from Anodic Biofilm of a Microbial Fuel Cell. Appl Biochem Biotechnol 175, 1879–1891, DOI:10.1007/s12010-014-1418-9
+Citrobacter*SX-1*									# Xu & Liu (2011) - New exoelectrogen Citrobacter sp. SX‐1 isolated from a microbial fuel cell, Journal of Applied Microbiology, Volume 111, Issue 5, Pages 1108–1115, DOI:10.1111/j.1365-2672.2011.05129.x
+Clostridium*acetobutylicum*							# Finch, Mackie et al. (2011) - Metabolite analysis of Clostridium acetobutylicum: Fermentation in a microbial fuel cell, Bioresource Technology, Volume 102, Issue 1, Pages 312-315, DOI:10.1016/j.biortech.2010.06.149.
+Clostridium*butyricum*								# Hyung Soo Park, Byung Hong Kim, et al. (2001) - A Novel Electrochemically Active and Fe(III)-reducing Bacterium Phylogenetically Related to Clostridium butyricum Isolated from a Microbial Fuel Cell, Anaerobe, Volume 7, Issue 6, Pages 297-306, DOI: 10.1006/anae.2001.0399.
+Clostridium*propionicum*							# Zhu, L., Chen, H., Huang, L., Cai, J. and Xu, Z. (2011), Electrochemical analysis of Clostridium propionicum and its acrylic acid production in microbial fuel cells. Engineering in Life Sciences 11: 238-244, DOI:10.1002/elsc.201000220
+Comamonas*denitrificans*							# Xing, D., Cheng, S., Logan, B.E. et al. (2010) - Isolation of the exoelectrogenic denitrifying bacterium Comamonas denitrificans based on dilution to extinction. Appl Microbiol Biotechnol 85, 1575–1587, DOI:10.1007/s00253-009-2240-0
+Comamonas*testosteroni*								# Yangyang Yu, Yichao Wu, et al. (2015) - Adjustable bidirectional extracellular electron transfer between Comamonas testosteroni biofilms and electrode via distinct electron mediators, Electrochemistry Communications, Volume 59, Pages 43-47, DOI:10.1016/j.elecom.2015.07.007.
+Corynebacterium*sp.*MFC03*							# Min Liu, Yong Yuan, et al. (2010) - Bioelectricity generation by a Gram-positive Corynebacterium sp. strain MFC03 under alkaline condition in microbial fuel cells, Bioresource Technology, Volume 101, Issue 6, Pages 1807-1811, DOI:10.1016/j.biortech.2009.10.003.
+Desulfitobacterium*hafniense*						# Milliken, May (2007) - Sustained generation of electricity by the spore-forming, Gram-positive, Desulfitobacterium hafniense strain DCB2. Appl Microbiol Biotechnol 73, 1180–1189, DOI:10.1007/s00253-006-0564-6
+Desulfobulbus*propionicus*							# Holmes, Bond & Lovley (2004) - Electron transfer by Desulfobulbus propionicus to Fe(III) and graphite electrodes. Appl Environ Microbiol. 70(2):1234-7. DOI:10.1128/AEM.70.2.1234-1237.2004
+Desulfovibrio*desulfuricans*						# Cooney, Roschi, et al. (1996) - Physiologic studies with the sulfate-reducing bacterium Desulfovibrio desulfuricans: Evaluation for use in a biofuel cell, Enzyme and Microbial Technology, Volume 18, Issue 5, Pages 358-365, DOI:10.1016/0141-0229(95)00132-8.
+Desulfuromonas*acetoxidans*							# Bond, Holmes et al. (2002) - Electrode-Reducing Microorganisms That Harvest Energy from Marine Sediments. Science295, 483-485, DOI:10.1126/science.1066771
+Enterobacter*aerogenes*								# Zhuang, L. et al. (2011) - Development of Enterobacter aerogenes fuel cells: From in situ biohydrogen oxidization to direct electroactive biofilm. Bioresour. Technol. 102, 284–289
+Escherichia*coli*									# Nandy, Kumar & Kundu(2016) - Effect of electric impulse for improved energy generation in mediatorless dual chamber microbial fuel cell through electroevolution of Escherichia coli, Biosens. Bioelectron. 79, 796–801 
+Geoalkalibacter*ferrihydriticus*					# Badalamenti, Krajmalnik-Brown, Torres (2013) - Generation of high current densities by pure cultures of anode-respiring Geoalkalibacter spp. under alkaline and saline conditions in microbial electrochemical cells. mBio 4(3):e00144-13. DOI:10.1128/mBio.00144-13
+Geoalkalibacter*subterraneus*						# Carmona-Martínez, Pierra, et al. (2013) - High current density via direct electron transfer by the halophilic anode respiring bacterium Geoalkalibacter subterraneus.Physical Chemistry Chemical Physics 15 (45): 19699–19707. DOI:10.1039/c3cp54045f
+Geobacillus*S2E*									# Wrighton, Agbo et al. (2008) - A novel ecological role of the Firmicutes identified in thermophilic microbial fuel cells, The ISME Journal, Volume 2, Issue 11, Pages 1146–1156, DOI:10.1038/ismej.2008.48
+Geobacter*anodireducens*							# Sun, Call, et al. (2014) - Geobacter sp. SD-1 in high-salt solutions. Environmental Microbiology Reports, 6: 723-729. https://doi.org/10.1111/1758-2229.12193
+Geobacter*bemidjiensis*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*bremensis*								# Nercessian, Parot, Délia, Bergel, Achouak (2012) - Harvesting Electricity with Geobacter bremensis Isolated from Compost. PLOS ONE 7(3): e34216. https://doi.org/10.1371/journal.pone.0034216
+Geobacter*chapellei*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*humireducens*								# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*hydrogenophilus*							# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geobacter*metallireducens*							# Bond, Holmes et al. (2002) - Electrode-Reducing Microorganisms That Harvest Energy from Marine Sediments. Science295, 483-485, DOI:10.1126/science.1066771
+Geobacter*sulfurreducens*							# Gregory Bond and Lovley (2004) - Graphite electrodes as electron donors for anaerobic respiration. Environmental Microbiology, 6: 596-604, DOI:10.1111/j.1462-2920.2004.00593.x
+Geobacter*uraniireducens*							# Rotaru, Nevin & Lovley (2015) - Link between capacity for current production and syntrophic growth in Geobacter species. Frontiers in Microbiology 6:744. DOI:10.3389/fmicb.2015.00744
+Geopsychrobacter*electrodiphilus*					# Holmes, Nicoll, Bond, Lovley (2004) - Potential Role of a Novel Psychrotolerant Member of the Family Geobacteraceae, Geopsychrobacter electrodiphilus gen. nov., sp. nov., in Electricity Production by a Marine Sediment Fuel Cell. Appl Environ Microbiol 70:10, https://doi.org/10.1128/AEM.70.10.6023-6030.2004
+Geothrix*fermentans*								# Bond, Lovley (2005) - Evidence for Involvement of an Electron Shuttle in Electricity Generation by Geothrix fermentans. Appl Environ Microbiol 71:4, https://doi.org/10.1128/AEM.71.4.2186-2189.2005
+Gluconobacter*roseus*								# Karthikeyan, Kumar, et al (2009) - Bioelectrocatalysis of acetobacter aceti and Gluconobacter roseus for current generation. Environ. Sci. Technol. 43, 8684–8689
+Haloferax*volcanii*									# Abrevaya, Sacco, et al. (2011) - Archaea-based microbial fuel cell operating at high ionic strength conditions. Extremophiles 15, 633–642
+Klebsiella*pneumoniae*								# Zhang, Zhou, et al. (2008) - Microbial fuel cell based on Klebsiella pneumoniae biofilm, Electrochemistry Communications, Volume 10, Issue 10, Pages 1641-1643, https://doi.org/10.1016/j.elecom.2008.08.030.
+Lysinibacillus*sphaericus*							# Nandy, Kumar, Kundu, (2013) - Utilization of proteinaceous materials for power generation in a mediatorless microbial fuel cell by a new electrogenic bacteria Lysinibacillus sphaericus VA5. Enzyme Microb. Technol. 53, 339–344
+Mariprofundus*ferrooxydans*							# Summers, Gralnick, Bond (2013) - Cultivation of an Obligate Fe(II)-Oxidizing Lithoautotrophic Bacterium Using Electrodes. mBio 4, https://doi.org/10.1128/mbio.00420-12
+Methanosarcina*acetivorans*							# Holmes, Ueki et al (2019) - A Membrane-Bound Cytochrome Enables Methanosarcina acetivorans To Conserve Energy from Extracellular Electron Transfer. mBio 10:4, doi:10.1128/mbio.00789-19. https://doi.org/10.1128/mbio.00789-19
+Natrialba*magadii*									# Abrevaya, Sacco, et al. (2011) - Archaea-based microbial fuel cell operating at high ionic strength conditions. Extremophiles 15, 633–642
+Ochrobactrum*anthropi*								# Zuo, Xing, Regan, Logan (2008) - Isolation of the Exoelectrogenic Bacterium Ochrobactrum anthropi YZ-1 by Using a U-Tube Microbial Fuel Cell. Appl Environ Microbiol 74:10 , https://doi.org/10.1128/AEM.02732-07
+Propionibacterium*freudenreichii*					# Emde, Schink (1990) - Enhanced Propionate Formation by Propionibacterium freudenreichii subsp. freudenreichii in a Three-Electrode Amperometric Culture System. Appl Environ Microbiol 56:9, https://doi.org/10.1128/aem.56.9.2771-2776.1990
+Proteus*vulgaris*									# Yuan, Ahmed, et al. (2011) - Carbon nanoparticles-assisted mediator-less microbial fuel cells using Proteus vulgaris, Biosensors and Bioelectronics, Volume 27, Issue 1, Pages 106-112, https://doi.org/10.1016/j.bios.2011.06.025.
+Pyrococcus*furiosus*								# Sekar, Wu, et al. (2017) - Electricity generation by Pyrococcus furiosus in microbial fuel cells operated at 90°C. Biotechnol. Bioeng. 114, 1419–1427
+Raoultella*electrica*								# Kimura, Chung, et al. (2014) - Raoultella electrica sp. nov., isolated from anodic biofilms of a glucose-fed microbial fuel cell, International Journal of Systematic and Evolutionary Microbiology 64, 1384-1388, doi:10.1099/ijs.0.058826-0
+Rhodoferax*ferrireducens*							# Chaudhuri & Lovley (2003) - Electricity generation by direct oxidation of glucose in mediatorless microbial fuel cells. Nature Biotechnology 21, 1229–1232, https://doi.org/10.1038/nbt867
+Rhodopseudomonas*palustris*							# Xing, Zuo, et al (2008) - Electricity Generation by Rhodopseudomonas palustris DX-1. Environ. Sci. Technol. 42 (11): 4146–4151. https://doi.org/10.1021/es800312v
+Shewanella*decolorationis*							# Yang, Sun, et al. (2011) - Differential biofilms characteristics of Shewanella decolorationis microbial fuel cells under open and closed circuit conditions, Bioresource Technology, Volume 102, Issue 14, Pages 7093-7098, https://doi.org/10.1016/j.biortech.2011.04.073.
+Shewanella*electrodiphila*							# Zhang, Burgess, Grant (2015) - Shewanella electrodiphila sp. nov., a psychrotolerant bacterium isolated from Mid-Atlantic Ridge deep-sea sediments, International Journal of Systematic and Evolutionary Microbiology, 65, https://doi.org/10.1099/ijs.0.000345
+Shewanella*frigidimarina*							# Fitzgerald, Petersen, et al. (2013) - Shewanella frigidimarina microbial fuel cells and the influence of divalent cations on current output, Biosensors and Bioelectronics, Volume 40, Issue 1, Pages 102-109, https://doi.org/10.1016/j.bios.2012.06.039.
+Shewanella*japonica*								# Biffinger, Fitzgerald, et al. (2011) - The utility of Shewanella japonica for microbial fuel cells, Bioresource Technology, Volume 102, Issue 1, Pages 290-297, https://doi.org/10.1016/j.biortech.2010.06.078.
+Shewanella*marisflavi*								# Huang, Sun, Zhang (2010) - Electricity generation at high ionic strength in microbial fuel cell by a newly isolated Shewanella marisflavi EP1. Appl Microbiol Biotechnol 85(4):1141-9. doi: 10.1007/s00253-009-2259-2
+Shewanella*oneidensis*								# Hyung Joo Kim et al. (2002) - A mediator-less microbial fuel cell using a metal reducing bacterium, Shewanella putrefaciens,, Enzyme and Microbial Technology, Volume 30, Issue 2, Pages 145-152, DOI:10.1016/S0141-0229(01)00478-1.
+Shewanella*putrefaciens*							# Hyung Joo Kim et al. (2002) - A mediator-less microbial fuel cell using a metal reducing bacterium, Shewanella putrefaciens,, Enzyme and Microbial Technology, Volume 30, Issue 2, Pages 145-152, DOI:10.1016/S0141-0229(01)00478-1.
+Shewanella*HN-41*									# Wu, Xing, et al. (2013) - Electricity generation by Shewanella sp. HN-41 in microbial fuel cells, International Journal of Hydrogen Energy, Volume 38, Issue 35, Pages 15568-15573, https://doi.org/10.1016/j.ijhydene.2013.04.081.
+Spirulina*platensis*								# Lin, Wei, et al. (2013) - Characteristics of the photosynthesis microbial fuel cell with a Spirulina platensis biofilm, Bioresource Technology, Volume 135, Pages 640-643, https://doi.org/10.1016/j.biortech.2012.09.138.
+Streptococcus*lactis*								# Freguia, Masuda, et al. (2009) - Lactococcus lactis catalyses electricity generation at microbial fuel cell anodes via excretion of a soluble quinone, Bioelectrochemistry, Volume 76, Issues 1–2, Pages 14-18, https://doi.org/10.1016/j.bioelechem.2009.04.001.
+Synechococcus*PCC*6301*								# Rawson, Willmer, Turner (1989) - Whole-cell biosensors for environmental monitoring, Biosensors, Volume 4, Issue 5, Pages 299-311, https://doi.org/10.1016/0265-928X(89)80011-2.
+Thermincola*ferriacetica*							# Parameswaran, Bry, et al. (2013) - Kinetic, Electrochemical, and Microscopic Characterization of the Thermophilic, Anode-Respiring Bacterium Thermincola ferriacetica. Environ. Sci. Technol. 47 (9): 4934–4940. https://doi.org/10.1021/es400321c
+Thermincola*potens*									# Wrighton, Agbo et al. (2008) - A novel ecological role of the Firmicutes identified in thermophilic microbial fuel cells, The ISME Journal, Volume 2, Issue 11, Pages 1146–1156, DOI:10.1038/ismej.2008.48
+Tolumonas*osonensis*								# Luo, Yang, et al. (2013) - A new electrochemically active bacterium phylogenetically related to Tolumonas osonensis and power performance in MFCs, Bioresource Technology, Volume 139, Pages 141-148, https://doi.org/10.1016/j.biortech.2013.04.031.
