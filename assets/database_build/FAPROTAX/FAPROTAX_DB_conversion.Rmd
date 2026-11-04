@@ -1,0 +1,279 @@
+---
+title: "FAPROTADX2 DB conversion to FAPROTAX1"
+author: "Lars Schreiber"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rationale
+With the update of FAPROTAX v1 to v2 the ability to add custom functions to the database was lost. So in order to leverage the more comprehensive v2 database and the better mapper script, we will try to get our custom functions as good as possible into the v2 db.
+
+```{r loading necessary libraries}
+library("tidyr")
+library("readr")
+library("stringr")
+library("igraph")
+library("dplyr")
+```
+
+``` {r read data and convert format}
+# Read v2 database
+faprotax2_db <- read_tsv(file = "FAPROTAX2_db/FAPROTAX2-db_main.tsv.gz")
+
+# Read custom functions and v1 data
+fpt_custom <- file("FAPROTAX1/FAPROTAX.txt", open = "r")
+
+recognized_guild <- NA_character_
+
+fpt_guild_to_taxa <- data.frame(guild = character(),
+                                taxon = character(),
+                                source = character())
+
+
+# Loop line by line
+while (TRUE) {
+  # Read exactly 1 line at a time
+  line <- readLines(fpt_custom, n = 1, warn = FALSE)
+  
+  # Check if we have hit the End of File (EOF)
+  if (length(line) == 0) {
+    break
+  }
+  
+  if(str_detect(string = line, pattern = fixed("# -")) & is.na(recognized_guild)){
+    message("Detected block delimiter, but block is not defined. Please review FAPROTAX1 reference file.")
+  }
+  
+  # Check if we hit a comment line
+  if (str_detect(line, pattern = "^#")) {
+    next
+  }
+  
+  ## Check if we are in empty lines between guild blocks, if yes reset the guild id to NA
+  if (str_trim(line) == "") {
+    recognized_guild <- NA_character_
+    next
+  }
+  
+  ## Check if we previously recongized a guild if not then we are at a guild right now!!!
+  if(is.na(recognized_guild)){
+    recognized_guild <- str_split_i(string = line, pattern = fixed("elements:"), i = 1)
+    #message("Recognized guild: ",recognized_guild)
+    next
+  }
+
+  # Extract taxon assignments
+  ## Check if guild has been recognized previously
+  if(!is.na(recognized_guild)){
+    ## Read taxon information under this guild
+    current_taxon <- str_split_i(string = line, pattern = fixed("#"), i = 1)
+    current_taxon <- gsub("\\s", "", current_taxon)
+    
+    current_source <- str_split_i(string = line, pattern = fixed("#"), i = 2)
+
+    ### Add taxon to final mapping df
+    fpt_guild_to_taxa <- rbind.data.frame(fpt_guild_to_taxa,
+                                          data.frame(guild = recognized_guild,
+                                                     taxon = current_taxon,
+                                                     source = current_source))
+    next
+  }
+}
+close(fpt_custom)
+
+# Create a db2 style taxon name to see how many species are already contained in the v2 db
+fpt_guild_to_taxa$taxon_v2 <- str_replace_all(string = fpt_guild_to_taxa$taxon,
+                                              pattern = fixed("*"),
+                                              replacement = fixed("_"))
+
+fpt_guild_to_taxa$taxon_v2 <- str_replace(string = fpt_guild_to_taxa$taxon_v2,
+                                          pattern = "_$",
+                                          replacement = "")
+
+fpt_guild_to_taxa$taxon_v2 <- str_replace(string = fpt_guild_to_taxa$taxon_v2,
+                                          pattern = "^_",
+                                          replacement = "")
+
+#fpt_guild_to_taxa$taxon_v2[!(fpt_guild_to_taxa$taxon_v2 %in% faprotax2_db$species)]
+
+
+# Turn v2 database into v1 style df
+db_v2_df <- data.frame(guild = character(),
+                       taxon = character(),
+                       source = character())
+
+all_funcs <- colnames(faprotax2_db)[colnames(faprotax2_db) |> 
+                                      str_detect(pattern = fixed(".value"))] |> 
+  str_replace_all(pattern = fixed(".value"), replacement = "")
+
+for (func in seq_along(all_funcs)){
+  #func = 1
+  function_column <- paste0(all_funcs[func], ".value")
+  reference_column <- paste0(all_funcs[func], ".source")
+  
+  # Subset and filter the dataframe accordingly
+  faprotax2_db_sub <- faprotax2_db[,c("species", function_column, reference_column)]
+  faprotax2_db_sub_filt <- faprotax2_db_sub[faprotax2_db_sub[[function_column]] == "P",]
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[!is.na(faprotax2_db_sub_filt[[function_column]]),]
+  
+  # Remove all entries without a reference
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[!is.na(faprotax2_db_sub_filt[[reference_column]]),]
+  
+  faprotax2_db_sub_filt <- unique(faprotax2_db_sub_filt)
+  
+  # Replace all internal underscores with * in species names
+  faprotax2_db_sub_filt$species <- str_replace_all(faprotax2_db_sub_filt$species, pattern = fixed("_"), replacement = fixed("*"))
+  # Add terminal *
+  faprotax2_db_sub_filt$species <- paste0(faprotax2_db_sub_filt$species,"*")
+  
+  # Sort by species name
+  faprotax2_db_sub_filt <- faprotax2_db_sub_filt[order(faprotax2_db_sub_filt$species),]
+  
+  
+  current_func <- all_funcs[func]
+  
+  # Loop through the species for putting them into a data frame
+  for (species in seq_along(faprotax2_db_sub_filt$species)){
+    #species = 1
+    # Pad species name with the right number of tabs
+    current_species <- faprotax2_db_sub_filt$species[species]
+    current_ref <- faprotax2_db_sub_filt[[reference_column]][species]
+    # Convert reference to plain ASCII
+    current_ref <- iconv(current_ref,
+                         from = "",
+                         to = "ASCII//TRANSLIT",
+                         sub = "")
+    # Add to growing df
+    db_v2_df <- rbind.data.frame(db_v2_df,
+                                 data.frame(guild = current_func,
+                                            taxon = current_species,
+                                            source = current_ref))
+  }
+}
+
+# How do the guilds match up???
+fpt_guild_to_taxa$guild <- gsub("\\s", "", fpt_guild_to_taxa$guild)
+unique(fpt_guild_to_taxa$guild[!(fpt_guild_to_taxa$guild %in% db_v2_df$guild)])
+
+# Remove the functions not being a custom function and being unique to the v1 database
+#undesired_funcs <- c("chloroplasts","nonphotosynthetic_cyanobacteria","photosynthetic_cyanobacteria")
+#fpt_guild_to_taxa <- fpt_guild_to_taxa[!(fpt_guild_to_taxa$guild %in% undesired_funcs),]
+
+# Merge both databases
+## Add initial * to taxon names in v2 db
+db_v2_df$taxon <- paste0("*",db_v2_df$taxon)
+colnames(db_v2_df)
+colnames(fpt_guild_to_taxa)
+
+merged_db <- rbind.data.frame(db_v2_df[,c("taxon","guild","source")],
+                              fpt_guild_to_taxa[,c("taxon","guild","source")])
+## Uniquify database
+merged_db$criterium <- paste0(merged_db$taxon, "_", merged_db$guild)
+merged_db <- merged_db[!(duplicated(merged_db$criterium)),]
+
+## The order of the guilds has to be so that sub-categories (i.e. nested categories) are defined before their parent/umbrella 
+## category. So we will have to find a guild order that works.
+
+### Create a df that contains all nested categories
+guild_order_df <- merged_db[str_detect(string = merged_db$taxon, pattern = fixed("add_group:")),]
+
+colnames(guild_order_df) <- c("daughter","parent","reference")
+guild_order_df <- guild_order_df[,c("daughter","parent")]
+guild_order_df$daughter <- str_replace_all(string = guild_order_df$daughter, pattern = fixed("add_group:"), replacement = "")
+
+### Use igraph and dplyr to do a topographic sort (i.e. leafs always before parents) of the resulting network
+g <- graph_from_data_frame(guild_order_df, directed = TRUE)
+ord <- names(topo_sort(g, mode = "out"))
+
+guild_order_df_ordered <- guild_order_df |> 
+  mutate(order = match(daughter, ord)) |> 
+  arrange(order) |> 
+  select(-order)
+
+### These are all the guilds that will need to be sorted
+all_new_funcs <- unique(merged_db$guild)
+
+### These are all the daughters (nested categories)
+order_daughters <- unique(guild_order_df_ordered$daughter)
+
+### These are all the umbrella categories
+order_parents <- unique(guild_order_df_ordered$parent)
+order_parents <- order_parents[!(order_parents %in% order_daughters)]
+
+### We will put daughters before parents
+order_all_nested <- c(order_daughters,
+                      order_parents)
+
+### ... and non-nested categories before nested ones
+guild_order <- c(all_new_funcs[!(all_new_funcs %in% order_all_nested )],
+                 order_all_nested)
+
+# Write the merged database out in v1 format
+output_file <- "FAPROTAX2_plus.tmp"
+
+longest_name = 55
+
+my_connection <- file(output_file, open = "wt", encoding = "UTF-8")
+writeLines("##############################################################################################", con = my_connection)
+writeLines("# Combined FAPROTAX1 and FAPROTAX2 databases plus custom functions", con = my_connection)
+writeLines("##############################################################################################", con = my_connection)
+writeLines("", con = my_connection)
+writeLines("", con = my_connection)
+
+
+
+## Create FAPROTAX1 type of records in temporary files for each of the function
+for (func in seq_along(guild_order)){
+  #func = 107
+ 
+  cat("Processing guild:", guild_order[func], "\n")
+  # Subset and filter the dataframe accordingly
+  merged_db_sub <- merged_db[merged_db$guild == guild_order[func],]
+  merged_db_sub <- merged_db_sub[!is.na(merged_db_sub$guild),]
+  
+  # Remove all entries without a reference but only for entries that are not "add_group" entries
+  #merged_db_sub <- merged_db_sub[!is.na(merged_db_sub$source) &
+  #                                 str_detect(merged_db_sub$taxon, pattern = fixed("add_group:")),]
+  merged_db_sub$source[is.na(merged_db_sub$source)] <- ""
+  
+  # Sort by species name
+  merged_db_sub <- merged_db_sub[order(merged_db_sub$taxon),]
+  
+  # Write function header to file
+  writeLines(guild_order[func], con = my_connection)
+  writeLines("# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", con = my_connection)
+  # Loop through the species for putting them into the file
+  for (species in seq_along(merged_db_sub$taxon)){
+    #species = 1
+    # Pad species name with the right number of tabs
+    current_species <- merged_db_sub$taxon[species]
+    current_ref <- merged_db_sub$source[species]
+    # Convert reference to plain ASCII
+    current_ref <- iconv(current_ref,
+                         from = "",
+                         to = "ASCII//TRANSLIT",
+                         sub = "")
+    
+    output_line <- sprintf("%-*s # %s",
+                           longest_name,
+                           current_species,
+                           current_ref)
+    # Write output line
+    writeLines(output_line, con = my_connection)
+  }
+  writeLines("", con = my_connection)
+  writeLines("", con = my_connection)
+}
+close(my_connection)
+
+# Append copyright statement to file
+system2(
+  command = "cat", 
+  args = c("faprotax_copyright_statement.txt", "FAPROTAX2_plus.tmp"), 
+  stdout = "FAPROTAX2_BT.txt"
+)
+```
