@@ -9144,6 +9144,7 @@ anode_respiration			elements:C; main_element:C; electron_donor:C; electron_accep
 *Acetobacter*aceti*									# Karthikeyan, Kumar, et al (2009) - Bioelectrocatalysis of acetobacter aceti and Gluconobacter roseus for current generation. Environ. Sci. Technol. 43, 8684–8689
 *Aeromonas*hydrophila*								# Pham, Jung et al. (2003) - A novel electrochemically active and Fe(III)-reducing bacterium phylogenetically related to Aeromonas hydrophila, isolated from a microbial fuel cell, FEMS Microbiology Letters, Volume 223, Issue 1, June 2003, Pages 129–134, DOI:10.1016/S0378-1097(03)00354-9
 *Anabaena*variabilis*								# Tanaka, Tamamushi & Ogawa (1985) – Bioelectrochemical fuel-cells operated by the cyanobacterium, Anabaena variabilis. J. Chem. Technol. Biotechnol., 35: 191-197. DOI:doi.org/10.1002/jctb.280350304
+*Alcaligenes*faecalis*								# Yu, Yuan et al. (2018) - Combined spectroelectrochemical and proteomic characterizations of bidirectional Alcaligenes faecalis-electrode electron transfer, Biosensors and Bioelectronics 106; DOI:10.1016/j.bios.2018.01.032
 *Arcobacter*butzleri*								# Fedorovich, V. et al. (2009) - Novel electrochemically active bacterium phylogenetically related to Arcobacter butzleri, isolated from a microbial fuel cell. Appl. Environ. Microbiol. 75, 7326–7334
 *Bacillus*subtilis*									# Nimje, V. R. et al. (2009) - Stable and high energy generation by a strain of Bacillus subtilis in a microbial fuel cell. J. Power Sources 190, 258–263
 *Calditerrivibrio*nitroreducens*					# Fu, Kobayashi et al. (2013) - A Thermophilic Gram-Negative Nitrate-Reducing Bacterium, Calditerrivibrio nitroreducens, Exhibiting Electricity Generation Capability. Environmental Science & Technology 47 (21): 12583–12590, DOI:10.1021/es402749f
@@ -9203,6 +9204,7 @@ anode_respiration			elements:C; main_element:C; electron_donor:C; electron_accep
 *Thermincola*ferriacetica*							# Parameswaran, Bry, et al. (2013) - Kinetic, Electrochemical, and Microscopic Characterization of the Thermophilic, Anode-Respiring Bacterium Thermincola ferriacetica. Environ. Sci. Technol. 47 (9): 4934–4940. https://doi.org/10.1021/es400321c
 *Thermincola*potens*								# Wrighton, Agbo et al. (2008) - A novel ecological role of the Firmicutes identified in thermophilic microbial fuel cells, The ISME Journal, Volume 2, Issue 11, Pages 1146–1156, DOI:10.1038/ismej.2008.48
 *Tolumonas*osonensis*								# Luo, Yang, et al. (2013) - A new electrochemically active bacterium phylogenetically related to Tolumonas osonensis and power performance in MFCs, Bioresource Technology, Volume 139, Pages 141-148, https://doi.org/10.1016/j.biortech.2013.04.031.
+*Xanthomonas*campestris*							# CHen, Wang et al. (2021) - Production of bioelectricity may play an important role for the survival of Xanthomonas campestris pv. campestris (Xcc) under anaerobic conditions, Science of The Total Environment 768, DOI:10.1016/j.scitotenv.2020.144335
 
 
 electrotrophic			elements:C; main_element:C; electron_donor:cathode; electron_acceptor:C; aerobic:no; exclusively_prokaryotic:yes; light_dependent:no
@@ -9210,6 +9212,7 @@ electrotrophic			elements:C; main_element:C; electron_donor:cathode; electron_ac
 # List largely originates from review articles Koch & Harnisch (2016; doi:10.1002/celc.201600079) with additional taxa from Logan et al. (2019; doi:10.1038/s41579-019-0173-x)
 # Note: taxa listed in original review articles, but requiring an externally added electron shuttles/mediators were excluded
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*Alcaligenes*faecalis*								# Li, Jia et al. (2024) - Bioelectricity facilitates carbon dioxide fixation by Alcaligenes faecalis ZS-1 in a biocathodic microbial fuel cell (MFC), Bioresource Technology 399; DOI:10.1016/j.biortech.2024.130555
 *Brevundimonas*diminuta*							# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
 *Burkholderia*cepacia*								# Cournet, Délia et al. (2010) - Electrochemical reduction of oxygen catalyzed by a wide range of bacteria including Gram-positive, Electrochemistry Communications, Volume 12, Issue 4,Pages 505-508, DOI:10.1016/j.elecom.2010.01.026.
 *Clostridium*aceticum*								# Nevin, Hensley et al. (2011) - Electrosynthesis of Organic Compounds from Carbon Dioxide Is Catalyzed by a Diversity of Acetogenic Microorganisms. Applied and Environmental Microbiology 77, DOI:10.1128/AEM.02642-10 
