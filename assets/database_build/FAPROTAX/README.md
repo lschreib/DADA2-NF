@@ -7,7 +7,5 @@ An extended version of the [FAPROTAX](http://www.loucalab.com/archive/FAPROTAX/l
 - Caproic acid production by saccharolytic fermentation
 - Homoacetogenesis
 - Microbial electrosynthesis (i.e. electrode-facilitated CO2 fixation)
-
-# Planned additions
 - Syngas fermentation
 
